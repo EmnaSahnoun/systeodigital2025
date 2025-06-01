@@ -112,7 +112,7 @@ environment {
                 
                 stage('Build Frontend Image') {
     steps {
-        dir('correct-frontend-directory-name') {
+        dir('WebFront') {
             script {
                 try {
                     sh "docker build -t emnasahnoun/angular-frontend ."
