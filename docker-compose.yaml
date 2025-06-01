@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    image: emnasahnoun/eureka-server:latest
+    container_name: eureka-server
+    hostname: eureka.systeo.tn
+    ports:
+      - "8761:8761"
+    networks:
+      - systeo-network
+
+  gateway-service:
+    image: emnasahnoun/gateway-service:latest
+    container_name: gateway-service
+    hostname: e1.systeo.tn
+    ports:
+      - "9091:9091"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - systeo-network
+
+  project-service:
+    image: emnasahnoun/project-service:latest
+    container_name: project-service
+    hostname: e3.systeo.tn
+    ports:
+      - "8074:8074"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - systeo-network
+
+  activity-service:
+    image: emnasahnoun/activity-service:latest
+    container_name: activity-service
+    hostname: e4.systeo.tn
+    ports:
+      - "8075:8075"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - systeo-network
+
+  document-service:
+    image: emnasahnoun/document-service:latest
+    container_name: document-service
+    hostname: e6.systeo.tn
+    ports:
+      - "8077:8077"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - systeo-network
+
+  angular-frontend:
+    image: emnasahnoun/angular-frontend:latest
+    container_name: angular-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - gateway-service
+    networks:
+      - systeo-network
+
+networks:
+  systeo-network:
+    driver: bridge
