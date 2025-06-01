@@ -129,12 +129,12 @@ environment {
                 )]) {
                     sh "docker login -u ${env.DockerHubUsername} -p ${env.DockerHubPassword}"
                     
-                    sh "docker push ${env.DOCKER_REGISTRY}/eureka-server:latest"
-                    sh "docker push ${env.DOCKER_REGISTRY}/gateway-service:latest"
-                    sh "docker push ${env.DOCKER_REGISTRY}/project-service:latest"
-                    sh "docker push ${env.DOCKER_REGISTRY}/activity-service:latest"
-                    sh "docker push ${env.DOCKER_REGISTRY}/document-service:latest"
-                    sh "docker push ${env.DOCKER_REGISTRY}/angular-frontend:latest"
+                    sh "docker push ${env.DOCKER_REGISTRY}/eureka-server"
+                    sh "docker push ${env.DOCKER_REGISTRY}/gateway-service"
+                    sh "docker push ${env.DOCKER_REGISTRY}/project-service"
+                    sh "docker push ${env.DOCKER_REGISTRY}/activity-service"
+                    sh "docker push ${env.DOCKER_REGISTRY}/document-service"
+                    sh "docker push ${env.DOCKER_REGISTRY}/angular-frontend"
                 }
             }
         }
