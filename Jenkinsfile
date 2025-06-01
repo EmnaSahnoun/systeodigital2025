@@ -73,7 +73,7 @@ environment {
                 stage('Build Eureka Image') {
                     steps {
                         dir('EurekaCompain') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/eureka-server:latest ."
+                            sh "docker build -t ${env.DOCKER_REGISTRY}/eureka-server ."
                         }
                     }
                 }
@@ -81,7 +81,7 @@ environment {
                 stage('Build Gateway Image') {
                     steps {
                         dir('Gatway') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/gateway-service:latest ."
+                            sh "docker build -t ${env.DOCKER_REGISTRY}/gateway-service ."
                         }
                     }
                 }
@@ -89,7 +89,7 @@ environment {
                 stage('Build ProjectService Image') {
                     steps {
                         dir('ProjectService') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/project-service:latest ."
+                            sh "docker build -t ${env.DOCKER_REGISTRY}/project-service ."
                         }
                     }
                 }
@@ -97,7 +97,7 @@ environment {
                 stage('Build ActivityService Image') {
                     steps {
                         dir('Activity-Service') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/activity-service:latest ."
+                            sh "docker build -t ${env.DOCKER_REGISTRY}/activity-service ."
                         }
                     }
                 }
@@ -105,7 +105,7 @@ environment {
                 stage('Build DocumentService Image') {
                     steps {
                         dir('DocumentService') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/document-service:latest ."
+                            sh "docker build -t ${env.DOCKER_REGISTRY}/document-service ."
                         }
                     }
                 }
@@ -113,7 +113,7 @@ environment {
                 stage('Build Frontend Image') {
                     steps {
                         dir('BankprojetFront') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/angular-frontend:latest ."
+                            sh "docker build -t ${env.DOCKER_REGISTRY}/angular-frontend ."
                         }
                     }
                 }
