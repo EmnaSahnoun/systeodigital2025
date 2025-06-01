@@ -112,7 +112,7 @@ environment {
                 
                 stage('Build Frontend Image') {
                     steps {
-                        dir('BankprojetFront') {
+                        dir('WebFront') {
                             sh "docker build -t ${env.DOCKER_REGISTRY}/angular-frontend ."
                         }
                     }
