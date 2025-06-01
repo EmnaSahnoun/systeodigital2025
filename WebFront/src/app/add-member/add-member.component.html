@@ -1,0 +1,23 @@
+<!-- Modal -->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"> <!-- Modal centered -->
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between align-items-center">
+          <h5 class="modal-title" id="addMemberModalLabel">Ajouter un membre</h5>
+          <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          
+        </div>
+        <div class="modal-body">
+          <!-- Contenu dynamique pour ajouter un membre -->
+          <ul>
+            <li *ngFor="let member of availableMembers" (click)="addMember(member)">
+                <img [src]="member.image" [alt]="member.name" class="member-img">
+                {{ member.name }}
+              </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

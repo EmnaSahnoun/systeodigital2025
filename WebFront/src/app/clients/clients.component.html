@@ -1,0 +1,128 @@
+<div class="client-container"> <!-- Renamed class from project-container -->
+    <app-header [title]="'Liste des Clients'"></app-header> <!-- Updated title -->
+
+    <!-- Header Section -->
+    <div class="client-header"> <!-- Renamed class from project-header -->
+      <!-- Search Bar -->
+      <div class="search-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" placeholder="Rechercher un client..." [(ngModel)]="searchQuery" (input)="applyFilter()" /> <!-- Updated placeholder -->
+      </div>
+
+      <!-- Actions: Filter, View Mode, Add Client -->
+      <div class="actions-container">
+        
+        <!-- Add Client Button -->
+        <button class="add-client-button" (click)="addClient()"> <!-- Renamed class and method from add-project-button -->
+          <mat-icon>add</mat-icon>
+          <span>Nouveau Client</span> <!-- Updated text -->
+        </button>
+      </div>
+    </div>
+
+    <!-- Client Display Area -->
+    <div class="client-display"> <!-- Renamed class from project-display -->
+      <!-- List View (Table) -->
+      <div *ngIf="viewMode === 'list'" class="client-table-card"> <!-- Renamed class from project-table-card -->
+        <table class="data-table"> <!-- Reusing .data-table style -->
+          <thead>
+            <tr>
+              <th>Nom du Client</th>
+              <th>Date Création</th>
+              <th>Adresse</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Statut MDP</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let client of filteredClients"  [class.editing-row]="editingClientId === client.id"> <!-- Updated iteration and variables -->
+              <!-- Name Column -->
+              <td>
+                <span>{{ client.name }}</span> <!-- Name is not editable as per request -->
+              </td>
+              <!-- Created At -->
+              <td>
+                {{ client.createdAt | date:'dd/MM/yyyy' }}
+              </td>
+              <!-- Address Column -->
+              <td>
+                <span *ngIf="editingClientId !== client.id">{{ client.address || 'N/A' }}</span>
+                <input *ngIf="editingClientId === client.id" type="text" [(ngModel)]="editedClientData.address" class="inline-edit-input" (click)="$event.stopPropagation()" (keydown.enter)="saveEdit(client.id, $event)" (keydown.escape)="cancelEdit($event)" />
+              </td>
+              <!-- Email -->
+              <td>
+                <span>{{ client.email }}</span> <!-- Email is not editable as per request -->
+          
+              </td>
+              <!-- Phone -->
+              <td>
+               <span *ngIf="editingClientId !== client.id">{{ client.phone || 'N/A' }}</span>
+               <input *ngIf="editingClientId === client.id" type="text" [(ngModel)]="editedClientData.phone" class="inline-edit-input" (click)="$event.stopPropagation()" (keydown.enter)="saveEdit(client.id, $event)" (keydown.escape)="cancelEdit($event)" />
+             
+              </td>
+              <!-- Statut Mot de Passe Keycloak -->
+              <td>
+                <ng-container *ngIf="client.isLoadingCredentials">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </ng-container>
+                <ng-container *ngIf="!client.isLoadingCredentials">
+                  <span *ngIf="client.hasPassword === true" class="badge bg-success">Défini</span>
+                  <span *ngIf="client.hasPassword === false" class="badge bg-warning">Non défini</span>
+                  <span *ngIf="client.hasPassword === undefined" class="badge bg-secondary">Inconnu</span>
+                  <button *ngIf="client.hasPassword === false"
+                          class="btn-set-password ms-2"
+                          (click)="openSetPasswordModal(client, $event)"
+                          title="Définir le mot de passe">
+                    <i class="bi bi-key-fill"></i> Définir
+                  </button>
+                </ng-container>
+              </td>
+               <td class="actions">
+  <ng-container *ngIf="editingClientId !== client.id">
+    <button class="edit-btn" (click)="startEdit(client, $event)" title="Modifier">
+      <i class="bi bi-pencil"></i>
+    </button>
+    <button class="delete-btn" (click)="deleteClient(client.id, $event)" title="Supprimer">
+      <i class="bi bi-trash"></i>
+    </button>
+  </ng-container>
+  <ng-container *ngIf="editingClientId === client.id">
+    <button class="save-btn" (click)="saveEdit(client.id, $event)" title="Sauvegarder">
+      <i class="bi bi-check-lg"></i>
+    </button>
+    <button class="cancel-btn" (click)="cancelEdit($event)" title="Annuler">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </ng-container>
+</td>
+
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="!filteredClients || filteredClients.length === 0" style="text-align: center; padding: 20px; color: var(--text-color-secondary);">
+          Aucun client trouvé. <!-- Updated text -->
+        </div>
+      </div>
+
+      <!-- Card View -->
+      <div *ngIf="viewMode === 'card'" class="client-cards-grid"> <!-- Renamed class from project-cards-grid -->
+        <div class="client-card" *ngFor="let client of filteredClients" > <!-- Updated iteration and class from project-card -->
+          <div class="card-header">
+            <h3>{{ client.name }}</h3>
+            <div class="card-creation-date">Créé le: {{ client.createdAt | date:'dd/MM/yyyy' }}</div> <!-- Adapted from card-dates -->
+          </div>
+          <div class="card-body">
+            <p><strong>Email:</strong> {{ client.email }}</p>
+            <p><strong>Téléphone:</strong> {{ client.phone || 'N/A' }}</p>
+            <p><strong>Adresse:</strong> {{ client.address || 'N/A' }}</p>
+          </div>
+          <!-- Le footer de la carte peut être ajouté ici si nécessaire pour des actions spécifiques par carte -->
+        </div>
+         <div *ngIf="!filteredClients || filteredClients.length === 0" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: var(--text-color-secondary);">
+          Aucun client trouvé. <!-- Updated text -->
+        </div>
+      </div>
+    </div>
+  </div>

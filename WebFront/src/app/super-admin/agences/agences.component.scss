@@ -1,0 +1,295 @@
+// Variables de couleurs inspirées du dashboard (ajustez si nécessaire)
+$primary-color: #41B3A3; // Teal/Vert principal (utilisé pour le bouton ajouter)
+$accent-color: #E27D60;  // Coral/Orange (peut être utilisé pour des accents)
+$text-color-primary: #333; // Texte principal (foncé)
+$text-color-secondary: #666; // Texte secondaire (gris moyen)
+$background-color: #f7f9fc; // Fond général très clair (comme dashboard)
+$container-background: #fff; // Fond du conteneur principal (blanc)
+$input-background: #f0f2f5; // Fond très léger pour l'input de recherche
+$input-icon-color: #777; // Couleur de l'icône de recherche (gris foncé)
+$date-background: #e9ecef; // Fond léger pour la date
+$border-color: #e0e0e0; // Couleur de bordure légère (comme mat-table)
+$table-header-background: #f9fafb; // Fond très léger pour l'en-tête de table
+$table-row-hover: rgba(0, 0, 0, 0.04); // Effet hover subtil (comme mat-table)
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); // Ombre légère (comme mat-card)
+$border-radius: 8px; // Rayon de bordure (comme mat-card)
+
+// Couleurs spécifiques pour les boutons d'action (conservées)
+$edit-color: #4CAF50;   // Vert
+$delete-color: #F44336; // Rouge
+@use '@angular/material' as mat;
+
+// Définir des variables pour la cohérence (ou s'assurer qu'elles sont globales)
+:host { // Appliquer les variables au composant hôte
+  --primary-color: #4a90e2; // Un bleu moderne
+  --accent-color: #50e3c2; // Un turquoise/vert comme accent
+  --warning-color: #f5a623; // Orange pour utilisateurs/avertissements
+  --text-color-primary: #333;
+  --text-color-secondary: #666;
+  --background-color: #f7f9fc; // Fond très clair, presque blanc
+  --card-background: #ffffff;
+  --border-color: #e0e0e0;
+  --border-radius: 8px;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); // Ombre douce
+  --hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+// --- Styles Généraux ---
+.agence-container {
+  padding: 24px; // Augmenter le padding général
+  font-family: 'Poppins', sans-serif;
+  background: $background-color; // Utiliser le fond du dashboard
+  min-height: calc(100vh - 64px); // Ajuster si hauteur header différente
+  color: $text-color-primary;
+}
+
+// --- Conteneur Principal ---
+.container {
+  background: $container-background; // Fond blanc
+  border-radius: $border-radius; // Appliquer le border-radius
+  padding: 24px; // Augmenter le padding interne
+  box-shadow: $card-shadow; // Appliquer l'ombre
+  // Retirer align-items et justify-content si non nécessaire ici
+}
+
+// --- Header (Recherche, Date, Bouton) ---
+.agence-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px; // Augmenter l'espace avant la table
+  gap: 16px; // Espacement entre éléments
+}
+
+/* Search Bar (Style original conservé, couleurs ajustées) */
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1; // Prend l'espace disponible
+  min-width: 250px; // Largeur minimale
+
+  input {
+    background: $input-background; // Fond plus clair
+    padding-left: 40px; // Plus d'espace pour l'icône
+    border: 1px solid $border-color; // Bordure légère
+    border-radius: $border-radius; // Utiliser le border-radius standard
+    min-height: 40px;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: $text-color-primary;
+
+    &::placeholder {
+        color: $text-color-secondary; // Placeholder plus subtil
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color; // Bordure colorée au focus
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2); // Effet de focus
+    }
+  }
+
+  .icon {
+    position: absolute;
+    left: 12px; // Ajuster position icône
+    font-size: 18px; // Taille icône ajustée
+    color: $input-icon-color; // Couleur icône
+  }
+}
+
+/* Date (Style original conservé, couleurs ajustées) */
+.current-date {
+  font-size: 0.9rem; // Taille légèrement réduite
+  background-color: $date-background; // Fond plus clair
+  border-radius: $border-radius; // Utiliser le border-radius standard
+  padding: 8px 16px;
+  white-space: nowrap;
+  color: $text-color-secondary; // Couleur texte secondaire
+  font-weight: 500;
+  border: 1px solid $border-color; // Bordure légère
+}
+
+/* Add Agency Button (Style original conservé, couleurs ajustées) */
+.add-agency {
+  cursor: pointer;
+  background: $primary-color; // Utiliser la couleur primaire du dashboard
+  border-radius: $border-radius; // Utiliser le border-radius standard
+  font-weight: 600;
+  min-height: 40px; // Hauteur alignée sur l'input
+  border: none;
+  color: white;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Ombre légère
+
+  i {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: darken($primary-color, 8%); // Assombrir au survol
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  &:active:not(:disabled) {
+      transform: scale(0.98);
+  }
+  &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+  }
+}
+
+// --- Affichage de la Table ---
+.agence-display {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.agence-table {
+  width: 100%;
+  overflow: hidden; // Gérer le border-radius
+  // Retirer le box-shadow ici car le .container l'a déjà
+  background: transparent; // La table elle-même est transparente dans le container
+
+  table {
+    width: 100%;
+    border-radius: 0; // Pas de radius sur la table interne
+    overflow: hidden;
+    border-collapse: collapse; // Style de bordure standard
+  }
+
+  th, td {
+    padding: 14px 16px; // Padding cohérent
+    text-align: left;
+    border-bottom: 1px solid $border-color; // Utiliser la couleur de bordure standard
+    vertical-align: middle; // Centrer verticalement
+  }
+
+  th {
+    background-color: $table-header-background; // Fond très léger pour header
+    font-weight: 600;
+    font-size: 12px; // Taille standard pour header
+    color: $text-color-secondary; // Couleur texte secondaire
+    text-transform: uppercase; // Majuscules pour header
+    letter-spacing: 0.5px;
+  }
+
+  td {
+      font-size: 14px; // Taille standard pour données
+      color: $text-color-primary;
+  }
+
+  tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: $table-row-hover; // Utiliser l'effet hover Material
+    }
+
+    // Enlever la bordure de la dernière ligne
+    &:last-child td {
+        border-bottom: none;
+    }
+  }
+
+  // Retirer les classes .even et .odd pour un look plus épuré
+  // .even { background-color: #f9f9f9; }
+  // .odd { background-color: #ffffff; }
+
+  // --- Actions (Styles conservés) ---
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center; // Centrer les boutons dans la cellule
+    text-align: center; // Assurer l'alignement central
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        transform: scale(1.1);
+      }
+      &:disabled {
+         opacity: 0.5;
+         cursor: not-allowed;
+         transform: none;
+         background-color: transparent !important;
+      }
+    }
+
+    .edit-btn {
+      color: $edit-color; // Couleur verte conservée
+      &:hover:not(:disabled) { background-color: rgba($edit-color, 0.1); }
+    }
+
+    .delete-btn {
+      color: $delete-color; // Couleur rouge conservée
+      &:hover:not(:disabled) { background-color: rgba($delete-color, 0.1); }
+    }
+  }
+
+  // Ajuster padding première/dernière colonne si besoin
+  th:first-child, td:first-child { padding-left: 24px; }
+  th:last-child, td:last-child { padding-right: 24px; text-align: center; } // Centrer la colonne actions
+}
+
+// --- Responsive Design (Adapté) ---
+@media (max-width: 1024px) {
+  .agence-header {
+    flex-direction: column;
+    align-items: stretch; // Étirer les éléments
+    gap: 15px;
+  }
+
+  .add-agency {
+    width: 100%;
+    justify-content: center;
+  }
+
+  // Gérer le scroll horizontal sur mobile/tablette
+  .agence-table {
+    display: block; // Permettre le scroll
+    overflow-x: auto;
+    white-space: nowrap; // Empêcher le retour à la ligne dans les cellules
+
+    table {
+      display: table; // Assurer que la table se comporte comme une table
+      min-width: 800px; // Largeur minimale avant que le scroll n'apparaisse
+    }
+    th, td {
+        white-space: normal; // Permettre le retour à la ligne si nécessaire DANS la cellule
+    }
+  }
+}
+
+// --- Indicateur de chargement et messages (optionnel, si vous ajoutez ces états) ---
+.loading-indicator, .error-message, .no-data-message {
+  text-align: center;
+  padding: 40px 24px;
+  color: $text-color-secondary;
+  font-style: italic;
+}
+.loading-indicator mat-spinner { margin: 0 auto 16px auto; }
+.error-message { color: $delete-color; font-style: normal; }

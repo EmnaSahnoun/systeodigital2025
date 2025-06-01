@@ -1,0 +1,97 @@
+/* header.component.scss */
+.user-header {
+    background: white;
+    border-radius: 20px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        .user-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .icon {
+            cursor: pointer;
+            background-color: #E27D60;
+            color: white;
+            border-radius: 50%;
+            padding: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+    }
+
+    h1 {
+        font-size: 24px;
+        background: white;
+        border-radius: 20px;
+        min-height: 3rem;
+        padding: 0.5rem;
+    }
+}
+/* Styles for the notification dropdown */
+.notification-dropdown {
+    position: absolute; /* Position relative to the nearest positioned ancestor (user-info or user-header) */
+    top: 100%; /* Position below the header */
+    right: 0; /* Align to the right */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px; /* Adjust width as needed */
+    max-height: 300px; /* Limit height */
+    overflow-y: auto; /* Add scroll if content exceeds max-height */
+    z-index: 1000; /* Ensure it appears above other content */
+    padding: 10px;
+    margin-top: 5px; /* Small gap between header and dropdown */
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    p {
+        text-align: center;
+        color: #666;
+    }
+}
+
+/* Ensure user-info is positioned relative so absolute positioning of dropdown works */
+.user-info {
+    position: relative; /* Add this line */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

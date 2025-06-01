@@ -1,0 +1,140 @@
+// --- Copier les Variables depuis projects.component.scss ---
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825;
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// --- Conteneur Principal (similaire à .project-container) ---
+.invitation-container {
+  font-family: 'Poppins', sans-serif;
+  padding: 24px;
+  background-color: $background-color;
+  color: $text-color-primary;
+  min-height: calc(110vh - 64px); // Ajuster selon la hauteur du header principal
+}
+
+// --- En-tête (similaire à .project-header mais simplifié) ---
+.invitation-header {
+  display: flex;
+  justify-content: space-between; // Ou juste 'flex-start' si pas d'autres éléments
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: $container-background;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+
+  h3 {
+    margin: 0;
+    color: $primary-color; // Ou $text-color-primary
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  // Styles pour la barre de recherche si ajoutée
+  // .search-container { ... }
+}
+
+// --- Zone d'affichage (similaire à .project-display) ---
+.invitation-display {
+  margin-top: 24px;
+}
+
+// --- Carte contenant le tableau (similaire à .project-table-card) ---
+.invitation-table-card {
+  background-color: $container-background;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+  overflow: hidden; // Important pour le border-radius du tableau
+
+  // --- Styles du tableau (copiés de .data-table dans projects.component.scss) ---
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-color-secondary;
+      background-color: lighten($background-color, 2%);
+      border-bottom: 2px solid $border-color;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+      padding: 14px 16px;
+      vertical-align: middle;
+      &:last-child { text-align: center; } // Centrer la colonne Actions
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid $border-color;
+      font-size: 14px;
+      color: $text-color-primary;
+      text-align: left;
+      vertical-align: middle;
+      &:last-child { text-align: center; } // Centrer la colonne Actions
+    }
+
+    tr {
+      transition: background-color 0.2s ease;
+      &:hover {
+        background-color: $background-color;
+      }
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+
+    // Styles spécifiques pour les boutons d'action dans le tableau
+    td.actions {
+      button {
+        margin: 0 5px;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+
+        i { font-size: 1rem; }
+
+        &.accept-btn { 
+            border-radius: 18px;
+            background-color: $primary-color; 
+            color: $text-color-light; 
+            &:hover:not(:disabled) { 
+                background-color: darken($primary-color, 10%); } }
+        &.refuse-btn { 
+            border-radius: 18px;
+            background-color: $accent-color; color: $text-color-light; &:hover:not(:disabled) { background-color: darken($warn-color, 10%); } }
+
+        &:disabled { opacity: 0.6; cursor: not-allowed; }
+      }
+    }
+  }
+}
+.empty-state{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  
+}

@@ -1,0 +1,126 @@
+<!-- tasks.component.html -->
+<div class="task-board-container">
+  <div class="header">
+    <button class="back-btn" routerLink="/project/{{projectId}}">
+      <i class="bi bi-arrow-left"></i> Retour
+    </button>
+    
+    <div class="phase-info">
+      <h2>{{ phase?.name }}</h2>
+      <p class="phase-description">{{ phase?.description }}</p>
+      <p class="phase-dates">
+        <strong>Période :</strong> 
+        {{ phase?.startDate | date:'dd/MM/yyyy' }} - {{ phase?.endDate | date:'dd/MM/yyyy' }}
+      </p>
+    </div>
+    
+    <button class="add-task-btn" (click)="addTask()" *ngIf="isAdmin||isSuperAdmin">
+      <i class="bi bi-plus"></i> Ajouter une tâche
+    </button>
+  </div>
+
+  <div class="task-columns" cdkDropListGroup>
+    <!-- Colonne À faire -->
+    <div class="task-column">
+      <h3>À faire</h3>
+      <div cdkDropList id="todo-list" [cdkDropListData]="todo" (cdkDropListDropped)="drop($event)" class="task-list">
+        <div class="task-card"
+             *ngFor="let task of todo"
+             cdkDrag
+             [ngClass]="{'high': task.priority === 'HIGH', 'medium': task.priority === 'MEDIUM', 'low': task.priority === 'LOW'}"
+             (click)="openTaskDetails(task)"
+             >
+          <div class="task-header">
+            <h4>{{ task.name }}</h4>
+            <span class="task-priority" [class.high]="task.priority === 'HIGH'"
+                  [class.medium]="task.priority === 'MEDIUM'"
+                  [class.low]="task.priority === 'LOW'">
+              {{ task.priority }}
+            </span>
+          </div>
+          
+       
+            
+            <div class="task-actions">
+              <button mat-icon-button (click)="editTask(task); $event.stopPropagation()">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button mat-icon-button (click)="deleteTask(task); $event.stopPropagation()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- Colonne En cours -->
+    <div class="task-column">
+      <h3>En cours</h3>
+      <div cdkDropList id="inProgress-list" [cdkDropListData]="inProgress" (cdkDropListDropped)="drop($event)" class="task-list">
+        <div class="task-card" 
+             *ngFor="let task of inProgress"
+             cdkDrag
+             [ngClass]="{'high': task.priority === 'HIGH', 'medium': task.priority === 'MEDIUM', 'low': task.priority === 'LOW'}"
+             (click)="openTaskDetails(task)"
+             >
+          <!-- Même structure que pour À faire -->
+          <div class="task-header">
+            <h4>{{ task.name }}</h4>
+            <span class="task-priority" [class.high]="task.priority === 'HIGH'"
+                  [class.medium]="task.priority === 'MEDIUM'"
+                  [class.low]="task.priority === 'LOW'">
+              {{ task.priority }}
+            </span>
+          </div>
+          
+   
+            
+            <div class="task-actions">
+              <button mat-icon-button (click)="editTask(task); $event.stopPropagation()">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button mat-icon-button (click)="deleteTask(task); $event.stopPropagation()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+ 
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne Terminé -->
+    <div class="task-column">
+      <h3>Terminé</h3>
+      <div cdkDropList id="done-list" [cdkDropListData]="done" (cdkDropListDropped)="drop($event)" class="task-list">
+        <div class="task-card"
+             *ngFor="let task of done"
+             cdkDrag
+             [ngClass]="{'high': task.priority === 'HIGH', 'medium': task.priority === 'MEDIUM', 'low': task.priority === 'LOW'}"
+             (click)="openTaskDetails(task)"
+             >
+          <!-- Même structure que pour À faire -->
+          <div class="task-header">
+            <h4>{{ task.name }}</h4>
+            <span class="task-priority" [class.high]="task.priority === 'HIGH'"
+                  [class.medium]="task.priority === 'MEDIUM'"
+                  [class.low]="task.priority === 'LOW'">
+              {{ task.priority }}
+            </span>
+          </div>
+          
+       
+            <div class="task-actions">
+              <button mat-icon-button (click)="editTask(task); $event.stopPropagation()">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button mat-icon-button (click)="deleteTask(task); $event.stopPropagation()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

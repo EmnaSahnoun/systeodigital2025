@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Accès à la Phase : {{ phase?.name }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="Rechercher par nom ou email..."
+             [(ngModel)]="searchQuery" (ngModelChange)="applyFilter()">
+    </div>
+
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <ul class="list-group" *ngIf="filteredUsers.length > 0; else noUsers">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let user of filteredUsers; trackBy: trackByUser">
+          <div>
+            <strong>{{ user.username }}</strong> <br>
+            <small class="text-muted">{{ user.email }}</small>
+          </div>
+          <!-- Checkbox for modifying access -->
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch"
+                   id="flexSwitchCheckChecked-{{user.id}}"
+                   [(ngModel)]="user.canView">
+            <label class="form-check-label" for="flexSwitchCheckChecked-{{user.id}}">Accès</label>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noUsers>
+        <p class="text-center text-muted">Aucun utilisateur trouvé ou ayant accès à cette phase.</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="isLoading">Enregistrer</button>
+
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isLoading">Fermer</button>
+  </div>

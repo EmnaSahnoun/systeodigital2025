@@ -1,0 +1,941 @@
+// --- Theme Colors & Base Variables ---
+$primary-color: #41B3A3; // Tealish green
+$accent-color: #E27D60;  // Coral
+$warn-color: #F44336;    // Red for delete/errors
+$success-color: #4CAF50; // Green for save/success
+$cancel-color: #6c757d;  // Grey for cancel
+
+$text-color-primary: #343a40; // Darker grey for primary text
+$text-color-secondary: #6c757d; // Medium grey for secondary text
+$text-color-light: #fff;
+$text-color-placeholder: #adb5bd;
+
+$background-color: #f8f9fa; // Lighter page background
+$container-background: #fff;
+$border-color: #dee2e6; // Lighter border color
+$border-color-light: #e9ecef; // Even lighter for subtle separations
+
+$border-radius-sm: 0.2rem;
+$border-radius: 0.375rem; // Standard border radius (Bootstrap 5 like)
+$border-radius-lg: 0.5rem;
+$border-radius-pill: 50rem;
+
+$shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+$shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-size-base: 1rem; // 16px
+$font-size-sm: 0.875rem; // 14px
+$font-size-xs: 0.75rem;  // 12px
+
+$line-height-base: 1.6;
+
+$spacing-unit: 8px;
+
+// Priority & Status Specific Colors
+$priority-high-color: #E74C3C; // Stronger Red
+$priority-medium-color: #F39C12; // Clear Orange
+$priority-low-color: #3498DB;   // Calming Blue
+
+$priority-high-bg: lighten($priority-high-color, 38%); // Adjusted lightness
+$priority-medium-bg: lighten($priority-medium-color, 40%); // Adjusted lightness
+$priority-low-bg: lighten($priority-low-color, 40%); // Adjusted lightness
+
+
+$status-todo-color: $accent-color;
+$status-inprogress-color: #0dcaf0; // Info blue
+$status-completed-color: $success-color;
+$input-padding-y: $spacing-unit * 0.5;          // 4px
+$input-padding-x: $spacing-unit;                // 8px
+$input-bg: $container-background;               // #fff
+$input-border-color: $border-color;             // #dee2e6
+$input-focus-border-color: lighten($primary-color, 15%);
+$input-focus-box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+
+// --- Base Styles ---
+body { // Apply base font to body if not already set globally
+  font-family: $font-family-sans-serif;
+  color: $text-color-primary;
+}
+
+// --- Main Container ---
+.task-details-container {
+  display: flex;
+  flex-direction: column;
+  background: $container-background;
+  border-radius: $border-radius-lg;
+  padding: $spacing-unit * 3; // 24px
+  box-shadow: $shadow-lg;
+  min-height: 110vh;
+  
+  overflow: hidden; // Important for child scrolling
+  font-family: $font-family-sans-serif;
+  max-width: 1200px; // Optional: constrain max width on very large screens
+  margin: auto; // Center if max-width is applied
+  
+}
+
+// --- Task Header ---
+.task-header {
+  display: flex;
+  align-items: center; // Vertically align items
+  gap: $spacing-unit * 2;
+  margin-bottom: $spacing-unit * 2.5; // 20px
+  padding-bottom: $spacing-unit * 2.5;
+  border-bottom: 1px solid $border-color;
+
+  h2 {
+    margin: 0;
+    color: $text-color-primary;
+    font-size: 1.75rem; // Slightly larger
+    font-weight: 600;
+    flex-grow: 1; // Allow title to take available space
+    overflow-wrap: break-word;
+  }
+
+  .priority-badge, .status-badge {
+    margin-bottom: 0; // Remove margin as they are in a flex row
+  }
+
+  .close-btn {
+    color: $text-color-secondary;
+    transition: color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      color: $warn-color;
+      transform: scale(1.1);
+    }
+    i.bi {
+      font-size: 1.25rem; // Ensure icon is sufficiently large
+    }
+  }
+}
+
+// --- Task Content Layout ---
+.task-content {
+  display: flex;
+  flex: 1;
+  gap: $spacing-unit * 3.5; // 30px -> 28px
+  min-height: 0; // Crucial for flex children with overflow
+  overflow: hidden; // Prevent this level from scrolling
+}
+
+.task-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; // Enable vertical scrolling per column
+  overflow-x: hidden;
+  min-height: 0;
+  padding-right: $spacing-unit * 1.5; // Space for scrollbar
+  // Consider custom scrollbar styling for a more polished look if desired
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: darken($border-color, 10%);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: lighten($border-color, 5%);
+  }
+}
+
+// --- Task Sections ---
+.task-section {
+  margin-bottom: $spacing-unit * 3.5; // 25px -> 28px
+
+  h3 {
+    color: $primary-color;
+    margin-top: 0;
+    margin-bottom: $spacing-unit * 2; // 15px -> 16px
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: $spacing-unit;
+
+    &::before { // Modernized indicator
+      content: '';
+      display: block;
+      width: 4px;
+      height: 18px;
+      background: $primary-color;
+      border-radius: 2px;
+    }
+    i.bi { // If icons are used in h3
+      font-size: 1.1em;
+    }
+  }
+  h4 { // For sub-headings like "Upload New Document"
+    margin-bottom: $spacing-unit * 1.5;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-color-primary;
+  }
+}
+
+// --- Badges (Priority & Status) ---
+%badge-base {
+  display: inline-flex;
+  align-items: center;
+  padding: ($spacing-unit * 0.5) ($spacing-unit * 1.5); // 4px 12px
+  border-radius: $border-radius-pill;
+  font-weight: 600;
+  font-size: $font-size-xs; // 0.85rem -> 0.75rem for a more refined look
+  text-transform: uppercase; // Common for badges
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+}
+
+.priority-badge {
+  @extend %badge-base;
+  &.high {
+    background-color: rgba($priority-high-color, 0.1);
+    color: $priority-high-color;
+    border-color: rgba($priority-high-color, 0.3);
+  }
+  &.medium {
+    background-color: rgba($priority-medium-color, 0.1);
+    color: $priority-medium-color;
+    border-color: rgba($priority-medium-color, 0.3);
+  }
+  &.low {
+    background-color: rgba($priority-low-color, 0.1);
+    color: $priority-low-color;
+    border-color: rgba($priority-low-color, 0.3);
+  }
+}
+
+.status-badge {
+  @extend %badge-base;
+  margin-left: $spacing-unit;
+  &.TODO {
+    background-color: rgba($status-todo-color, 0.15);
+    color: $status-todo-color;
+    border-color: rgba($status-todo-color, 0.4);
+  }
+  &.IN_PROGRESS {
+    background-color: rgba($status-inprogress-color, 0.15);
+    color: $status-inprogress-color;
+    border-color: rgba($status-inprogress-color, 0.4);
+  }
+  &.COMPLETED {
+    background-color: rgba($status-completed-color, 0.15);
+    color: $status-completed-color;
+    border-color: rgba($status-completed-color, 0.4);
+  }
+}
+
+// --- Date Range ---
+.date-range {
+  display: flex;
+  gap: $spacing-unit * 2.5; // 20px
+  margin-bottom: $spacing-unit * 2; // Added margin for separation
+
+  .date-item {
+    label {
+      display: block;
+      font-size: $font-size-xs;
+      color: $text-color-secondary;
+      margin-bottom: $spacing-unit * 0.5;
+      font-weight: 500;
+    }
+    p {
+      margin: 0;
+      font-weight: 500;
+      font-size: $font-size-sm;
+      color: $text-color-primary;
+    }
+  }
+}
+.subtasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-unit * 0.5; // Réduire la marge si h3 l'a déjà
+
+  h3 {
+    margin-bottom: $spacing-unit; // Ajuster la marge de h3 pour qu'elle s'aligne bien
+  }
+
+  .add-subtask-btn {
+    color: $primary-color;
+    i.bi {
+      font-size: 1.3rem; // Taille de l'icône
+    }
+    &:hover {
+      color: darken($primary-color, 10%);
+      background-color: rgba($primary-color, 0.08);
+    }
+  }
+}
+// --- Task Description ---
+.task-description {
+  line-height: $line-height-base;
+  color: $text-color-primary; // Ensure it's not $text-color-secondary
+  font-size: $font-size-sm;
+  overflow-wrap: break-word;
+  margin-bottom: $spacing-unit * 2;
+  
+
+    &.add-new-subtask-form {
+      background-color: lighten($primary-color, 48%); // Légèrement différent de l'édition
+      border: 1px dashed lighten($primary-color, 30%);
+      border-radius: $border-radius;
+      padding: $spacing-unit * 1.5;
+      margin-bottom: $spacing-unit * 2; // Espace avant la liste des sous-tâches
+ 
+}
+}
+// --- Subtasks List ---
+.subtasks-list.detailed-subtasks {
+  .subtask-item {
+    display: flex;
+    flex-direction: column; // Keep if edit mode is stacked, otherwise row
+    padding: ($spacing-unit * 1.5) 0; // 12px
+    border-bottom: 1px solid $border-color-light;
+    gap: $spacing-unit;
+    transition: background-color 0.2s ease-in-out;
+
+    &:last-child {
+      border-bottom: none;
+    }
+    &:hover:not(.editing) {
+      background-color: lighten($background-color, 2%);
+    }
+
+    &.editing {
+      
+      background-color: lighten($primary-color, 45%);
+      border-radius: $border-radius;
+      padding: $spacing-unit * 1.5;
+      margin: ($spacing-unit * 0.5) (-$spacing-unit * 1.5); // Negative margin to align with non-editing items if padding is added
+    }
+
+    .subtask-info-display{
+      display: flex;
+      align-items: center;
+      gap: $spacing-unit * 1.5; // 10px -> 12px
+        width: 100%; // Ceci assure que .subtask-info-edit prend toute la largeur de sa ligne
+    }
+      .subtask-info-edit { // Container for the two edit rows
+      display: flex;
+      flex-direction: column; // Stack the two rows vertically
+      gap: $spacing-unit * 1.5; // Vertical gap between the two rows
+      width: 100%;
+    }
+
+    .subtask-info-display {
+      .subtask-name {
+        flex: 3 1 0%; // More space for name
+        font-weight: 500;
+        color: $text-color-primary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: $font-size-sm;
+      }
+      .subtask-dates {
+        flex: 2 1 auto;
+        font-size: $font-size-xs;
+        color: $text-color-secondary;
+        text-align: center;
+        min-width: 120px;
+      }
+      .subtask-priority-badge, .subtask-status-badge {
+        @extend %badge-base; // Use the base badge style
+        flex: 0 0 auto;
+        min-width: 90px;
+        font-size: 0.7rem; // Even smaller for subtask badges
+        padding: ($spacing-unit * 0.35) ($spacing-unit * 1.25);
+        text-transform: capitalize; // Override uppercase if needed
+
+        // Priority classes for subtasks
+        &.high { background-color: rgba($priority-high-color,0.1); color: $priority-high-color; border-color: rgba($priority-high-color,0.2); }
+        &.medium { background-color: rgba($priority-medium-color,0.1); color: $priority-medium-color; border-color: rgba($priority-medium-color,0.2); }
+        &.low { background-color: rgba($priority-low-color,0.1); color: $priority-low-color; border-color: rgba($priority-low-color,0.2); }
+
+        // Status classes for subtasks
+        &.todo { background-color: rgba($status-todo-color,0.1); color: $status-todo-color; border-color: rgba($status-todo-color,0.2); }
+        &.in-progress { background-color: rgba($status-inprogress-color,0.1); color: $status-inprogress-color; border-color: rgba($status-inprogress-color,0.2); }
+        &.completed { background-color: rgba($status-completed-color,0.1); color: $status-completed-color; border-color: rgba($status-completed-color,0.2); }
+      }
+    }
+
+    // Styles for each row within the edit form
+    .subtask-edit-row {
+      display: flex;
+      align-items: center;
+      gap: $spacing-unit * 1.5; // Horizontal gap between items in a row
+      width: 100%;
+
+      // Specific flex distribution for items in each row
+      &.subtask-edit-row-top {
+        .subtask-edit-name { flex: 2 1 45%; } // Name takes more space
+        .subtask-edit-dates { flex: 3 1 55%; } // Dates take remaining space
+      }
+
+      &.subtask-edit-row-bottom {
+        .subtask-edit-selects { flex: 1 1 auto; } // Selects take available space
+        .subtask-actions-edit {
+          flex: 0 0 auto; // Actions take their content size
+          margin-left: auto; // Push actions to the right
+        }
+      }
+    }
+
+    // Styles for form elements, now children of .subtask-edit-row
+     
+      .form-control-sm, .form-select-sm { // General styling for small form controls
+        font-size: $font-size-xs;
+        padding: ($spacing-unit * 0.5) ($spacing-unit); // 4px 8px
+        border: 1px solid $border-color;
+        border-radius: $border-radius-sm;
+        background-color: $input-bg;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        &:focus {
+          border-color: $input-focus-border-color;
+          box-shadow: $input-focus-box-shadow;
+          outline: 0;
+        }
+      }
+     
+      .subtask-edit-dates {
+   
+        display: flex;
+        align-items: center;
+        gap: $spacing-unit * 0.5;
+        input[type="date"] { flex: 1; min-width: 100px; }
+      }
+      .subtask-edit-selects {
+      
+        display: flex;
+        gap: $spacing-unit * 0.75;
+        select { flex: 1; min-width: 90px; }
+      }
+    
+
+    .subtask-actions, .subtask-actions-edit {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: $spacing-unit * 0.5; // 4px
+
+      button[mat-icon-button] { // Standardize icon button appearance
+        width: 36px; height: 36px; // Slightly larger for easier interaction
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        color: $text-color-secondary; // Default icon color
+
+        .icon, i.bi { font-size: 1rem; } // 16px
+
+        &:hover:not(:disabled) {
+          background-color: rgba($primary-color, 0.08);
+          color: $primary-color;
+        }
+        &.delete-btn-subtask:hover:not(:disabled),
+        &.cancel-btn-subtask:hover:not(:disabled) {
+          background-color: rgba($warn-color, 0.08);
+          color: $warn-color;
+        }
+        &.save-btn-subtask:hover:not(:disabled) {
+          background-color: rgba($success-color, 0.08);
+          color: $success-color;
+        }
+        // Specific icon colors if needed when not hovered
+        &.save-btn-subtask .icon, &.save-btn-subtask i.bi { color: $success-color; }
+        &.delete-btn-subtask .icon, &.delete-btn-subtask i.bi { color: $warn-color; }
+      }
+    }
+   
+  }
+}
+
+// --- Documents List ---
+.documents-list {
+  .document-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-unit * 1.5; // 10px -> 12px
+    padding: ($spacing-unit * 1.25) 0; // 10px
+    border-bottom: 1px solid $border-color-light;
+    transition: background-color 0.2s ease;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background-color: lighten($background-color, 2%); }
+
+    .document-icon {
+      font-size: 1.75rem;
+      color: $text-color-secondary;
+      width: 36px;
+      text-align: center;
+      flex-shrink: 0;
+      i.bi-file-earmark-image { color: $primary-color; }
+      i.bi-file-earmark-play { color: $accent-color; }
+      i.bi-file-earmark-text { color: $text-color-secondary; }
+    }
+
+    .document-info {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-unit * 0.25; // 4px -> 2px
+      .document-filename {
+        font-size: $font-size-sm;
+        font-weight: 500;
+        color: $primary-color;
+        cursor: pointer;
+        overflow-wrap: break-word;
+        &:hover { text-decoration: underline; }
+      }
+      .document-description {
+        font-size: $font-size-xs;
+        color: $text-color-secondary;
+        overflow-wrap: break-word;
+      }
+      .document-meta {
+        color: $text-color-secondary;
+        font-size: 0.7rem; // Even smaller for meta
+      }
+    }
+    .document-actions { // Same styling as subtask actions
+      @extend .subtask-actions; // Inherit common button styling
+    }
+  }
+}
+.documents-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-unit * 0.5;
+
+  h3 {
+    margin-bottom: $spacing-unit; // Match subtasks-header h3
+  }
+
+  .add-document-btn {
+    color: $primary-color;
+    i.bi {
+      font-size: 1.3rem;
+    }
+    &:hover {
+      color: darken($primary-color, 10%);
+      background-color: rgba($primary-color, 0.08);
+    }
+  }
+}
+// --- Upload Document Section ---
+.upload-document-section {
+  border: 1px dashed lighten($primary-color, 30%);
+  background-color: lighten($primary-color, 48%); // Slightly different from subtask editing
+  padding: $spacing-unit * 2;
+  margin-top: $spacing-unit * 1.5; // Space from the header or list
+  margin-bottom: $spacing-unit * 2; // Space before the documents list
+  border-radius: $border-radius;
+
+
+
+  .upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit * 1.5; // 8px -> 12px
+
+    input[type="file"].form-control-sm { // Style file input
+      font-size: $font-size-sm;
+      padding: 4px 8px;
+      border: 1px solid $input-border-color;
+      border-radius: $border-radius;
+      &::file-selector-button { // Style the button part of file input
+          padding: 4px 8px;
+          margin: -4px 0 -4px -8px;
+          margin-inline-end: 8px;
+          color: $primary-color;
+          background-color: lighten($primary-color, 40%);
+          border: 0;
+          border-inline-end: 1px solid $input-border-color;
+          border-radius: $border-radius 0 0 $border-radius;
+          transition: background-color .15s ease-in-out;
+          &:hover {
+            background-color: lighten($primary-color, 35%);
+          }
+      }
+    }
+    textarea.form-control-sm { // Style textarea
+      font-size: $font-size-sm;
+      padding: 4px 8px;
+      border: 1px solid $input-border-color;
+      border-radius: $border-radius;
+      resize: vertical;
+      min-height: 60px;
+      &:focus {
+        border-color: $input-focus-border-color;
+        box-shadow: $input-focus-box-shadow;
+        outline: 0;
+      }
+    }
+    button[mat-raised-button] { // Ensure consistent button styling
+      align-self: flex-start; // Align button to the left
+      i.bi { margin-right: $spacing-unit * 0.5; }
+    }
+    .selected-file-info {
+      font-size: $font-size-xs;
+      color: $text-color-secondary;
+      margin-top: $spacing-unit * 0.5;
+      }
+    .progress { // Basic styling for the progress bar
+      height: 10px;
+      border-radius: $border-radius-sm;
+      .progress-bar {
+        background-color: $primary-color;
+        transition: width .3s ease;
+      }
+    }
+  }
+}
+
+// --- Activity Timeline ---
+.activity-timeline {
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: ($spacing-unit * 1.5) 0; // 12px
+    border-bottom: 1px solid $border-color-light;
+    gap: $spacing-unit * 1.5; // 12px
+
+    &:last-child { border-bottom: none; }
+
+    .activity-icon {
+      font-size: 1.25rem; // Slightly larger
+      width: 30px; // Fixed width for alignment
+      text-align: center;
+      flex-shrink: 0;
+      margin-top: $spacing-unit * 0.25; // Align with first line of text
+      // Specific colors for icons
+      &.comment-icon i.bi { color: $primary-color; }
+      &.update-icon i.bi { color: $accent-color; }
+      &.delete-icon i.bi { color: $warn-color; }
+      &.create-icon i.bi { color: $success-color; }
+      i.bi { color: $text-color-secondary; } // Default
+    }
+
+    .activity-content-wrapper {
+      flex-grow: 1;
+      .activity-main-info {
+        margin-bottom: $spacing-unit * 0.5; // 4px
+        .user {
+          font-weight: 600;
+          color: $primary-color;
+          margin-right: $spacing-unit * 0.5;
+        }
+        .action-description {
+          color: $text-color-primary;
+          font-size: $font-size-sm;
+          line-height: 1.5;
+          overflow-wrap: break-word;
+        }
+      }
+      .activity-meta .timestamp {
+        color: $text-color-secondary;
+        font-size: $font-size-xs;
+      }
+    }
+  }
+}
+
+// --- Comments Section ---
+%comment-form-textarea-base {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid $input-border-color;
+  border-radius: $border-radius;
+  min-height: 80px;
+  resize: vertical;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  &:focus {
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+    outline: 0;
+  }
+}
+
+.comments-list {
+  .comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-unit * 1.5; // 10px -> 12px
+    padding: ($spacing-unit * 2) 0; // 15px -> 16px
+    border-bottom: 1px solid $border-color-light;
+
+    &:last-child { border-bottom: none; }
+
+    &.editing { // Style for comment being edited
+      background-color: lighten($primary-color, 45%);
+      border-radius: $border-radius;
+      padding: $spacing-unit * 1.5;
+      margin: ($spacing-unit * 0.5) (-$spacing-unit * 1.5);
+    }
+
+    .avatar-circle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background-color: $primary-color;
+      color: $text-color-light;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: $font-size-sm;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .comment-body {
+      flex-grow: 1;
+      .comment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-unit * 0.5;
+        .user {
+          font-weight: 600;
+          color: $primary-color;
+          font-size: $font-size-sm;
+        }
+        .timestamp {
+          color: $text-color-secondary;
+          font-size: $font-size-xs;
+        }
+      }
+      .comment-content {
+        margin: 0;
+        font-size: $font-size-sm;
+        line-height: $line-height-base;
+        color: $text-color-primary;
+        overflow-wrap: break-word;
+      }
+    }
+
+    .edit-comment-area {
+      width: 100%;
+      .edit-comment-textarea {
+        @extend %comment-form-textarea-base;
+        min-height: 70px;
+        margin-bottom: $spacing-unit;
+      }
+      .edit-comment-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: $spacing-unit;
+        button { // General styling for small buttons in edit mode
+          font-size: $font-size-xs;
+          padding: ($spacing-unit * 0.5) $spacing-unit;
+          line-height: 1.5;
+        }
+      }
+    }
+
+    .comment-actions { // Same styling as subtask actions
+      @extend .subtask-actions;
+      margin-left: $spacing-unit * 1.5; // Ensure some space from comment body
+      align-self: flex-start; // Align with top of comment body
+    }
+  }
+}
+
+.add-comment-section {
+  margin-top: $spacing-unit * 2.5; // 20px
+  padding-top: $spacing-unit * 2;
+  border-top: 1px solid $border-color-light; // Subtle separator
+  textarea {
+    @extend %comment-form-textarea-base;
+    margin-bottom: $spacing-unit;
+  }
+  button[mat-raised-button] {
+    display: flex; // To align icon and text if any
+    margin-left: auto; // Align button to the right
+  }
+}
+
+// --- Utility Classes (Loading, No Data) ---
+.loading-indicator {
+  padding: $spacing-unit * 2.5; // 20px
+  text-align: center;
+  color: $text-color-secondary;
+  font-style: italic;
+  font-size: $font-size-sm;
+  background-color: lighten($background-color, 3%);
+  border-radius: $border-radius;
+  border: 1px solid $border-color-light;
+}
+
+.no-comments, .no-subtasks, .no-documents, .no-activities { // Consolidated "no data" style
+  padding: $spacing-unit * 2.5; // 15px -> 20px
+  color: $text-color-secondary;
+  font-style: italic;
+  text-align: center;
+  font-size: $font-size-sm;
+  border: 1px dashed $border-color;
+  border-radius: $border-radius;
+  background-color: lighten($background-color, 4%);
+}
+
+// --- Requirements & Guidelines Lists (if used, from original SCSS) ---
+.requirements-list, .guidelines-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 ($spacing-unit * 2) 0;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-unit;
+    padding: $spacing-unit 0;
+    border-bottom: 1px solid $border-color-light;
+    font-size: $font-size-sm;
+    color: $text-color-primary;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    i.bi { // Assuming Bootstrap Icons
+      margin-top: $spacing-unit * 0.25;
+      font-size: 1.1em;
+      flex-shrink: 0;
+    }
+    &.requirements-list i.bi { color: $success-color; } // Example
+    &.guidelines-list i.bi { color: $accent-color; } // Example
+
+    span {
+      flex: 1;
+      overflow-wrap: break-word;
+    }
+  }
+}
+
+.detailed-subtasks {
+  .subtask-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef; // Ligne de séparation
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    // Styles pour le mode affichage des sous-tâches
+    .subtask-info-display {
+      display: flex;
+      flex-direction: column; // Organise les lignes verticalement
+      gap: 8px; // Espace entre la première et la deuxième ligne
+
+      .subtask-display-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; // Éléments espacés dans chaque ligne
+        width: 100%;
+
+        &.subtask-display-row-top {
+          .subtask-name {
+            font-weight: 500;
+       
+            margin-right: 16px; // Espace avant les dates
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.95rem;
+          }
+          .subtask-dates {
+            font-size: 0.85em;
+            color: #555;
+            white-space: nowrap; 
+            margin-left: auto; // Pousse cet élément complètement à droite.
+            flex-shrink: 0; // Empêche les dates de rétrécir si l'espace est limité.
+       
+          }
+        }
+
+        &.subtask-display-row-bottom {
+          .subtask-attributes {
+            display: flex;
+            align-items: center;
+            gap: 10px; // Espace entre le badge de priorité et de statut
+          }
+          // .subtask-actions seront à droite grâce à justify-content: space-between sur le parent
+        }
+      }
+    }
+
+    // Styles pour les badges (vous avez peut-être déjà des styles similaires)
+    .subtask-priority-badge, .subtask-status-badge {
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.75em;
+      font-weight: 500;
+      text-transform: capitalize; // Ou uppercase selon votre préférence
+      // Assurez-vous que les classes de couleur (low, medium, high, todo, in-progress, completed) sont définies
+      // Exemple :
+      // &.low { background-color: #28a745; color: white; }
+      // &.medium { background-color: #ffc107; color: #212529; }
+      // &.high { background-color: #dc3545; color: white; }
+      // &.todo { background-color: #6c757d; color: white; }
+      // &.in-progress { background-color: #007bff; color: white; } // Nom de classe généré par .replace('_', '-')
+      // &.completed { background-color: #17a2b8; color: white; }
+    }
+
+    // Styles pour les boutons d'action (vous avez peut-être déjà des styles similaires)
+    .subtask-actions {
+      .mat-icon-button { // Si vous utilisez Angular Material
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        .icon {
+          font-size: 16px;
+        }
+      }
+    }
+
+    // Les styles pour .subtask-info-edit (mode édition) et .add-new-subtask-form (ajout)
+    // devraient déjà bien fonctionner avec leur structure à deux .subtask-edit-row.
+    // Vous pouvez ajuster leur 'gap' ou espacement si nécessaire.
+    .subtask-info-edit {
+      display: flex;
+      flex-direction: column;
+      gap: 10px; // Espace entre les lignes du formulaire d'édition/ajout
+
+      .subtask-edit-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        &.subtask-edit-row-top {
+          .subtask-edit-name {
+            flex-grow: 1;
+          }
+          .subtask-edit-dates {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+        }
+
+        &.subtask-edit-row-bottom {
+          .subtask-edit-selects {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+            select {
+              flex-grow: 1; // Pour que les selects prennent une largeur égale si souhaité
+            }
+          }
+        }
+      }
+    }
+  }
+}

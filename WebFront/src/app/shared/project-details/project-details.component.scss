@@ -1,0 +1,471 @@
+
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336; // For delete actions
+$success-color: #4CAF50; // For save actions
+$cancel-color: #6c757d; // For cancel actions
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+
+
+.project-details-container {
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    background: #F1F1F1;
+  height: 110vh;
+    
+  }
+  
+  .tabs {
+    display: flex;
+    margin-bottom: 20px;
+    
+  }
+  
+  .tabs button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #ccc;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .tabs button.active {
+    background-color: $container-background; // Keep background consistent
+    color: $primary-color;
+    font-weight: 600;
+    border-bottom: 3px solid $primary-color; // Use border like in projects header
+  }
+  
+  .tab-content {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: $card-shadow;
+  }
+  .details-content{
+    display: flex;
+  gap: 20px;
+  }
+  .left-panel {
+    flex: 1;
+  }
+  .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-btn {
+    cursor: pointer;
+    background: #41B3A3;
+    border-radius: 40px;
+    font-weight: bold;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border: none;
+    color: white;
+    margin-top: 10px;
+  }
+  
+  .progress-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+  }
+  
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+  }
+  @media (max-width: 768px) {
+    .tab-content {
+      flex-direction: column;
+    }
+  
+    .edit-btn {
+      font-size: 0.9rem;
+    }
+  
+    .progress-container {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .progress-text {
+      font-size: 14px;
+    }
+  }
+ .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px; // Consistent margin
+  padding-bottom: 16px; // Padding below header content
+  border-bottom: 1px solid $border-color; // Separator line
+  
+  h2 {
+    margin: 0;
+    color: $primary-color !important; // Use primary color for title
+    font-size: 1.5em; // Slightly larger title
+    font-weight: 600;
+  }
+}
+
+.add-phase {
+  cursor: pointer;
+  background-color: $primary-color;
+  border: none;
+  color: $text-color-light !important; // Use variable
+  border-radius: $border-radius; // Match projects button radius (8px)
+  padding: 0 16px; // Match projects button padding
+  min-height: 40px; // Match projects button height
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px; // Match projects button font size
+  font-weight: 600; // Match projects button font weight
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease; // Match projects button transition
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); // Match projects button shadow
+
+  
+  i {
+    font-size: 18px; // Match projects button icon size
+    margin-right: 6px;
+  }
+
+  /* Positionner le bouton à droite avec auto margin */
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .add-phase {
+    font-size: 0.9rem; /* Réduction de la taille du texte pour les petits écrans */
+    padding: 0.5rem 1rem; /* Ajuster les paddings pour les petits écrans */
+  }
+
+  .header {
+    flex-direction: column; /* Aligner les éléments en colonne sur les petits écrans */
+    align-items: flex-start; /* Alignement à gauche pour le texte */
+  }
+}
+
+  
+  .phases-table {
+    width: 100%;
+    overflow: hidden; // Important for table border radius within card
+     border-radius: $border-radius; // Use variable
+     box-shadow: $card-shadow; // Use variable
+     background-color: $container-background; // Use variable
+     margin-top: 24px;
+}
+.phases-table table {
+    width: 100%;
+    
+    border-collapse: collapse;
+}
+
+.phases-table th, .phases-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+// Table Data Cells (td) - Adapted from .data-table td
+.phases-table th {
+  font-size: 12px;
+  font-weight: 600;
+  color: $text-color-secondary;
+  background-color: lighten($background-color, 2%); // Slight background for header
+  border-bottom: 2px solid $border-color; // Thicker bottom border for header
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left; // Default align left
+  vertical-align: middle;
+  &:not(:first-child):not(:last-child) { text-align: center; } // Center intermediate columns
+  &:last-child { text-align: right; padding-right: 24px; } // Align last column (Actions) right
+}
+tr {
+  transition: all 0.3s ease;
+  
+  &.expanded {
+    background-color: rgba(0, 0, 0, 0.02);
+    
+    td {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+  }
+}
+.phases-table td {
+  // Align first two columns (Name, Description) to the left
+  &:nth-child(1),
+  &:nth-child(2) { text-align: left; }
+
+  // Apply ellipsis to the Description column (second column)
+  &:nth-child(2) {
+    white-space: nowrap;      // Empêche le retour à la ligne
+    overflow: hidden;         // Cache ce qui dépasse
+    text-overflow: ellipsis;  // Ajoute "..."
+    max-width: 250px;         // Largeur max avant troncature (ajustez si besoin)
+    vertical-align: middle;   // Alignement vertical par défaut
+    transition: all 0.3s ease; // Ajoute une transition douce
+  }
+  // Styles for the description cell when its row is expanded
+  &.expanded:nth-child(2) {
+    white-space: normal; // Allow text wrapping
+    overflow: visible;   // Show overflow content
+    text-overflow: clip; // Remove ellipsis
+    max-width: none;     // Remove max-width constraint
+    vertical-align: top; // Align text to top might look better when expanded
+    background-color: lighten($background-color, 1.5%); // Optional: Subtle background highlight
+  }
+  .inline-edit-input, .inline-edit-textarea {
+    appearance: none;
+    background: transparent;
+    border: none; // Pas de bordure par défaut
+    outline: none; // Pas d'outline par défaut
+    box-shadow: none;
+    width: 100%; // Prend toute la largeur de la cellule
+    padding: 1px 2px;// Ajustez si nécessaire pour aligner avec le texte du span
+    margin: 0;
+    border-radius: 4px;
+    font-size: inherit; // Garde la taille de police du tableau
+    font-family: inherit;
+    line-height: inherit; 
+    color: inherit;
+    box-sizing: border-box;
+    border-bottom: 1px dashed transparent;
+    &:focus {
+      border-bottom: 1px solid $primary-color; // Bordure plus visible au focus
+      background-color: lighten($background-color, 2%); // Léger fond au focus
+      outline: none;
+    }
+  }
+  .inline-edit-textarea {
+    resize: vertical; // Permet le redimensionnement vertical
+    min-height: auto; // Hauteur minimale basée sur la ligne
+    overflow: auto; // Ajoute une barre de défilement si nécessaire
+    height: auto;
+  }
+  .inline-edit-dates {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    .date-input { width: auto; } // Ajuste la largeur des inputs date
+  }
+
+  &:last-child { text-align: right; white-space: nowrap; padding-right: 16px; } // Match header alignment and prevent wrap
+
+}
+tbody{tr{
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    &:last-child td { border-bottom: none; } // Remove border from last row cells
+
+}}
+.phases-table tr:hover {
+    background-color: #f9f9f9; /* Effet au survol */
+}
+.phases-table th {
+    background-color: #f4f4f4;
+}
+
+.members-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centre les éléments horizontalement */
+  gap: 10px;
+  width: 100%;
+  
+}
+
+.members {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap; /* Empêche le retour à la ligne */
+  white-space: nowrap; /* Empêche la rupture du texte */
+  max-width: 100%; /* S'assure que tout reste dans la colonne */
+  overflow: hidden; /* Évite que les éléments débordent */
+}
+.member-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  margin: 8px 0;
+}
+.member-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+
+}
+
+.more-members {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #b5b5b5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  flex-shrink: 0; /* Empêche l'élément de se réduire */
+}
+
+
+
+
+  
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    &[mat-icon-button] {
+      padding: 6px;
+      border-radius: 50%;
+      width: 34px; // Fixed size
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 4px; // Spacing between buttons
+      transition: background-color 0.2s ease;
+      vertical-align: middle; // Align with text/other elements if needed
+
+      &:hover:not(:disabled) {
+     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+     background-color: darken($primary-color, 8%); // Match projects button hover background
+   }
+   &:active:not(:disabled) {
+      transform: translateY(1px); // Match projects button active state
+   }
+   &:disabled { // Match projects button disabled state
+     opacity: 0.6;
+     cursor: not-allowed;
+    }
+
+      .icon, .bi { // Target icons within the button
+        font-size: 18px; // Consistent icon size
+        color: $text-color-secondary; // Default icon color
+      }
+    }
+  }
+  
+  .icon {
+    font-size: 18px;
+ 
+  }
+  
+  .icon:hover {
+    color: #41B3A3;
+  }
+  .bi-trash{
+    color: $warn-color !important ;
+    font-size: 18px;
+  }
+  button[mat-icon-button]:hover:not(:disabled) {
+    &.edit-btn-phase { background-color: rgba($primary-color, 0.1); .icon { color: $primary-color; } }
+    &.view-btn-phase { background-color: rgba($primary-color, 0.1); .icon { color: $primary-color; } } // Style for view button hover
+    &.delete-btn-phase { background-color: rgba($warn-color, 0.1); .bi-trash { color: darken($warn-color, 10%); } }
+  }
+  // Style for the "Add Member" button (+) in the members column
+  .add-member-btn {
+    // Inherits base button styles, add specifics if needed
+    .icon { color: $primary-color; } // Make the plus icon primary color
+    &:hover { background-color: rgba($primary-color, 0.1); }
+  }
+  .bi-trash:hover{
+    
+    color: rgba(121, 0, 0, 0.638);
+  }
+
+  .custom-dialog-container {
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .custom-dialog-container {
+      width: 90% !important;  /* Modifie la largeur pour les petits écrans */
+      max-width: 90% !important;
+      left: 5% !important;  /* Centre le modal sur les petits écrans */
+      top: 10% !important;  /* Ajuste la position verticale pour les petits écrans */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .custom-dialog-container {
+      width: 95% !important; /* Pour les écrans très petits comme les téléphones */
+      max-width: 95% !important;
+      left: 2.5% !important; /* Centre encore mieux */
+      top: 10% !important;
+    }
+  }
+  .members-action-button {
+    color: $primary-color;
+    
+  }
+
+  .description-container {
+    position: relative;
+  }
+  
+  .description-preview {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+  }
+  
+  .description-full {
+    white-space: normal;
+    word-break: break-word;
+    padding-top: 0.5rem;
+  }
+  
+  /* Style pour l'icône œil */
+  .bi-eye-slash {
+    color: #666;
+  }
+  
+  /* Animation pour l'expansion */
+  @keyframes fadeIn {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+  }
+  
+  .expanded .description-full {
+    animation: fadeIn 0.3s ease-out;
+  }

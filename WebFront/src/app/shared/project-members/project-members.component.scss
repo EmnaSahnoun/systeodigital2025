@@ -1,0 +1,388 @@
+// --- Import or Define Variables (Copy from projects.component.scss or use a shared variables file) ---
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825;
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$avatar-size: 32px; // Same as Material version
+
+
+// --- Variables ---
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825;
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$avatar-size: 32px;
+
+// --- Modal Container ---
+.modal-container {
+  background-color: $container-background;
+  border-radius: $border-radius;
+  box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 
+              0 24px 38px 3px rgba(0,0,0,.14), 
+              0 9px 46px 8px rgba(0,0,0,.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 800px; // Largeur fixe pour la modale
+  max-height: 90vh; // Hauteur maximale
+}
+
+// --- Modal Header ---
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid $border-color;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $primary-color;
+    margin: 0;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    display: inline-flex; // Pour centrer l'icône
+    align-items: center; // Centre verticalement
+    justify-content: center;
+    margin-left: 16px;
+    color: $text-color-secondary;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    i {
+      font-size: 22px;
+      display: block;
+    }
+  }
+}
+
+// --- Modal Tabs ---
+.modal-tabs {
+  display: flex;
+  border-bottom: 1px solid $border-color;
+  background-color: lighten($background-color, 2%);
+
+  .tab-button {
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $text-color-secondary;
+    position: relative;
+    transition: all 0.2s ease;
+
+    &:hover:not(.active) {
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.05);
+    }
+
+    &.active {
+      color: $primary-color;
+      font-weight: 600;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: $primary-color;
+      }
+    }
+  }
+}
+
+// --- Modal Content ---
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+// --- Tab Content ---
+.tab-content {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+
+  // Loading Indicator
+  .loading-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($container-background, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+
+    .spinner {
+      border: 4px solid rgba($primary-color, 0.2);
+      border-top-color: $primary-color;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: $text-color-primary;
+  }
+}
+
+// --- Members Table ---
+.members-table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background-color: $container-background;
+}
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid $border-color;
+  }
+
+  th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: $text-color-secondary;
+    background-color: lighten($background-color, 2%);
+    position: sticky;
+    top: 0;
+  }
+
+  td {
+    font-size: 0.95rem;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  .role-badge {
+    background-color: rgba($primary-color, 0.1);
+    color: darken($primary-color, 10%);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+
+    &.pending {
+      background-color: rgba($pending-color, 0.1);
+      color: darken($pending-color, 15%);
+    }
+  }
+
+  .button-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08); // Survol légèrement plus visibl
+    }
+    &.button-warn { // Utiliser la classe existante pour la couleur
+      color: $warn-color;
+    }
+    &.button-secondary { // Ajouter une classe pour les actions secondaires si besoin
+      color: $text-color-secondary;
+    }
+  }
+}
+
+.no-data-message {
+  padding: 24px;
+  text-align: center;
+  color: $text-color-secondary;
+  font-style: italic;
+  border: 1px dashed $border-color;
+  border-radius: $border-radius;
+  margin-top: 16px;
+}
+
+// --- Add Member Form ---
+.add-member-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px 0;
+
+  .form-group {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: $text-color-secondary;
+      font-weight: 500;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      font-size: 0.95rem;
+      background-color: $container-background;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+    }
+  }
+
+  .button-primary {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: darken($primary-color, 10%);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    i {
+      margin-right: 8px;
+    }
+  }
+}
+
+.info-text {
+  font-size: 0.85rem;
+  color: $text-color-secondary;
+  margin-top: 16px;
+  text-align: center;
+}
+
+// --- Modal Footer ---
+.modal-actions {
+  padding: 16px 24px;
+  border-top: 1px solid $border-color;
+  display: flex;
+  justify-content: flex-end;
+
+  .button-stroked {
+    background-color: transparent;
+    border: 1px solid $border-color;
+    color: $text-color-secondary;
+    border-radius: $border-radius;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.05);
+    }
+  }
+}
+
+// --- Animations ---
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.bi-trash{
+  color: red($color: #000000);
+}

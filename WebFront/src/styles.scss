@@ -1,0 +1,56 @@
+::ng-deep .cdk-overlay-container {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1050; /* S'assure qu'il est au-dessus de tout */
+  }
+  
+  ::ng-deep .cdk-overlay-pane {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100vh !important;
+  }
+  
+  ::ng-deep .custom-modal .mat-dialog-container {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 90vw; // S'adapte aux écrans mobiles
+  }
+  
+  ::ng-deep .cdk-overlay-backdrop {
+    background: rgba(0, 0, 0, 0.5) !important; /* Fond assombri */
+  }
+  
+  .modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .modal-lg {
+    max-width: 800px;
+  }
+  
+  .modal-md {
+    max-width: 500px;
+  }
+  
+  // Style pour le header du modal
+  .modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    
+    .close {
+      outline: none;
+    }
+  }
+  
+  // Style pour le body du modal
+  .modal-body {
+    padding: 20px;
+  }

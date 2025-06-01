@@ -1,0 +1,407 @@
+// --- Import or Define Variables (Copied from projects.component.scss or a shared variables file) ---
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825;
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// --- General Client Container ---
+.client-container {
+  font-family: 'Poppins', sans-serif;
+  padding: 24px;
+  background-color: $background-color;
+  color: $text-color-primary;
+  min-height: calc(110vh - 64px); // Adjust 64px based on your header height
+}
+
+// --- Client Header ---
+.client-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; // Allow wrapping on smaller screens
+  gap: 16px; // Spacing between elements
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: $container-background;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-grow: 1; // Take available space
+    min-width: 250px; // Minimum width for search
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: $text-color-secondary;
+      font-size: 18px; // Mat icon size
+    }
+
+    input {
+      padding: 10px 15px 10px 40px; // Adjust padding for icon
+      border: 1px solid $border-color;
+      border-radius: 8px;
+      min-height: 40px;
+      width: 100%;
+      font-size: 14px;
+      background-color: lighten($background-color, 2%); // Slightly lighter background
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+    }
+  }
+
+  .actions-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; // Allow wrapping within actions too
+    gap: 12px;
+
+    .filter-button, .view-mode button, .add-client-button { // Renamed .add-project-button
+      // Common button styles
+      border: none;
+      border-radius: 8px;
+      padding: 0 16px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+      mat-icon, i { // Target both mat-icon and i
+        margin-right: 6px;
+        font-size: 18px; // Consistent icon size
+      }
+
+      &:hover:not(:disabled) {
+         box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      }
+      &:active:not(:disabled) {
+         transform: translateY(1px);
+      }
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    // Specific button styles
+    .filter-button {
+      background-color: lighten($accent-color, 35%); // Lighter accent for filter
+      color: darken($accent-color, 15%);
+      &:hover:not(:disabled) {
+        background-color: lighten($accent-color, 30%);
+      }
+    }
+
+    .view-mode {
+      display: flex;
+      gap: 8px;
+      button {
+        background-color: $container-background;
+        color: $text-color-secondary;
+        border: 1px solid $border-color;
+        padding: 0 12px; // Slightly less padding for icon-only buttons potentially
+        min-width: 40px; // Ensure square-ish shape
+        box-shadow: none;
+
+        mat-icon, i { margin-right: 0; } // No margin if only icon
+
+        &.active {
+          background-color: rgba($primary-color, 0.1);
+          color: $primary-color;
+          border-color: rgba($primary-color, 0.3);
+        }
+        &:hover:not(.active):not(:disabled) {
+          background-color: $background-color;
+        }
+      }
+    }
+
+    .add-client-button { // Renamed .add-project-button
+      background-color: $primary-color;
+      color: $text-color-light;
+      font-weight: 600; // Make add button stand out
+      &:hover:not(:disabled) {
+        background-color: darken($primary-color, 8%);
+      }
+    }
+  }
+}
+
+// --- Client Display Area ---
+.client-display { // Renamed .project-display
+  margin-top: 24px; // Space below header
+}
+
+// --- Table View (Adopted from .data-table) ---
+.client-table-card { // Renamed .project-table-card
+  background-color: $container-background;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+  overflow: hidden; // Important for table border radius
+
+  .data-table { // Apply dashboard table styles
+    width: 100%;
+    box-shadow: none; // Remove default mat-table shadow if used
+    border-collapse: collapse; // Ensure borders work correctly
+
+    th.mat-header-cell, th { // Target both mat-header-cell and plain th
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-color-secondary;
+      background-color: lighten($background-color, 2%); // Slight background for header
+      border-bottom: 2px solid $border-color;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left; // Default align left
+      padding: 14px 16px;
+      vertical-align: middle;
+      &:not(:first-child):not(:last-child) { text-align: center; } // Center intermediate columns
+      &:last-child { text-align: right; } // Align last column right
+    }
+
+    td.mat-cell, td { // Target both mat-cell and plain td
+      padding: 14px 16px;
+      border-bottom: 1px solid $border-color;
+      font-size: 14px;
+      color: $text-color-primary;
+      text-align: left; // Default align left
+      vertical-align: middle;
+      &:not(:first-child):not(:last-child) { text-align: center; } // Center intermediate columns
+      &:last-child { text-align: right; } // Align last column right (e.g., for actions if added)
+    }
+
+    tr.mat-row, tr { // Target both mat-row and plain tr
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      &:hover {
+        background-color: $background-color;
+      }
+      &:last-child {
+        td.mat-cell, td { border-bottom: none; }
+      }
+    }
+    // Note: .members-action-button might not be used for clients, but kept for structural similarity
+    .members-action-button {
+      background-color: transparent;
+      border: none;
+      color: $primary-color;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px / 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      mat-icon { font-size: 18px; }
+      span { font-size: 13px; font-weight: 500; }
+
+      &:hover {
+        background-color: rgba($primary-color, 0.1);
+      }
+    }
+ }
+}
+
+// --- Card View ---
+.client-cards-grid { // Renamed .project-cards-grid
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); // Responsive grid
+  gap: 20px;
+
+  .client-card { // Renamed .project-card
+    background-color: $container-background;
+    border-radius: 8px;
+    box-shadow: $card-shadow;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        color: $text-color-primary;
+      }
+      .card-creation-date { // Adapted from card-dates
+        font-size: 12px;
+        color: $text-color-secondary;
+        text-align: right;
+        white-space: nowrap;
+      }
+    }
+
+    .card-body {
+      flex-grow: 1;
+      font-size: 13px;
+      color: $text-color-secondary;
+      p {
+        margin: 5px 0;
+      }
+    }
+
+    .card-footer { // Kept for structure, can be removed if not used
+      margin-top: 15px;
+      // Example: .client-actions or similar could go here
+    }
+  }
+}
+
+// --- Responsive Adjustments ---
+@media (max-width: 768px) {
+  .client-header { // Renamed .project-header
+    flex-direction: column;
+    align-items: stretch; // Stretch items like search bar
+
+    .actions-container {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+
+      .filter-button, .add-client-button { // Renamed .add-project-button
+        width: 100%; // Make buttons full width
+      }
+      .view-mode {
+        justify-content: center; // Center view mode buttons
+      }
+    }
+  }
+
+  .client-cards-grid { // Renamed .project-cards-grid
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); // Adjust min size
+  }
+}
+
+// Styles for inline editing, actions, save/cancel buttons (copied and kept for potential use)
+.inline-edit-input {
+  width: 90%;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+tr.editing-row {
+  background-color: #f0f8ff;
+}
+
+.actions {
+  button {
+
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 6px;
+    border-radius: 50%;
+width: 36px; // Légère augmentation pour un meilleur espacement interne de l'icône
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 3px; // Espacement ajusté
+    transition: background-color 0.2s ease, color 0.2s ease;
+    vertical-align: middle;
+   &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    // Application des couleurs via les classes spécifiques et variables SCSS
+    &.edit-btn { color: $primary-color; &:hover:not(:disabled) { background-color: rgba($primary-color, 0.1); } }
+    &.delete-btn { color: $warn-color; &:hover:not(:disabled) { background-color: rgba($warn-color, 0.1); } }
+    &.save-btn { color: $success-color; &:hover:not(:disabled) { background-color: rgba($success-color, 0.1); } }
+    &.cancel-btn { color: $cancel-color; &:hover:not(:disabled) { background-color: rgba($cancel-color, 0.1); } }
+
+    i { // S'assurer que les icônes sont bien alignées si ce n'est pas déjà le cas
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }  }
+  .spinner-border-sm {
+    width: 1em;
+    height: 1em;
+    border-width: .2em;
+  }
+}
+.badge {
+  display: inline-block;
+  padding: .4em .65em; // Slightly more padding for better appearance
+  font-size: .78em;    // Slightly larger font
+  font-weight: 600;   // Semi-bold
+  line-height: 1;
+  color: $text-color-light;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .3rem; // Slightly larger border-radius
+
+  &.bg-success {
+    background-color: $success-color;
+  }
+  &.bg-warning {
+    background-color: $pending-color; // Using pending as a warning-like color
+    color: $text-color-primary; // Darker text for lighter background if $pending-color is light
+  }
+  &.bg-secondary {
+    background-color: $cancel-color;
+  }
+}
+
+// Style for the "Définir MDP" button
+.btn-set-password {
+  background-color: transparent;
+  border: none;
+  color: $primary-color;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  vertical-align: middle;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  i {
+    margin-right: 4px;
+  }
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1);
+  }
+}

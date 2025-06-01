@@ -1,0 +1,82 @@
+{
+    "/api": {
+      "target": "https://esmm.systeo.tn",
+      "secure": false,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      },
+      "headers": {
+        "Connection": "keep-alive"
+      }
+    },
+  
+  "/agence": {
+    "target": "https://e1.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/agence": "/projectcompany"
+    }
+  },
+  "/projet": {
+    "target": "https://e1.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/projet": "/ProjectService"
+    }
+  },
+  "/activity": {
+    "target": "https://e1.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/activity": "/ActivityService"
+    }
+  },
+  "/notification": {
+    "target": "https://e1.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/notification": "/NotificationService"
+    }
+  },
+  "/commercial": {
+    "target": "https://e1.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/commercial": "/CommercialService"
+    }
+  },
+  
+"/document": {
+    "target": "https://e1.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/document": "/DocumentService"
+    }
+  },
+   "/email": {
+    "target": "https://e8.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/email": ""
+    }
+  },
+  "/emailService": {
+    "target": "https://e8.systeo.tn",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/emailService": ""
+    }
+  }
+  
+
+}
+    

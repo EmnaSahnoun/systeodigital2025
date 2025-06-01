@@ -1,0 +1,137 @@
+<div class="modal-container">
+  <!-- En-tête -->
+  <div class="modal-header">
+    <h2>Membres du Projet : {{ project?.name || 'Projet sans nom' }}</h2>
+    <button type="button" (click)="closeDialog()" class="close-button">
+      <i class="icon-close"></i>
+    </button>
+  </div>
+
+  <!-- Onglets -->
+  <div class="modal-tabs">
+    <button class="tab-button"  [class.active]="activeTab === 'current'" (click)="setActiveTab('current')">
+      Membres Actuels ({{ members.length }})
+    </button>
+    <button class="tab-button" *ngIf="viewInvitations" [class.active]="activeTab === 'pending'" (click)="setActiveTab('pending')">
+      Invitations ({{ pendingMembers.length }})
+    </button>
+    <button class="tab-button" *ngIf="viewInvitations" [class.active]="activeTab === 'add'" (click)="setActiveTab('add')">
+      Ajouter Membre
+    </button>
+  </div>
+
+  <!-- Contenu -->
+  <div class="tab-content">
+    <!-- Membres Actuels -->
+    <div *ngIf="activeTab === 'current'"  >
+      <div class="table-container">
+        <table class="members-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of members">
+              <td>{{ member.name }}</td>
+              <td>{{ member.email }}</td>
+              <td><span class="role-badge">{{ member.role }}</span></td>
+              <td>
+                
+                <button (click)="removeMember(member)" class="button-icon button-warn">
+                  <i  class="bi bi-trash"></i> 
+                </button>
+                
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="members.length === 0" class="no-data">
+          Aucun membre actif
+        </div>
+      </div>
+    </div>
+
+    <!-- Invitations en attente -->
+     
+    <div *ngIf="activeTab === 'pending'" >
+      <div class="table-container">
+        <table class="members-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Rôle</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pending of pendingMembers">
+              <td>{{ pending.emailUser }}</td>
+              <td><span class="role-badge">{{ pending.role }}</span></td>
+              <td>{{ pending.createdAt | date:'shortDate' }}</td>
+              <td>
+               
+                <button (click)="cancelInvitation(pending)" class="button-icon button-warn">
+                  <i  class="bi bi-trash"></i> 
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="pendingMembers.length === 0" class="no-data">
+          Aucune invitation en attente
+        </div>
+      </div>
+    </div>
+
+    <!-- Ajouter Membre -->
+    <!-- Ajouter Membre -->
+<div *ngIf="activeTab === 'add'">
+  <div class="add-member-section">
+    <h3>Ajouter un Membre</h3>
+    <div class="add-member-form">
+      <div class="form-group">
+        <label>Sélectionner un utilisateur</label>
+        <select [(ngModel)]="selectedUserId" 
+                (focus)="getMembersGroup()" 
+                
+                class="custom-select">
+          <option [ngValue]="null" disabled>
+            {{ usersToAdd.length === 0 ? 'Aucun utilisateur disponible' : 'Sélectionnez...' }}
+          </option>
+          <option *ngFor="let user of usersToAdd" 
+                  [ngValue]="user.id"
+                  [title]="user.email">
+            {{ user.username || user.name }} ({{ user.email }})
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Sélectionner un rôle</label>
+        <select [(ngModel)]="selectedRole" [disabled]="!selectedUserId || isLoading">
+          <option value="MEMBER">Membre</option>
+          <option value="CLIENT">Client</option>
+        </select>
+      </div>
+
+      <button class="button-primary" (click)="sendInvitation()" [disabled]="!selectedUserId || isLoading">
+       
+        <i class="icon-person-add "></i> Inviter
+      </button>
+    </div>
+  </div>
+</div>
+  </div>
+
+
+  <!-- Pied de la modale -->
+  <div class="modal-actions">
+    <button type="button" class="button-stroked" (click)="closeDialog()">Fermer</button>
+  </div>
+</div>

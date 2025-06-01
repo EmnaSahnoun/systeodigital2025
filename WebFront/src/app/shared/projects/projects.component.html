@@ -1,0 +1,176 @@
+<div class="project-container">
+    <app-header [title]="'Liste des Projets'"></app-header>
+
+    <!-- Header Section -->
+    <div class="project-header">
+      <!-- Search Bar -->
+      <div class="search-container">
+        <!-- Using mat-icon for consistency, but i works too if Bootstrap is globally available -->
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" placeholder="Rechercher un projet..." [(ngModel)]="searchQuery" (input)="applyFilter()" />
+      </div>
+
+      <!-- Actions: Filter, View Mode, Add Project -->
+      <div class="actions-container">
+        <!-- Filter Button -->
+        <button class="filter-button">
+          <mat-icon>filter_list</mat-icon>
+          <span>Filtrer</span>
+        </button>
+
+        <!-- View Mode Toggle -->
+        <div class="view-mode">
+          <button (click)="toggleViewMode('list')" [class.active]="viewMode === 'list'" matTooltip="Vue Liste">
+            <mat-icon>view_list</mat-icon>
+          </button>
+          <button (click)="toggleViewMode('card')" [class.active]="viewMode === 'card'" matTooltip="Vue Cartes">
+            <mat-icon>view_module</mat-icon>
+          </button>
+        </div>
+
+        <!-- Add Project Button -->
+        <button class="add-project-button" (click)="addProject()">
+          <mat-icon>add</mat-icon>
+          <span>Nouveau Projet</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Project Display Area -->
+    <div class="project-display">
+      <!-- List View (Table) -->
+      <div *ngIf="viewMode === 'list'" class="project-table-card">
+        <!-- Apply .data-table class for styling -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <!-- Use mat-header-cell if using Material Table, otherwise th -->
+              <th>Nom du Projet</th>
+              <th>Date Création</th>
+              <th>Localisation</th>
+              <th>Dates (Début-Fin)</th>
+              <th>Progression</th>
+              <th>Statut</th>
+              <th>Membres</th>
+               <th>Phases</th> 
+               <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Use mat-row if using Material Table, otherwise tr -->
+            <tr *ngFor="let project of filteredProjects" (click)="goToProjectDetails(project)" [class.editing-row]="editingProjectId === project.id">
+              <!-- Name Column -->
+              <td>
+                <span *ngIf="editingProjectId !== project.id">{{ project.name }}</span>
+                <input *ngIf="editingProjectId === project.id" type="text" [(ngModel)]="editedProjectData.name" class="inline-edit-input" (click)="$event.stopPropagation()" />
+              </td>
+              <!-- Created At (Read-only example) -->
+              <td>
+                {{ project.createdAt | date:'dd/MM/yyyy' }}
+              </td>
+              <td>
+                <span *ngIf="editingProjectId !== project.id">{{ project.address }}</span>
+                <input *ngIf="editingProjectId === project.id" type="text" [(ngModel)]="editedProjectData.address" class="inline-edit-input" (click)="$event.stopPropagation()" />
+              </td>
+              <!-- Dates (Read-only example) -->
+              <td>
+                 {{ project.minStartDate | date:'dd/MM/yy' }} - {{ project.maxEndDate | date:'dd/MM/yy' }}
+              </td>
+               <!-- Progress (Read-only example) -->
+              <td>
+                <span >{{ (project.progress || 0) | number:'1.0-0' }}%</span>
+                <span *ngIf="(project.progress)==='NaN'">0%</span>
+              </td>
+              <!-- Status Column (Example of editable status) -->
+              <td>
+                <span>{{ project.status }}</span>
+            
+              </td>
+              <!-- Members (Button remains) -->
+               <td>
+                <button class="members-action-button" (click)="openMembersModal(project, $event)" matTooltip="Voir/Gérer les membres">
+                  <mat-icon>group</mat-icon>
+                </button>
+              </td>
+               <td>{{ project.phases?.length || 0 }}</td> 
+               
+               <td class="actions">
+                
+                 <!-- View Mode Buttons -->
+                 <ng-container *ngIf="editingProjectId !== project.id">
+                  <button class="delete-btn" (click)="deleteProject(project.id)"(click)="$event.stopPropagation()" title="Supprimer" > <!-- Disable delete if any row is being edited -->
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </ng-container>
+               
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Add *matNoDataRow equivalent if needed -->
+        <div *ngIf="!filteredProjects || filteredProjects.length === 0" style="text-align: center; padding: 20px; color: var(--text-color-secondary);">
+          Aucun projet trouvé.
+        </div>
+      </div>
+
+      <!-- Card View -->
+      <div *ngIf="viewMode === 'card'" class="project-cards-grid">
+        <!-- Use project-card class -->
+        <div class="project-card" *ngFor="let project of filteredProjects" (click)="goToProjectDetails(project)">
+          <div class="card-header">
+            <h3>{{ project.name }}</h3>
+            <div class="card-header-actions">
+              <div class="card-creation-date">Créé le: {{ project.createdAt | date:'dd/MM/yyyy' }}</div>
+              <button class="delete-btn-card" (click)="deleteProject(project.id); $event.stopPropagation()" matTooltip="Supprimer le projet">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+               </div>
+          <div class="card-body">
+            <div class="card-info-row">
+              <span class="info-label"><mat-icon>location_on</mat-icon> Localisation:</span>
+              <span class="info-value">{{ project.address || 'N/A' }}</span>
+            </div>
+            <div class="card-info-row">
+              <span class="info-label"><mat-icon>date_range</mat-icon> Dates (Début-Fin):</span>
+              <span class="info-value">{{ project.minStartDate | date:'dd/MM/yy' }} - {{ project.maxEndDate | date:'dd/MM/yy' }}</span>
+            </div>
+            <div class="card-info-row">
+              <span class="info-label"><mat-icon>trending_up</mat-icon> Progression:</span>
+              <span class="info-value">{{ (project.progress || 0) | number:'1.0-0' }}%</span>
+            </div>
+
+           <!-- Condition pour afficher la barre de progression uniquement si project.progress > 0 -->
+            <div class="progress-bar-container"
+                 *ngIf="project.progress > 0"
+                 [matTooltip]="(project.progress || 0) + '%'">
+              <div class="progress-bar-fill" [style.width]="(project.progress || 0) + '%'"></div>
+               </div>
+           <div class="card-info-row">
+              <span class="info-label"><mat-icon>flag</mat-icon> Statut:</span>
+              <span class="info-value status-badge status-{{project.status | lowercase}}">{{ project.status }}</span>
+            </div>
+            <div class="card-info-row">
+              <span class="info-label"><mat-icon>layers</mat-icon> Phases:</span>
+              <span class="info-value">{{ project.phases?.length || 0 }}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="members-list">
+               <span class="info-label"><mat-icon>group</mat-icon> Membres:</span>
+            
+
+            <button class="members-action-button-card" (click)="openMembersModal(project, $event); $event.stopPropagation()" matTooltip="Voir/Gérer les membres">
+                <mat-icon>visibility</mat-icon> <!-- Ou une autre icône appropriée -->
+              </button>
+            </div>
+          </div>
+        </div>
+         <!-- Add message for no projects in card view -->
+         <div *ngIf="!filteredProjects || filteredProjects.length === 0" style="grid-column: 1 / -1; text-align: center; padding: 20px; color: var(--text-color-secondary);">
+          Aucun projet trouvé.
+        </div>
+      </div>
+    </div>
+  </div>

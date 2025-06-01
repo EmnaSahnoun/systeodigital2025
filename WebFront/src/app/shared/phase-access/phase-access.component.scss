@@ -1,0 +1,156 @@
+// d:\satge pfe\application\ArchiManage\Front\WebFront\src\app\shared\project-access\project-access.component.scss
+
+// --- Variables (Adjust to match your theme if needed) ---
+$border-color: #dee2e6;      // Standard Bootstrap border
+$primary-color: #41B3A3;     // Your theme's primary color (Teal)
+$secondary-color: #6c757d;   // Standard Bootstrap secondary gray (Adjust if you have a specific secondary color)
+$light-gray: #f8f9fa;      // Standard Bootstrap light gray
+$text-muted-color: #6c757d; // Standard Bootstrap muted text color
+$white: #fff;
+$body-bg: #fff;             // Assuming a white background for cards/modals
+
+// --- Modal Structure ---
+.modal-header {
+  background-color: $light-gray; // Light background for header
+  border-bottom: 1px solid $border-color;
+  padding: 1rem 1.5rem;
+
+  .modal-title {
+    font-size: 1.15rem; // Slightly larger title
+    font-weight: 500;
+    color: #343a40; // Darker title color
+  }
+
+  .btn-close {
+    // Ensure close button is easily clickable
+    padding: 0.5rem;
+    margin: -0.5rem -0.5rem -0.5rem auto; // Standard Bootstrap positioning
+  }
+}
+
+.modal-body {
+  padding: 1.5rem; // Generous padding
+  background-color: $body-bg;
+
+  // Search Input Styling
+  .form-control {
+    border-radius: 0.25rem;
+    border: 1px solid $border-color;
+    &:focus {
+      border-color: lighten($primary-color, 25%);
+      box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+    }
+  }
+
+  // Loading Spinner Container
+  .text-center {
+    padding: 2rem 0; // Space around the spinner
+    min-height: 100px; // Prevent layout jump
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .spinner-border.text-primary {
+        color: $primary-color !important; // Use theme color for spinner
+    }
+  }
+
+  // User List Styling
+  .list-group {
+    margin-top: 1.5rem; // Space above the list
+    border: 1px solid $border-color;
+    border-radius: 0.3rem; // Slightly more rounded corners
+    max-height: 300px; // Limit height for scrollability
+    overflow-y: auto;
+
+    .list-group-item {
+      padding: 0.9rem 1.25rem; // Comfortable padding within items
+      border-bottom: 1px solid $border-color; // Separator line
+      background-color: $white; // Ensure white background for items
+
+      &:last-child {
+        border-bottom: none; // No border for the last item
+      }
+
+      // User Info Styling
+      strong {
+        font-weight: 500; // Standard bold
+        color: #212529; // Dark text color
+        display: block; // Ensure it takes its own line if needed
+        margin-bottom: 0.15rem;
+      }
+
+      small.text-muted {
+        color: $text-muted-color !important; // Ensure muted color applies
+        font-size: 0.875em; // Slightly smaller email text
+      }
+
+      // Access Switch Styling
+      .form-check.form-switch {
+        // Align switch nicely to the right
+        .form-check-input {
+          cursor: pointer;
+          width: 2.75em; // Standard switch size
+          height: 1.375em;
+          margin-top: 0.25em; // Adjust vertical alignment if needed
+          &:focus {
+             box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+          }
+          &:checked {
+            background-color: $primary-color; // Use theme color when checked
+            border-color: $primary-color;
+          }
+        }
+        .form-check-label {
+          cursor: pointer;
+          font-size: 0.9em;
+          padding-left: 0.5rem; // Space between switch and label
+          color: $secondary-color; // Slightly muted label
+        }
+      }
+    }
+  }
+
+  // "No Users" Message Styling
+  .text-center.text-muted {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px dashed $border-color;
+    border-radius: 0.3rem;
+    background-color: $light-gray;
+    color: $text-muted-color !important;
+  }
+}
+
+.modal-footer {
+  background-color: $light-gray; // Match header background
+  border-top: 1px solid $border-color;
+  padding: 1rem 1.5rem;
+  display: flex; // Use flex for button alignment
+  justify-content: flex-end; // Align buttons to the right
+
+  .btn {
+    margin-left: 0.5rem; // Space between buttons
+    min-width: 90px; // Minimum width for buttons
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    &:hover {
+        background-color: darken($primary-color, 10%);
+        border-color: darken($primary-color, 12%);
+    }
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
+    }
+    &:disabled {
+        background-color: $primary-color; // Keep color even when disabled
+        border-color: $primary-color;
+        opacity: 0.65;
+    }
+  }
+
+  
+}

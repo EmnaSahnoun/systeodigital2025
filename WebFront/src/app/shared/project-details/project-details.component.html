@@ -1,0 +1,186 @@
+<div class="project-details-container" *ngIf="projet"> <!-- Add *ngIf here -->
+  <app-header [title]="projet?.name"></app-header> <!-- Use projet?.name -->
+
+
+  <!-- Navigation entre les onglets -->
+  <div class="tabs">
+    <button (click)="changeTab('details')" [class.active]="selectedTab === 'details'">Détails du projet</button>
+    <button (click)="changeTab('phases')" [class.active]="selectedTab === 'phases'">Phases</button>
+  </div>
+
+  <!-- Contenu des onglets -->
+  <div *ngIf="selectedTab === 'details'" class="tab-content details-content">
+    <div class="left-panel">
+      <div class="card">
+        <h2>Détails du projet</h2>
+        <div *ngIf="!isEditing">
+          <p><strong>Nom :</strong> {{ projet?.name }}</p>
+          <p><strong>Description :</strong> {{ projet?.description || 'Pas de description' }}</p>
+          <p><strong>Localisation :</strong> {{ projet?.address || "Pas d'address'" }}</p>
+          <p><strong>Date de création :</strong> {{ projet.createdAt | date:'dd/MM/yyyy à HH:mm' }}</p>
+          <button class="edit-btn" (click)="startEdit()">Modifier</button>
+        </div>
+        <!-- Mode édition -->
+        <div *ngIf="isEditing">
+          <div class="form-group mb-3">
+            <label for="projectName"><strong>Nom :</strong></label>
+            <input type="text" id="projectName" class="form-control" [(ngModel)]="editedProjectData.name">
+          </div>
+          <div class="form-group mb-3">
+            <label for="projectDescription"><strong>Description :</strong></label>
+            <textarea id="projectDescription" class="form-control" rows="3" [(ngModel)]="editedProjectData.description"></textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label for="projectAddress"><strong>Localisation :</strong></label>
+            <textarea id="projectAddress" class="form-control"  [(ngModel)]="editedProjectData.address"></textarea>
+          </div>
+          <p><strong>Date de création :</strong> {{ projet.createdAt | date:'dd/MM/yyyy à HH:mm' }}</p> <!-- Date non modifiable -->
+          <button class="save-btn me-2" (click)="saveEdit()" [disabled]="isLoading">Enregistrer</button>
+          <button class="cancel-btn" (click)="cancelEdit()" [disabled]="isLoading">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="card">
+        <h2>Statistiques</h2>
+        <div class="progress-container">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <!-- Cercle de fond -->
+            <circle cx="50" cy="50" r="40" stroke="#ddd" stroke-width="8" fill="none"></circle>
+            
+            <!-- Cercle de progression -->
+            <circle 
+              cx="50" 
+              cy="50" 
+              r="40" 
+              stroke="#41B3A3" 
+              stroke-width="8" 
+              fill="none"
+              stroke-dasharray="251.2"
+              [attr.stroke-dashoffset]="getProgressOffset()"
+              transform="rotate(-90 50 50)">
+            </circle>
+          </svg>
+          <div class="progress-text">
+            {{ getDisplayProgress() }}
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Membres du projet</h2>
+        <ul>
+          <li *ngFor="let member of members">{{ member.username }}  - {{ member.role }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedTab === 'phases'" class="tab-content">
+    <div class="header">
+      <h2>Phases</h2>
+      <button mat-button class="add-phase" (click)="addPhase()" *ngIf="isAdmin||isSuperAdmin">
+        <i class="bi bi-plus"></i> Ajouter une phase
+      </button>
+    </div>
+  
+    <!-- Affichage des phases dans un tableau -->
+    <div *ngIf="phases.length > 0" class="phases-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Nom de la Phase</th>
+            <th>Description</th>
+            <th>Date (Début - Fin)</th>
+            <th>Nombre de Tâches</th>
+            <th>Membres ayant accès</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <ng-container *ngFor="let phase of phases">
+            <tr (click)="editingPhaseId !== phase.id && openTasks(phase)"
+                [class.editing-row]="editingPhaseId === phase.id"> <!-- Classe pour la ligne en édition -->
+
+              <!-- Nom de la Phase -->
+              <td>
+                <span *ngIf="editingPhaseId !== phase.id">{{ phase.name }}</span>
+                <input *ngIf="editingPhaseId === phase.id" type="text" [(ngModel)]="editedPhaseData.name" class="inline-edit-input" (click)="$event.stopPropagation()">
+              </td>
+
+              <!-- Description -->
+              <td [class.expanded]="expandedPhaseId === phase.id && editingPhaseId !== phase.id">
+                <span *ngIf="editingPhaseId !== phase.id">{{ phase.description || 'Pas de description' }}</span>
+                <textarea *ngIf="editingPhaseId === phase.id" [(ngModel)]="editedPhaseData.description" class="inline-edit-textarea" rows="2" (click)="$event.stopPropagation()"></textarea>
+              </td>
+
+              <!-- Dates -->
+              <td>
+                <span *ngIf="editingPhaseId !== phase.id">{{ phase.startDate | date:'dd/MM/yyyy'}} - {{ phase.endDate | date:'dd/MM/yyyy' }}</span>
+                 <!-- Utilisation de input type="date" -->
+                 <div *ngIf="editingPhaseId === phase.id" class="inline-edit-dates" (click)="$event.stopPropagation()">
+                   <input type="date" [(ngModel)]="editedPhaseData.startDate" class="inline-edit-input date-input"> -
+                   <input type="date" [(ngModel)]="editedPhaseData.endDate" class="inline-edit-input date-input">
+                 </div>
+              </td>
+
+              <!-- Nombre de Tâches (Non éditable) -->
+              <td >{{ phase.taskIds?.length ?? 0 }}</td>
+
+              <!-- Membres (Non éditable inline ici) -->
+              <td>
+                <div class="members-container">
+                  <div class="members">
+                    <button class="members-action-button" (click)="openPhaseAccesssModal(phase); $event.stopPropagation()" matTooltip="Voir/Gérer les membres">
+                      <mat-icon>group</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Actions -->
+              <td>
+                <!-- Mode Normal -->
+                <ng-container *ngIf="editingPhaseId !== phase.id">
+                  <button mat-icon-button class="view-btn-phase"
+                          (click)="togglePhaseExpansion(phase.id); $event.stopPropagation()" matTooltip="Voir/Masquer détails">
+                    <i class="bi" [class.bi-eye]="expandedPhaseId !== phase.id" [class.bi-eye-slash]="expandedPhaseId === phase.id"></i>
+                  </button>
+                  <button mat-icon-button class="edit-btn-phase" (click)="editPhase(phase); $event.stopPropagation()" matTooltip="Modifier la phase">
+                    <i class="bi bi-pencil icon"></i>
+                  </button>
+                  <button mat-icon-button class="delete-btn-phase" (click)="deletePhase(phase); $event.stopPropagation()" matTooltip="Supprimer la phase">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </ng-container>
+
+                <!-- Mode Édition -->
+                <ng-container *ngIf="editingPhaseId === phase.id">
+                   <button mat-icon-button class="save-btn-phase" (click)="savePhaseEdit(); $event.stopPropagation()" [disabled]="isLoading" matTooltip="Enregistrer">
+                     <i class="bi bi-check-lg icon"></i>
+                   </button>
+                   <button mat-icon-button class="cancel-btn-phase" (click)="cancelPhaseEdit(); $event.stopPropagation()" [disabled]="isLoading" matTooltip="Annuler">
+                     <i class="bi bi-x-lg icon"></i>
+                   </button>
+                 </ng-container>
+              </td>
+            </tr>
+          </ng-container>
+       
+
+                        
+          
+        </tbody>
+        
+      </table>
+    </div>
+  
+    <div *ngIf="phases.length === 0">
+      <p>Aucune phase disponible pour ce projet.</p>
+    </div>
+  </div>
+  
+  
+</div>

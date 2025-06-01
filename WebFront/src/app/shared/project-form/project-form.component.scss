@@ -1,0 +1,154 @@
+// src/app/shared/project-form/project-form.component.scss
+// Copié et adapté depuis agence-form.component.scss
+
+// --- Variables de couleurs (identiques à agence-form) ---
+$primary-color: #41B3A3;       // Teal/Vert principal
+$accent-color: #E27D60;        // Coral/Orange (utilisé pour le titre)
+$warn-color: #F44336;          // Rouge (erreurs)
+$text-color-primary: #333;     // Texte principal
+$text-color-secondary: #666;   // Texte secondaire
+$container-background: #fff;   // Fond de la modal/conteneur
+$input-background: #f0f2f5;    // Fond des champs (léger)
+$border-color: #e0e0e0;         // Couleur de bordure légère
+$border-radius: 8px;           // Rayon de bordure standard
+$cancel-color: #6c757d;        // Gris pour annuler
+
+// --- Styles du Conteneur du Formulaire ---
+// Utilisation de la même classe racine que agence-form
+.user-form-container {
+  padding: 24px; // Padding standard
+  font-family: 'Poppins', sans-serif;
+  background-color: $container-background; // Fond blanc
+  border-radius: $border-radius; // Coins arrondis (si c'est une modal, le conteneur NgbModal peut gérer ça)
+
+  h2 {
+    color: $accent-color; // Utiliser la couleur accent pour le titre
+    margin-bottom: 24px; // Espace après le titre
+    text-align: center;
+    font-weight: 600; // Titre plus marqué
+  }
+
+  // --- Styles des Groupes de Formulaire ---
+  .form-group {
+    margin-bottom: 20px; // Espace entre les champs
+
+    label {
+      display: block;
+      margin-bottom: 8px; // Espace label/input
+      font-weight: 500; // Medium weight
+      color: $text-color-secondary; // Couleur secondaire pour label
+      font-size: 0.9em; // Taille label légèrement réduite
+    }
+
+    // Style commun pour input et textarea
+    input, textarea {
+      width: 100%;
+      padding: 10px 12px; // Padding ajusté
+      border: 1px solid $border-color; // Bordure standard
+      border-radius: $border-radius; // Utiliser le radius standard
+      font-size: 14px; // Taille de police standard
+      background-color: $input-background; // Fond léger pour input
+      color: $text-color-primary;
+      box-sizing: border-box; // Assurer que padding/border sont inclus dans la largeur
+      font-family: inherit; // Hériter la police
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color; // Bordure colorée au focus
+        background-color: $container-background; // Fond blanc au focus
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2); // Effet de focus
+      }
+
+      // Style pour placeholder (optionnel)
+      &::placeholder {
+        color: lighten($text-color-secondary, 15%);
+      }
+    }
+
+    // Style spécifique pour textarea si besoin (ex: hauteur min)
+    textarea {
+      min-height: 80px; // Hauteur minimale pour la description
+      resize: vertical; // Permettre redimensionnement vertical
+    }
+
+    // --- Message d'Erreur ---
+    .error-message {
+      color: $warn-color; // Utiliser la couleur warn pour les erreurs
+      font-size: 12px;
+      margin-top: 5px;
+      // Style pour les erreurs imbriquées (si utilisées dans le HTML)
+      div {
+        margin-top: 3px;
+      }
+    }
+  }
+
+  // --- Affichage Erreur Générale ---
+  .general-error-display { // Classe ajoutée dans le HTML
+      color: $warn-color;
+      font-size: 13px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      text-align: center;
+      padding: 8px;
+      background-color: rgba($warn-color, 0.05);
+      border: 1px solid rgba($warn-color, 0.1);
+      border-radius: $border-radius;
+  }
+
+
+  // --- Actions du Formulaire (Boutons) ---
+  .form-actions {
+    display: flex;
+    justify-content: flex-end; // Aligner à droite
+    gap: 12px; // Espace entre boutons
+    margin-top: 30px; // Espace avant les boutons
+
+    button {
+      padding: 8px 20px;
+      border-radius: $border-radius; // Utiliser le radius standard
+      cursor: pointer;
+      font-weight: 500; // Medium weight
+      transition: all 0.2s ease;
+      border: 1px solid transparent; // Bordure transparente par défaut
+      font-size: 14px; // Taille standard
+      display: inline-flex; // Pour aligner le texte/spinner si besoin
+      align-items: center;
+      justify-content: center;
+
+      // --- Bouton Annuler ---
+      &.cancel-btn {
+        background: transparent; // Fond transparent
+        border-color: $border-color; // Bordure grise
+        color: $text-color-secondary; // Texte gris
+
+        &:hover:not(:disabled) {
+          background: darken($container-background, 5%); // Léger fond gris au survol
+          border-color: darken($border-color, 10%);
+        }
+      }
+
+      // --- Bouton Soumettre/Modifier ---
+      &.submit-btn {
+        background: $primary-color; // Couleur primaire
+        color: white;
+        border-color: $primary-color; // Bordure de la même couleur
+
+        &:hover:not(:disabled) {
+          background: darken($primary-color, 8%); // Assombrir au survol
+          border-color: darken($primary-color, 8%);
+        }
+
+        // --- État Désactivé ---
+        &:disabled {
+          background: lighten($cancel-color, 25%); // Gris clair
+          border-color: lighten($cancel-color, 25%);
+          color: lighten($cancel-color, 5%);
+          cursor: not-allowed;
+        }
+
+        
+      }
+    }
+  }
+}

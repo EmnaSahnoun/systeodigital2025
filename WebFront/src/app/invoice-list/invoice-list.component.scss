@@ -1,0 +1,417 @@
+// --- Variables (Assurez-vous qu'elles sont définies ici ou importées d'un fichier partagé) ---
+$primary-color: #41b3a3;
+$accent-color: #e27d60;
+$warn-color: #f44336;
+$success-color: #4caf50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825;
+$paid-color: $success-color;
+$overdue-color: $warn-color;
+$draft-color: $cancel-color; // Ajout pour le statut 'draft'
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// --- General Invoice List Container ---
+.invoice-list-container {
+  font-family: 'Poppins', sans-serif;
+  padding: 24px;
+  background-color: $background-color;
+  color: $text-color-primary;
+  min-height: calc(110vh - 64px); // Ajustez 64px en fonction de la hauteur de votre en-tête
+}
+
+// --- Invoice List Header ---
+.invoice-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; // Permet le retour à la ligne sur les petits écrans
+  gap: 16px; // Espacement entre les éléments
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: $container-background;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-grow: 1; // Prend l'espace disponible
+    min-width: 250px; // Largeur minimale pour la recherche
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: $text-color-secondary;
+      font-size: 18px; // Taille de l'icône Mat
+    }
+
+    input {
+      padding: 10px 15px 10px 40px; // Ajuster le padding pour l'icône
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      min-height: 40px;
+      width: 100%;
+      font-size: 14px;
+      background-color: lighten($background-color, 2%); // Fond légèrement plus clair
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+    }
+  }
+
+  .actions-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .action-button { // Style commun pour les boutons d'action
+      border: none;
+      border-radius: $border-radius;
+      padding: 0 16px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+      mat-icon, i {
+        margin-right: 6px;
+        font-size: 18px;
+      }
+
+      &:hover:not(:disabled) {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .add-invoice-button { // Style spécifique pour le bouton d'ajout
+      background-color: $primary-color;
+      color: $text-color-light;
+      font-weight: 600; // Pour faire ressortir le bouton d'ajout
+
+      &:hover:not(:disabled) {
+        background-color: darken($primary-color, 8%);
+      }
+    }
+  }
+}
+
+// --- Filter Bar ---
+.filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; // Allow items to wrap on smaller screens
+  gap: 16px; // Space between label, button group, and clear button
+  padding: 12px 16px;
+  background-color: $container-background; // Use existing variable
+  border-radius: $border-radius; // Use existing variable
+  box-shadow: $card-shadow; // Use existing variable
+  margin-bottom: 24px; // Space below the filter bar
+
+  .filter-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-color-secondary;
+    margin-right: 8px; // Space after the label
+  }
+
+  .filter-buttons-group {
+    display: flex;
+    gap: 8px; // Space between filter buttons
+    flex-wrap: wrap;
+  }
+
+  .filter-button {
+    border: 1px solid $border-color;
+    background-color: #fff;
+    color: $text-color-primary;
+    border-radius: $border-radius;
+    padding: 8px 12px; // Adjusted padding
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex; // To align icon and text
+    align-items: center;
+    gap: 6px; // Space between icon and text
+
+    mat-icon {
+      font-size: 18px; // Match other icon sizes
+      height: 18px;
+      width: 18px;
+    }
+
+    &:hover {
+      border-color: darken($border-color, 10%);
+      background-color: lighten($background-color, 2%);
+    }
+
+    &.active {
+      background-color: $primary-color;
+      color: $text-color-light;
+      border-color: $primary-color;
+      font-weight: 600;
+
+      &:hover {
+        background-color: darken($primary-color, 8%);
+      }
+    }
+  }
+
+  .clear-filters-button { // Uses .action-button styles by class, specific overrides here
+    margin-left: auto; // Pushes it to the right
+    background-color: $cancel-color; // A distinct color for clearing
+    color: $text-color-light;
+    border-radius: 8px; // Assurez-vous que cela correspond à .action-button si hérité
+    &:hover:not(:disabled) {
+      background-color: darken($cancel-color, 8%);
+    }
+  }
+}
+
+// --- Invoice Display Area ---
+.invoice-display {
+  margin-top: 24px; // Espace sous l'en-tête
+}
+
+// --- Table View ---
+.invoice-table-card {
+  background-color: $container-background;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  overflow: hidden; // Important pour le border-radius du tableau
+
+  .data-table { // Utilisation de .data-table comme dans clients.component.scss
+    width: 100%;
+    border-collapse: collapse; // Assure que les bordures fonctionnent correctement
+
+    th.mat-header-cell, th {
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-color-secondary;
+      background-color: lighten($background-color, 2%);
+      border-bottom: 2px solid $border-color;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+      padding: 14px 16px;
+      vertical-align: middle;
+
+      &:not(:first-child):not(:last-child) { text-align: center; }
+      &:last-child { text-align: right; } // Pour la colonne Actions
+    }
+
+    td.mat-cell, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid $border-color;
+      font-size: 14px;
+      color: $text-color-primary;
+      text-align: left;
+      vertical-align: middle;
+
+      &:not(:first-child):not(:last-child) { text-align: center; }
+      &:last-child { text-align: right; } // Pour la colonne Actions
+    }
+
+    tr.mat-row, tr.invoice-row {
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      &:hover {
+        background-color: $background-color;
+      }
+      &:last-child {
+        td.mat-cell, td { border-bottom: none; }
+      }
+    }
+
+    .actions-cell { // Styles pour la cellule contenant les boutons d'action
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+
+      button { // Styles communs pour les boutons d'icône dans la table
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 1.2rem; // Taille de l'icône
+        padding: 6px;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        // Couleurs spécifiques pour chaque type de bouton
+        &.view-btn { // Vous pouvez utiliser $accent-color ou une autre couleur pour "view"
+          color: $accent-color;
+          &:hover:not(:disabled) { background-color: rgba($accent-color, 0.1); }
+        }
+        &.edit-btn {
+          color: $primary-color;
+          &:hover:not(:disabled) { background-color: rgba($primary-color, 0.1); }
+        }
+        &.delete-btn {
+          color: $warn-color;
+          &:hover:not(:disabled) { background-color: rgba($warn-color, 0.1); }
+        }
+      }
+    }
+  }
+}
+
+// --- Status Badges ---
+.invoice-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px; /* Adjusted padding for a slightly more spacious look */
+  border-radius: 16px; /* Rounded corners like dashboard badges */
+  font-size: 0.85em;
+  font-weight: 600; /* Slightly bolder text */
+  border: 1px solid transparent;
+  text-transform: capitalize; /* Or none, if translated text is already capitalized */
+
+  i { /* Style for the icon within the badge */
+    margin-right: 7px; /* Space between icon and text */
+    font-size: 1.1em;  /* Slightly larger icon */
+    line-height: 1; /* Ensure icon aligns well vertically */
+  }
+}
+
+/* Specific status styles */
+.status-unpaid {
+  background-color: #ffebee; /* Light red background */
+  color: #c62828;           /* Darker red text/icon */
+  border-color: #e57373;    /* Slightly lighter red border */
+}
+
+.status-paid {
+  background-color: #e8f5e9; /* Light green background */
+  color: #2e7d32;           /* Darker green text/icon */
+  border-color: #81c784;    /* Slightly lighter green border */
+}
+
+.status-draft {
+  background-color: #f5f5f5; /* Light grey background */
+  color: #757575;           /* Darker grey text/icon */
+  border-color: #bdbdbd;    /* Slightly lighter grey border */
+}
+
+.status-overdue {
+  background-color: #fff3e0; /* Light orange/yellow background */
+  color: #ef6c00;           /* Darker orange text/icon */
+  border-color: #ffb74d;    /* Slightly lighter orange border */
+}
+
+.status-default { /* Fallback style for unknown statuses */
+  background-color: #e9ecef; /* Neutral light grey */
+  color: #495057;           /* Neutral dark grey text/icon */
+  border-color: #ced4da;    /* Neutral grey border */
+}
+
+
+// --- Loading, Error, Empty States (Similaire à clients.component.scss) ---
+.loading-state, .error-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: $text-color-secondary;
+  background-color: $container-background;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  margin-top: 24px;
+
+  mat-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.error-state {
+  mat-icon { color: $warn-color; }
+  
+}
+
+// --- Responsive Design ---
+@media (max-width: 768px) {
+  .invoice-list-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    .actions-container {
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+
+      .action-button, .add-invoice-button { // Assurez-vous que tous les boutons d'action sont ciblés
+        width: 100%;
+      }
+    }
+     }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch; // Make items take full width
+
+    .filter-buttons-group {
+      justify-content: flex-start; // Align buttons to the start
+    }
+    .clear-filters-button {
+      margin-left: 0; // Reset margin for stacked layout
+      margin-top: 10px; // Add some space if it stacks below buttons
+    }
+  }
+
+  .invoice-table-card .data-table { // Pour rendre le tableau scrollable horizontalement
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap; // Empêche le retour à la ligne du contenu des cellules
+
+    th, td {
+      white-space: nowrap; // S'assurer que le contenu ne se coupe pas bizarrement
+    }
+    // Vous pourriez avoir besoin d'ajuster les largeurs minimales des colonnes ici
+    // ou de masquer certaines colonnes sur les petits écrans si nécessaire.
+  }
+}

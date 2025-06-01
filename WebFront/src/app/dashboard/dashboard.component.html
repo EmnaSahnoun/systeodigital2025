@@ -1,0 +1,196 @@
+<div class="dashboard-container">
+  <!-- En-tête (supposant que app-header existe) -->
+  <app-header [title]="'Tableau de bord Architecte'"></app-header>
+
+  <!-- Section Résumé des Projets -->
+  <div class="section-header">
+    <h2>Résumé des Projets</h2>
+    <button mat-flat-button color="primary" class="add-project-button" (click)="addProject()">
+      <mat-icon>add</mat-icon>
+      <span>Nouveau Projet</span>
+    </button>
+  </div>
+
+  <div class="stats-cards-grid">
+    <!-- Carte Projets en Attente -->
+    <mat-card class="stat-card pending">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-container">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <mat-card-title>{{ notStartedProjectCount }}</mat-card-title>
+        <mat-card-subtitle>Projets en Attente</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <!-- Carte Projets en Cours -->
+    <mat-card class="stat-card in-progress">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-container">
+          <mat-icon>construction</mat-icon>
+        </div>
+        <mat-card-title>{{ inProgressProjectCount }}</mat-card-title>
+        <mat-card-subtitle>Projets en Cours</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <!-- Carte Projets Terminés -->
+    <mat-card class="stat-card completed">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-container">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <mat-card-title>{{ completedProjectCount }}</mat-card-title>
+        <mat-card-subtitle>Projets Terminés</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
+
+  <!-- Section Activité des Tâches -->
+  <mat-card class="activity-section section-card">
+    <mat-card-header>
+      <mat-card-title>Activité Récente</mat-card-title>
+      <mat-card-subtitle>Vue d'ensemble des tâches et statistiques clés</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="activity-content">
+        <div class="chart-container">
+          <canvas id="taskChartDashboard"></canvas>
+        </div>
+        <div class="activity-stats">
+          <div class="stat-item">
+            <mat-icon>event_available</mat-icon>
+            <span class="stat-value">{{ totalTasks }}</span>
+            <span class="stat-label">Tâches Totales</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>group</mat-icon>
+            <span class="stat-value">{{ users.length }}</span>
+            <span class="stat-label">Membres Assignés</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>leaderboard</mat-icon>
+            <span class="stat-value">{{ this.projects.length }}</span>
+            <span class="stat-label">Projets Actifs</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Section Liste des Utilisateurs (Mise à jour avec Inline Edit) -->
+<mat-card class="user-list-section section-card" *ngIf="isAdmin">
+  <div class="section-header" style="padding: 0 24px;">
+    <h2 class="mat-card-title">Gestion des Membres</h2>
+    <button mat-flat-button color="primary" class="add-user-button"
+            (click)="triggerAddUser()"
+            [disabled]="!currentAgence || isLoadingUsers || !!editingUserId || !!activeModalRef">
+      <mat-icon>person_add</mat-icon>
+      <span>Ajouter membre</span>
+    </button>
+  </div>
+
+  <mat-card-content>
+    <div *ngIf="isLoadingUsers" class="loading-indicator">
+      <mat-spinner [diameter]="50"></mat-spinner>
+      <p>Chargement des membres...</p>
+    </div>
+
+    <table mat-table [dataSource]="userDataSource" class="data-table" *ngIf="!isLoadingUsers">
+
+      <!-- Colonne Nom Complet -->
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Nom Complet </th>
+        <td mat-cell *matCellDef="let user" class="text-center">
+          <!-- Display Mode -->
+          <span *ngIf="editingUserId !== user.id">{{ user.username }}</span>
+          <!-- Edit Mode -->
+          <input *ngIf="editingUserId === user.id" type="text" [(ngModel)]="editedUserData.username" class="inline-edit-input" placeholder="Nom du membre" />
+        </td>
+      </ng-container>
+
+      <!-- Colonne Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Email </th>
+        <td mat-cell *matCellDef="let user" class="text-center">
+          <!-- Display Mode -->
+          <span *ngIf="editingUserId !== user.id">{{ user.email }}</span>
+          <!-- Edit Mode -->
+          <input *ngIf="editingUserId === user.id" type="email" [(ngModel)]="editedUserData.email" class="inline-edit-input" placeholder="Email" />
+        </td>
+      </ng-container>
+
+      <!-- Colonne Rôle (Read-only in this example) -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Rôle </th>
+        <td mat-cell *matCellDef="let user" class="text-center">
+          <span class="role-badge" [ngClass]="user.roleClass">{{ user.role }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Colonne Statut -->
+      <ng-container matColumnDef="status" >
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Statut </th>
+        <td mat-cell *matCellDef="let user" class="status-cell text-center">
+          <!-- Display Mode -->
+          <ng-container *ngIf="editingUserId !== user.id">
+            <span *ngIf="user.enabled" class="status-badge status-enabled">
+              <i class="bi bi-check-circle-fill"></i> Activé
+            </span>
+            <span *ngIf="!user.enabled" class="status-badge status-disabled">
+              <i class="bi bi-x-circle-fill"></i> Désactivé
+            </span>
+          </ng-container>
+          <!-- Edit Mode: Bootstrap Toggle Switch -->
+          <div *ngIf="editingUserId === user.id" class="form-check form-switch d-flex justify-content-center align-items-center h-100">
+            <input class="form-check-input" type="checkbox" role="switch"
+                   id="userStatusSwitch-{{user.id}}"
+                   [(ngModel)]="editedUserData.enabled"
+                   [attr.aria-label]="editedUserData.enabled ? 'Désactiver le membre' : 'Activer le membre'">
+            
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Colonne Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-center actions-header"> Actions </th>
+        <td mat-cell *matCellDef="let user" class="actions-cell text-center">
+          <!-- View/Edit Mode Buttons -->
+          <ng-container *ngIf="editingUserId !== user.id">
+            <button mat-icon-button class="edit-btn" (click)="editUser(user)" title="Modifier" [disabled]="isDeletingUser === user.id || !!editingUserId">
+              <i class="bi bi-pencil"></i> <!-- Using MatIcon -->
+            </button>
+            <button mat-icon-button class="delete-btn" (click)="deleteUser(user)" title="Supprimer" [disabled]="isDeletingUser === user.id || !!editingUserId">
+              <i *ngIf="isDeletingUser !== user.id" class="bi bi-trash"></i> 
+              <mat-spinner *ngIf="isDeletingUser === user.id" [diameter]="20"></mat-spinner>
+            </button>
+          </ng-container>
+
+          <!-- Save/Cancel Mode Buttons -->
+          <ng-container *ngIf="editingUserId === user.id">
+            <button mat-icon-button class="save-btn" (click)="saveUser()" title="Enregistrer" [disabled]="isSavingUser">
+              <mat-icon *ngIf="!isSavingUser">check</mat-icon> <!-- Using MatIcon -->
+              <mat-spinner *ngIf="isSavingUser" [diameter]="20"></mat-spinner> 
+            </button>
+            <button mat-icon-button class="cancel-btn" (click)="cancelEdit()" title="Annuler" [disabled]="isSavingUser">
+              <mat-icon>close</mat-icon> <!-- Using MatIcon -->
+            </button>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="userDisplayedColumns"></tr>
+      <!-- Add editing-row class when editing -->
+      <tr mat-row *matRowDef="let row; columns: userDisplayedColumns;" [class.editing-row]="editingUserId === row.id"></tr>
+
+      <!-- Ligne affichée quand il n'y a pas de données -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="userDisplayedColumns.length">Aucun membre trouvé pour cette agence.</td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+
+</div>

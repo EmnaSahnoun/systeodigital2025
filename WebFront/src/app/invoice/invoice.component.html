@@ -1,0 +1,134 @@
+<!-- facture.component.html -->
+<div class="invoice-container" #invoicePdfContent>
+  <div class="invoice-header">
+    <div class="logo-box">
+      <div class="logo-placeholder">+ Ajoutez votre logo</div>
+    </div>
+    <h2 >{{ getDocumentTitle() }}</h2>
+    <div class="invoice-title">
+      
+      <div class="invoice-meta">
+        <div class="invoice-number">
+          <label for="invoiceNumber"*ngIf="invoice.documentNumber>0">#</label>
+          <input id="invoiceNumber" *ngIf="invoice.documentNumber>0" type="number" [(ngModel)]="invoice.documentNumber" />
+        </div>
+        <div>
+          <label for="documentTypeSelect">Type:</label>
+          <select id="documentTypeSelect" [(ngModel)]="invoice.documentType" (ngModelChange)="calculateTotals()">
+            <option *ngFor="let type of documentTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="invoice-details">
+    <div class="left">
+      <h4>Votre Agence</h4>
+      <label for="companyName">Nom de l'entreprise:</label>
+      <input id="companyName" [(ngModel)]="company.name" />
+
+
+        <label for="companyAddress">Adresse:</label>
+      <input id="companyAddress" [(ngModel)]="company.address" />
+
+
+      <label for="companyPhone">Téléphone:</label>
+      <input id="companyPhone" [(ngModel)]="company.phone" />
+
+      <label for="companyEmail">Email:</label>
+      <input id="companyEmail" [(ngModel)]="company.email" />
+ 
+    </div>
+
+    <div class="right">
+      <h4>Client</h4>
+      <label for="clientSelect" class="client-label">Choisir un client:</label>
+      <select id="clientSelect" name="selectedClient" [(ngModel)]="invoice.selectedClientId" (ngModelChange)="onClientSelected()">
+        <option [ngValue]="null" disabled>-- Sélectionnez un client --</option>
+        <option *ngFor="let client of clients" [ngValue]="client.id">{{ client.name }}</option>
+      </select>
+
+
+       <label for="clientName">Nom du client:</label>
+      <input id="clientName" [(ngModel)]="invoice.clientName" readonly />
+
+
+       <label for="clientAddress">Adresse du client:</label>
+      <input id="clientAddress" [(ngModel)]="invoice.clientAddress" readonly />
+
+ <label for="clientPhone">Téléphone du client:</label>
+      <input id="clientPhone" [(ngModel)]="invoice.clientPhone" readonly />
+
+      <label for="clientEmail">Email du client:</label>
+      <input id="clientEmail" [(ngModel)]="invoice.clientEmail" readonly />
+  
+    </div>
+  </div>
+
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th class="text-right">Description</th>
+         <th class="text-right">Quantité</th>
+        <th class="text-right">Prix Unitaire</th>
+        <th class="text-right">Taux de TVA/TAX (%)</th>
+       
+       
+        <th class="text-right" >Montant</th>
+        <th class="text-right" >Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of invoice.lines; let i = index">
+      
+        <td><input [(ngModel)]="item.description"/></td>
+        <td><input type="number" [(ngModel)]="item.quantity" class="text-right" (input)="calculateTotals()" /></td>
+        <td><input type="number" [(ngModel)]="item.unitPrice" class="text-right" (input)="calculateTotals()" /></td>
+       <td><input type="number" class="text-right" [(ngModel)]="item.taxRate" (input)="calculateTotals()" /></td>
+       <td class="text-right">{{ ((item.quantity * item.unitPrice) || 0) | currency:'TND' }}</td>
+        
+        <td class="action-cell">
+          <button class="delete-item-btn" (click)="removeItem(i)" [disabled]="invoice.lines.length <= 1" title="Supprimer la ligne">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="add-item" (click)="addItem()">+ Ajouter une ligne</button>
+
+  <div class="notes-terms">
+    <div>
+      <label>Remarques</label>
+      <textarea [(ngModel)]="invoice.notes"></textarea>
+    </div>
+    
+  </div>
+
+  <!-- invoice.component.html -->
+<div class="invoice-totals">
+  <p>
+    <span>SOUS-TOTAL:</span>
+    <span class="amount">{{ subtotal | currency:'TND':'symbol':'1.2-2' }}</span>
+  </p>
+  <p>
+    <span>MONTANT TVA:</span>
+    <span class="amount">{{ totalTaxAmount | currency:'TND':'symbol':'1.2-2' }}</span>
+  </p>
+  <p *ngIf="invoice.discount && invoice.discount > 0">
+    <span>REMISE:</span>
+    <span class="amount">- {{ invoice.discount | currency:'TND':'symbol':'1.2-2' }}</span>
+  </p>
+  <p class="total-highlight">
+    <span>TOTAL:</span>
+    <span class="amount">{{ total | currency:'TND':'symbol':'1.2-2' }}</span>
+  </p>
+</div>
+
+  <div class="invoice-actions">
+    <button class="btn btn-primary" (click)="saveInvoice()">Enregistrer {{ getDocumentTitle() }}</button>
+   <button class="btn btn-secondary" (click)="downloadInvoiceAsPDF()">Télécharger PDF</button> <!-- Bouton de téléchargement PDF -->
+   
+  </div>
+</div>

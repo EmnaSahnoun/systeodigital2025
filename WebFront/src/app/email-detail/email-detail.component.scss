@@ -1,0 +1,276 @@
+// Variables (peuvent être importées d'un fichier global ou définies ici)
+$primary-color: #007bff;
+$secondary-color: #2c3e50; // Un gris foncé/bleu
+$text-color: #333;
+$text-muted-color: #6c757d;
+$border-color: #e0e0e0;
+$light-bg-color: #f8f9fa;
+$error-color: #dc3545;
+
+$padding-base: 16px;
+$padding-large: 24px;
+$header-height-estimate: 64px; // Ajustez si vous avez une barre de navigation fixe
+
+:host {
+  display: block;
+  background-color: #fff; // Fond blanc pour la page de détail elle-même
+}
+
+.email-detail-page {
+  padding: $padding-large;
+  margin: $padding-base;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  background-color: #fff; // S'assurer que le contenu a un fond blanc
+}
+
+.email-detail-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: $padding-base;
+  margin-bottom: $padding-base; // Espace avant le premier divider
+
+  .back-button {
+    margin-right: $padding-base;
+    color: $text-muted-color;
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .email-subject {
+    font-size: 1.6em;
+    font-weight: 500;
+    color: $secondary-color;
+    margin: 0;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; // Empêche le retour à la ligne du sujet
+    padding-right: $padding-base; // Espace pour éviter que le texte ne colle aux actions
+  }
+
+  .email-actions {
+    display: flex;
+    gap: 8px; // Espace entre les boutons d'action
+    flex-shrink: 0; // Empêche les boutons de rétrécir
+
+    button {
+      color: $text-muted-color;
+      &:hover {
+        color: $primary-color;
+        background-color: rgba($primary-color, 0.1);
+      }
+      &[color="warn"] {
+         &:hover {
+            color: $error-color;
+            background-color: rgba($error-color, 0.1);
+         }
+      }
+    }
+  }
+}
+
+mat-divider {
+  margin-bottom: $padding-base; // Espace après chaque divider
+}
+
+.email-meta-container {
+  padding: $padding-base / 2 0;
+  font-size: 0.95em;
+  color: $text-color;
+
+  .email-meta-row {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: flex-start; // Pour que les labels longs s'alignent bien
+
+    .meta-label {
+      font-weight: 500;
+      color: $secondary-color;
+      min-width: 70px; // Alignement des valeurs
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .meta-value {
+      word-break: break-word; // Permet aux longues chaînes (emails) de passer à la ligne
+      line-height: 1.4;
+    }
+  }
+}
+
+.email-body-container {
+  padding: $padding-base 0;
+  line-height: 1.7;
+  color: $text-color;
+  font-size: 1em; // Taille de base pour le corps
+
+  .email-body-content {
+    // Styles pour le contenu HTML injecté
+    // Soyez prudent avec les sélecteurs trop larges
+    p {
+      margin-top: 0;
+      margin-bottom: 1em;
+    }
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin: 0.5em 0;
+    }
+    blockquote {
+      border-left: 4px solid $border-color;
+      padding-left: $padding-base;
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      color: $text-muted-color;
+      font-style: italic;
+      background-color: $light-bg-color;
+      border-radius: 0 4px 4px 0;
+    }
+    ul, ol {
+      padding-left: $padding-large; // Indentation standard pour les listes
+    }
+    // Ajoutez d'autres styles pour les éléments courants (h1-h6, table, etc.) si nécessaire
+  }
+}
+
+.email-attachments-container {
+  padding-top: $padding-base;
+  margin-top: $padding-base;
+
+  h3 {
+    font-size: 1.2em;
+    color: $secondary-color;
+    margin-bottom: $padding-base;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: $padding-base / 2;
+  }
+
+  .attachments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .attachment-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid $light-bg-color; // Séparateur très léger
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .attachment-icon {
+      margin-right: 10px;
+      color: $primary-color;
+    }
+
+    .attachment-filename {
+      font-weight: 500;
+      color: $text-color;
+      margin-right: 10px;
+      cursor: default; // Ou pointer si cliquable pour télécharger
+    }
+
+    .attachment-size {
+      font-size: 0.85em;
+      color: $text-muted-color;
+    }
+    // button[mat-icon-button] {
+    //   margin-left: auto;
+    //   color: $text-muted-color;
+    //   &:hover { color: $primary-color; }
+    // }
+  }
+}
+
+// États de chargement et d'erreur
+.loading-spinner-detail,
+.error-message-detail,
+.no-email-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $padding-large * 2 $padding-large;
+  text-align: center;
+  min-height: 300px;
+  margin: $padding-base;
+
+  mat-icon {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: $padding-base;
+  }
+
+  p {
+    font-size: 1.15em;
+    color: $text-muted-color;
+    margin-bottom: $padding-large;
+  }
+}
+
+.error-message-detail {
+  color: $error-color;
+  border: 1px solid lighten($error-color, 25%);
+  background-color: lighten($error-color, 40%);
+  border-radius: 6px;
+  padding: $padding-large;
+
+  mat-icon {
+    color: $error-color;
+  }
+  p {
+    color: darken($error-color, 10%);
+  }
+  button {
+    margin-top: $padding-base;
+    &:not(:last-child) {
+        margin-right: $padding-base / 2;
+    }
+  }
+}
+
+.no-email-selected {
+    mat-icon {
+        color: $border-color; // Icône discrète
+    }
+}
+
+// Ajustements responsives
+@media (max-width: 768px) {
+  .email-detail-page {
+    margin: $padding-base / 2;
+    padding: $padding-base;
+  }
+  .email-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .email-subject {
+      font-size: 1.4em;
+      margin-top: $padding-base / 2;
+      margin-bottom: $padding-base;
+      white-space: normal; // Permet au sujet de s'enrouler sur plusieurs lignes
+    }
+    .email-actions {
+      width: 100%;
+      justify-content: flex-start; // Aligner les actions à gauche sur petits écrans
+      margin-top: $padding-base / 2;
+    }
+  }
+}

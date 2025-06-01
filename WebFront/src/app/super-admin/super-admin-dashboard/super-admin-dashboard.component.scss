@@ -1,0 +1,305 @@
+@use '@angular/material' as mat;
+
+// Définir des variables pour la cohérence (ou s'assurer qu'elles sont globales)
+:host { // Appliquer les variables au composant hôte
+  --primary-color: #4a90e2; // Un bleu moderne
+  --accent-color: #50e3c2; // Un turquoise/vert comme accent
+  --warning-color: #f5a623; // Orange pour utilisateurs/avertissements
+  --text-color-primary: #333;
+  --text-color-secondary: #666;
+  --background-color: #f7f9fc; // Fond très clair, presque blanc
+  --card-background: #ffffff;
+  --border-color: #e0e0e0;
+  --border-radius: 8px;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); // Ombre douce
+  --hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container {
+  font-family: 'Poppins', sans-serif; // Assurez-vous que Poppins est importé
+  padding: 24px;
+  background-color: var(--background-color);
+  color: var(--text-color-primary);
+}
+
+// En-tête de section (pour titre + bouton)
+.stats-header { // Renommé pour clarté, peut être .section-header si générique
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px; // Espace après l'en-tête
+
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0; // Enlever marge par défaut du h2
+  }
+
+  .add-agency-button { 
+    padding-top: 1rem; // Garder si nécessaire
+    cursor: pointer;
+    background: #41B3A3 ; // Utiliser la couleur primaire du dashboard
+    border-radius: 8px; // Utiliser le border-radius standard
+    font-weight: 600;
+    min-height: 40px; // Hauteur alignée sur l'input
+    border: none;
+    color: white;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Ombre légère
+    mat-icon {
+      margin-right: 8px;
+    }
+    // Hérite des styles de mat-flat-button
+  }
+}
+
+// Grille pour les cartes de statistiques
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); // Grille responsive
+  gap: 24px; // Espace entre les cartes
+  margin-bottom: 32px; // Espace après la grille de cartes
+}
+
+// Style des cartes de statistiques individuelles
+.stat-card {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  overflow: hidden; // Empêche le contenu de déborder lors des transitions
+
+  &:hover {
+    transform: translateY(-4px); // Effet de lévitation
+    box-shadow: var(--hover-shadow);
+  }
+
+  // Style de l'en-tête de la carte Material
+  .mat-mdc-card-header { // Cibler la classe spécifique pour Material v15+
+    padding: 20px; // Padding interne
+  }
+
+  .stat-icon-container {
+    width: 52px; // Légèrement plus grand
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px; // Espace entre icône et texte
+    flex-shrink: 0; // Empêche l'icône de rétrécir
+
+    mat-icon {
+      font-size: 28px; // Taille de l'icône
+      color: white; // Couleur de l'icône
+    }
+  }
+
+  // Couleurs spécifiques par type de carte
+  &.agencies .stat-icon-container { background-color: var(--primary-color); }
+  &.projects .stat-icon-container { background-color: var(--accent-color); }
+  &.users .stat-icon-container { background-color: var(--warning-color); }
+
+  .mat-mdc-card-title { // Cibler la classe spécifique pour Material v15+
+    font-size: 30px; // Taille du nombre
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2px; // Espace réduit sous le titre
+    color: var(--text-color-primary);
+  }
+
+  .mat-mdc-card-subtitle { // Cibler la classe spécifique pour Material v15+
+    font-size: 14px;
+    color: var(--text-color-secondary);
+    font-weight: 500;
+    margin: 0; // Pas de marge pour le sous-titre
+  }
+}
+
+// Section Activité (Graphique + Stats)
+.activity-section {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 32px;
+  padding: 0; // Le padding sera géré par mat-card-header/content
+
+  .mat-mdc-card-header { // Cibler la classe spécifique pour Material v15+
+    padding: 20px 24px 10px 24px; // Padding pour l'en-tête
+  }
+
+  .mat-mdc-card-title { // Cibler la classe spécifique pour Material v15+
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+   .mat-mdc-card-subtitle { // Cibler la classe spécifique pour Material v15+
+     font-size: 13px;
+     color: var(--text-color-secondary);
+   }
+
+  .mat-mdc-card-content { // Cibler la classe spécifique pour Material v15+
+    padding: 10px 24px 24px 24px; // Padding pour le contenu
+  }
+
+  .activity-content {
+    display: flex;
+    flex-wrap: wrap; // Responsive
+    gap: 30px; // Espace entre graphique et stats
+    margin-top: 10px; // Espace après le sous-titre
+  }
+
+  .chart-container {
+    flex: 2; // Le graphique prend plus de place
+    min-width: 300px; // Largeur minimale
+    canvas {
+      max-width: 100%;
+      height: auto; // Hauteur responsive
+    }
+  }
+
+  .activity-stats {
+    flex: 1; // Les stats prennent moins de place
+    display: flex;
+    flex-direction: column;
+    gap: 18px; // Espace entre les items de stats
+    min-width: 200px; // Largeur minimale
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 14px; // Espace entre icône et texte
+    padding: 12px;
+    background-color: var(--background-color); // Fond légèrement différent
+    border-radius: 6px;
+    border: 1px solid var(--border-color); // Bordure subtile
+
+    mat-icon {
+      color: var(--primary-color);
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-color-primary);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-color-secondary);
+      margin-left: auto; // Pousse le label à droite si nécessaire
+    }
+  }
+}
+
+// Section Liste (Projets, Agences, etc.) - Style générique
+.project-list-section { // Peut être renommé .list-section si utilisé pour autre chose
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 0; // Padding géré par header/content
+  margin-bottom: 32px;
+
+  .mat-mdc-card-header { // Cibler la classe spécifique pour Material v15+
+    padding: 20px 24px 10px 24px;
+  }
+
+  .mat-mdc-card-title { // Cibler la classe spécifique pour Material v15+
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .mat-mdc-card-content { // Cibler la classe spécifique pour Material v15+
+     padding: 0 0 16px 0; // Pas de padding haut/bas, padding bas pour espace après table
+  }
+
+  .project-table { // Peut être renommé .data-table
+    width: 100%;
+    box-shadow: none; // Pas d'ombre pour la table dans la carte
+    background-color: transparent; // Fond transparent
+
+    th.mat-mdc-header-cell { // Cibler la classe spécifique pour Material v15+
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-color-secondary);
+      background-color: #f8f9fa; // Fond léger pour l'en-tête
+      border-bottom: 2px solid var(--border-color);
+      padding: 10px 24px; // Padding cellules en-tête
+      text-align: left; // Alignement par défaut
+    }
+
+    td.mat-mdc-cell { // Cibler la classe spécifique pour Material v15+
+      padding: 14px 24px; // Padding cellules corps
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle; // Alignement vertical
+      font-size: 14px;
+      color: var(--text-color-primary);
+    }
+
+    // Style pour les badges de statut (réutilisé de dashboard)
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex; // Pour aligner icône et texte si besoin
+      align-items: center;
+      gap: 4px;
+
+      // Couleurs spécifiques (ajuster si nécessaire)
+      &.status-active, &.status-completed { background-color: #e8f5e9; color: #2e7d32; } // Vert
+      &.status-inactive, &.status-pending { background-color: #fffde7; color: #f9a825; } // Jaune/Orange
+      &.status-in-progress { background-color: #e3f2fd; color: #1565c0; } // Bleu
+      // Ajouter d'autres statuts
+    }
+
+    // Style pour les boutons d'action
+    .mat-mdc-icon-button { // Cibler la classe spécifique pour Material v15+
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+
+      .mat-icon { // Cibler l'icône dans le bouton
+        font-size: 20px;
+      }
+    }
+
+     // Cellule d'actions : alignement à droite
+     td.mat-mdc-cell:last-child, th.mat-mdc-header-cell:last-child {
+        text-align: right;
+     }
+     // En-tête Actions : padding droit spécifique
+     th.mat-mdc-header-cell:last-child {
+         padding-right: 24px;
+     }
+     // Cellule Actions : padding droit spécifique
+      td.mat-mdc-cell:last-child {
+         padding-right: 16px; // Moins de padding pour rapprocher les boutons du bord
+      }
+
+     // Ligne "Aucune donnée"
+     .mat-mdc-row.mat-mdc-no-data-row {
+        td.mat-mdc-cell {
+           text-align: center;
+           padding: 20px;
+           color: var(--text-color-secondary);
+           font-style: italic;
+        }
+     }
+  }
+}
+
+// Styles globaux pour Material (peuvent être dans styles.scss global)
+// Assurer que les cartes Material n'ont pas de padding interférant
+.mat-mdc-card {
+  padding: 0 !important;
+}

@@ -1,0 +1,41 @@
+<mat-sidenav-container class="sidenav-container" >
+  <mat-sidenav mode="side" opened class="sidenav">
+    <div class="logo">
+      <!-- <img src="assets/user.jpg" alt="logo"> -->
+      <h4>{{titre}}</h4>
+    </div>
+    
+    <ul>
+      <li routerLink="{{ isSuperAdmin ? '/super-admin/dashboard' : '/dashboard' }}" routerLinkActive="active"><a (click)="changeTitle('Tableau de bord')">
+        <i class="bi bi-clipboard2-data"></i> Dashboard</a>
+      </li>
+      <li mat-list-item routerLink="/projects" routerLinkActive="active" *ngIf="isUser || isAdmin"><a (click)="changeTitle('Projets')">
+        <i class="bi bi-briefcase"></i> Projects</a>
+      </li>
+      <li mat-list-item routerLink="/invitations" routerLinkActive="active" *ngIf="isUser || isAdmin"><a (click)="changeTitle('Invitations')">
+        <i class="bi bi-envelope-paper"></i> Invitations</a>
+      </li>
+      <li mat-list-item routerLink="/super-admin/agences" routerLinkActive="active" *ngIf="isSuperAdmin"><a (click)="changeTitle('Projets')">
+        <i class="bi bi-briefcase"></i> Agences</a>
+      </li>
+      <li mat-list-item routerLink="/clients" routerLinkActive="active" *ngIf="isUser || isAdmin"><a (click)="changeTitle('Clients')">
+        <i class="bi bi-person-lines-fill"></i> Clients</a>
+      </li>
+     <li mat-list-item routerLink="/emails" routerLinkActive="active" *ngIf="isUser || isAdmin"><a (click)="changeTitle('Emails')">
+        <i class="bi bi-chat-dots"></i> Emails</a>
+      </li>
+      <li mat-list-item routerLink="/invoices" routerLinkActive="active" *ngIf="isAdmin"><a (click)="changeTitle('Factures')">
+     <i class="bi bi-briefcase"></i> Documents Commerciaux</a>
+      </li>
+      <li mat-list-item routerLink="/settings" routerLinkActive="active">
+        <i class="bi bi-gear"></i> Settings
+      </li>
+      <li mat-list-item  routerLinkActive="active" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Sign out
+      </li>
+      
+    </ul>
+  </mat-sidenav>
+  
+  
+</mat-sidenav-container>

@@ -1,0 +1,163 @@
+// --- Import or Define Variables (Copied from projects.component.scss or a shared variables file) ---
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// --- General Form Container (Inspired by card styles) ---
+.client-form-card {
+  font-family: 'Poppins', sans-serif; // Assurez-vous que cette police est chargée
+  padding: 24px 32px; // More padding for a form
+  background-color: $container-background;
+  color: $text-color-primary;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  max-width: 700px; // Adjust as needed
+  margin: 30px auto; // Center the form on the page
+}
+
+.form-header {
+  font-size: 22px;
+  font-weight: 600;
+  color: $text-color-primary;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $border-color;
+  text-align: center;
+}
+
+form {
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); // Responsive grid for form fields
+    gap: 20px 24px; // Row and column gap
+    margin-bottom: 30px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; // Space between label and input
+
+    &.form-field-full-width {
+      grid-column: 1 / -1; // Make field span full width
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      color: $text-color-secondary;
+      .required-asterisk {
+        color: $warn-color;
+        margin-left: 2px;
+      }
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      padding: 10px 15px;
+      border: 1px solid $border-color;
+      border-radius: 8px / 2;
+      min-height: 42px; // Consistent height
+      width: 100%;
+      font-size: 14px;
+      color: $text-color-primary;
+      background-color: lighten($background-color, 3%);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        background-color: $container-background;
+      }
+
+      &.input-error {
+        border-color: $warn-color;
+        &:focus {
+          box-shadow: 0 0 0 3px rgba($warn-color, 0.15);
+        }
+      }
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .error-message {
+      font-size: 12px;
+      color: $warn-color;
+      margin-top: 2px; // Small gap for error message
+    }
+    .field-hint {
+      font-size: 12px;
+      color: $text-color-secondary;
+      margin-top: 2px;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid $border-color;
+
+    .btn {
+      // Common button styles from projects.component.scss
+      border: none;
+      border-radius: 8px / 1.5;
+      padding: 0 20px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+      &:hover:not(:disabled) { box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+      &:active:not(:disabled) { transform: translateY(1px); }
+      &:disabled { opacity: 0.6; cursor: not-allowed; }
+    }
+
+    .btn-submit { background-color: $primary-color; color: $text-color-light; &:hover:not(:disabled) { background-color: darken($primary-color, 8%); } }
+    .btn-cancel { background-color: $container-background; color: $text-color-secondary; border: 1px solid $border-color; &:hover:not(:disabled) { background-color: lighten($background-color, 2%); } }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .client-form-card {
+    padding: 20px;
+    margin: 20px 15px;
+  }
+
+  form .form-grid {
+    grid-template-columns: 1fr; // Stack fields on smaller screens
+    gap: 16px;
+  }
+
+  form .form-actions {
+    flex-direction: column-reverse; // Stack buttons
+    .btn { width: 100%; }
+  }
+}

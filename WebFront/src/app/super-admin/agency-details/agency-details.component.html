@@ -1,0 +1,146 @@
+<div class="agency-details-container">
+  <button class="close-modal-btn" (click)="closeModal()" aria-label="Fermer">
+    <i class="bi bi-x"></i>
+  </button>
+  <div class="agency-info">
+    <div class="header-section">
+      <h2>{{ agency.name }}</h2>
+      <button mat-button class="projects-btn" (click)="viewProjects()">
+        <i class="bi bi-folder"></i> Voir Projets
+      </button>
+    </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label">Adresse:</span>
+        <span class="value">{{ agency.address || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Email:</span>
+        <span class="value">{{ agency.email || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Téléphone:</span>
+        <span class="value">{{ agency.phone || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Date de création:</span>
+        <span class="value">{{ agency.createdAt | date:'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="users-section">
+    <div class="users-header">
+      <h3>Membres</h3>
+      <button mat-button class="add-user-btn" (click)="addUser(agency)">
+        <i class="bi bi-plus"></i> Ajouter Membre
+      </button>
+    </div>
+
+    <!-- ... début du template ... -->
+
+    <div class="users-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Nom</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">Rôle</th>
+            <th class="text-center">Statut</th> <!-- Header reste le même -->
+            <th class="actions-header text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loading Indicator -->
+          <tr *ngIf="isLoadingUsers">
+            <td colspan="5" class="loading-state">Chargement des membres...</td>
+          </tr>
+
+          <!-- User Rows -->
+          <ng-container *ngIf="users.length > 0">
+            <!-- No Users Found Row -->
+            <tr *ngIf="!isLoadingUsers && users.length === 0">
+              <td colspan="5" class="no-users">Aucun membre trouvé pour cette agence.</td>
+            </tr>
+            <tr *ngFor="let user of users" [class.editing-row]="editingUserId === user.id">
+
+              <!-- Username Column -->
+              <td class="text-center">
+                <span *ngIf="editingUserId !== user.id">{{ user.username }}</span>
+                <input *ngIf="editingUserId === user.id" type="text" [(ngModel)]="editedUserData.username" class="inline-edit-input" />
+              </td>
+
+              <!-- Email Column -->
+              <td class="text-center">
+                <span *ngIf="editingUserId !== user.id">{{ user.email }}</span>
+                <input *ngIf="editingUserId === user.id" type="email" [(ngModel)]="editedUserData.email" class="inline-edit-input" />
+              </td>
+
+              <!-- Role Column (Read-only) -->
+              <td class="text-center">{{ user.role }}</td>
+
+              <!-- Status Column -->
+              <td class="status-cell text-center">
+                <!-- Display Mode: Badge -->
+                <ng-container *ngIf="editingUserId !== user.id">
+                  <span *ngIf="user.enabled" class="status-badge status-enabled">
+                    <i class="bi bi-check-circle-fill"></i> Activé
+                  </span>
+                  <span *ngIf="!user.enabled" class="status-badge status-disabled">
+                    <i class="bi bi-x-circle-fill"></i> Désactivé
+                  </span>
+                </ng-container>
+
+                <!-- Edit Mode: Toggle Switch -->
+                <div *ngIf="editingUserId === user.id" class="form-check form-switch d-flex justify-content-center align-items-center h-100">
+                  <input class="form-check-input" type="checkbox" role="switch"
+                         id="userStatusSwitch-{{user.id}}"
+                         [(ngModel)]="editedUserData.enabled"
+                         [attr.aria-label]="editedUserData.enabled ? 'Désactiver le membre' : 'Activer le membre'">
+                 
+                </div>
+              </td>
+
+
+              <!-- Actions Column -->
+              <td class="actions text-center">
+                <!-- View/Edit Mode Buttons -->
+                <ng-container *ngIf="editingUserId !== user.id">
+                 <button class="edit-btn" (click)="editUser(user)" title="Modifier" [disabled]="isDeletingUser === user.id">
+                   <i class="bi bi-pencil"></i>
+                 </button>
+                 <button class="delete-btn" (click)="deleteUser(user)" title="Supprimer" [disabled]="isDeletingUser === user.id || !!editingUserId"> <!-- Disable delete also when editing any user -->
+                    <i *ngIf="isDeletingUser !== user.id" class="bi bi-trash"></i>
+                    <span *ngIf="isDeletingUser === user.id" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                 </button>
+               </ng-container>
+
+               <!-- Edit Mode Buttons -->
+               <ng-container *ngIf="editingUserId === user.id">
+                 <!-- **** THIS IS THE IMPORTANT CHANGE **** -->
+                 <button class="save-btn" (click)="saveUser()" title="Enregistrer" [disabled]="isSavingUser">
+                 <!-- **** END OF IMPORTANT CHANGE **** -->
+                   <i *ngIf="!isSavingUser" class="bi bi-check-lg"></i>
+                   <span *ngIf="isSavingUser" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                 </button>
+                 <button class="cancel-btn" (click)="cancelEdit()" title="Annuler" [disabled]="isSavingUser">
+                   <i class="bi bi-x-lg"></i>
+                 </button>
+               </ng-container>
+             </td>
+           </tr>
+
+<!-- ... rest of the template ... -->
+
+
+            
+          </ng-container>
+
+        </tbody>
+      </table>
+    </div>
+
+<!-- ... reste du template ... -->
+
+  </div>
+</div>

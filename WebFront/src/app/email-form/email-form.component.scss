@@ -1,0 +1,38 @@
+
+ .email-form {
+     display: flex;
+     flex-direction: column;
+     height: 100%;
+     padding: 20px;
+   
+     .email-form-header {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       margin-bottom: 20px;
+   
+       h2 {
+         margin: 0;
+         font-size: 1.5em;
+       }
+     }
+   
+     form {
+       display: flex;
+       flex-direction: column;
+       flex-grow: 1;
+       overflow-y: auto; /* Allow form content to scroll */
+     }
+   
+     .full-width {
+       width: 100%;
+     }
+   
+     mat-form-field {
+       margin-bottom: 15px;
+     }
+   
+     textarea {
+       flex-grow: 1; /* Make textarea take remaining vertical space */
+       min-height: 15
+     }}

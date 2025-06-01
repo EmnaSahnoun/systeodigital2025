@@ -1,0 +1,70 @@
+<div class="form-container client-form-card">
+  <h2 class="form-header">Ajouter un Nouveau Client</h2>
+ <form [formGroup]="clientForm" (ngSubmit)="saveClient()" novalidate>
+      <div class="form-grid">
+      <!-- Nom du Client -->
+      <div class="form-field">
+        <label for="clientName">Nom du Client <span class="required-asterisk">*</span></label>
+        <input type="text" id="clientName" formControlName="name" placeholder="Ex: Jean Dupont"
+               [ngClass]="{ 'input-error': name?.invalid && (name?.dirty || name?.touched) }">
+        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="error-message">
+          <div *ngIf="name?.hasError('required')">Le nom du client est requis.</div>
+          <div *ngIf="name?.hasError('minlength')">Le nom doit contenir au moins 3 caractères.</div>
+      
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-field">
+        <label for="clientEmail">Email <span class="required-asterisk">*</span></label>
+       <input type="email" id="clientEmail" formControlName="email" placeholder="Ex: jean.dupont@example.com"
+               [ngClass]="{ 'input-error': email?.invalid && (email?.dirty || email?.touched) }">
+        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
+          <div *ngIf="email?.hasError('required')">L'email est requis.</div>
+          <div *ngIf="email?.hasError('email')">Veuillez saisir une adresse email valide.</div>
+           </div>
+      </div>
+
+      <!-- Téléphone -->
+      <div class="form-field">
+        <label for="clientPhone">Téléphone <span class="required-asterisk">*</span></label>
+        <input type="tel" id="clientPhone" formControlName="phone" placeholder="Ex: 0612345678"
+               [ngClass]="{ 'input-error': phone?.invalid && (phone?.dirty || phone?.touched) }">
+        <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="error-message">
+          <div *ngIf="phone?.hasError('required')">Le numéro de téléphone est requis.</div>
+          <div *ngIf="phone?.hasError('pattern')">Veuillez saisir un numéro de téléphone valide (chiffres uniquement).</div>
+       
+        </div>
+      </div>
+
+      
+
+      <!-- Adresse -->
+      <div class="form-field form-field-full-width">
+        <label for="clientAddress">Adresse <span class="required-asterisk">*</span></label>
+       <textarea id="clientAddress" formControlName="address" rows="3" placeholder="123 Rue de l'Exemple, Ville"
+                  [ngClass]="{ 'input-error': address?.invalid && (address?.dirty || address?.touched) }"></textarea>
+        <div *ngIf="address?.invalid && (address?.dirty || address?.touched)" class="error-message">
+          <div *ngIf="address?.hasError('required')">L'adresse est requise.</div>
+     
+        </div>
+      </div>
+
+      
+    </div>
+<!-- Affichage des erreurs générales -->
+    <div *ngIf="errorMessage" class="error-message general-error-display">
+      {{ errorMessage }}
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-cancel" (click)="cancel()" [disabled]="isLoading">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-submit" [disabled]="clientForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Ajouter le Client</span>
+        <span *ngIf="isLoading">Enregistrement...</span>
+ 
+      </button>
+    </div>
+  </form>
+</div>

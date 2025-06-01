@@ -1,0 +1,17 @@
+<mat-sidenav-container class="sidenav-container" *ngIf="showSidebar">
+    <!-- Sidebar -->
+    <mat-sidenav mode="side" opened class="sidenav">
+      <app-sidebar></app-sidebar> 
+    </mat-sidenav>
+  
+    <!-- Contenu principal -->
+    <mat-sidenav-content class="content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
+  <!-- Affichage du login/signup sans sidebar -->
+  <div *ngIf="!showSidebar">
+    <router-outlet></router-outlet>
+  </div>
+  

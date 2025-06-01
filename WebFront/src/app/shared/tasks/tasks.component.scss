@@ -1,0 +1,481 @@
+// --- Global Variables & Theme ---
+$primary-color: #41B3A3; // Tealish green
+$accent-color: #E27D60;  // Coral
+$warn-color: #F44336;    // Red for delete/errors
+$success-color: #4CAF50; // Green for save/add actions
+$cancel-color: #6c757d;  // Grey for cancel
+
+$text-color-primary: #2c3e50; // Darker, more neutral primary text
+$text-color-secondary: #7f8c8d; // Softer secondary text
+$text-color-light: #ffffff;
+$text-color-placeholder: #bdc3c7;
+
+$background-color: #f4f7f9; // Lighter, cleaner background
+$container-background: #ffffff;
+$column-background: #edf2f5; // Slightly different background for columns
+$card-background: #ffffff;
+
+$border-color: #e0e5e9; // Softer border
+$border-color-light: #f0f3f5;
+
+$border-radius-sm: 4px;
+$border-radius: 8px;
+$border-radius-lg: 12px;
+$border-radius-pill: 50px;
+
+// Refined Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 5px 10px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.08);
+
+$font-family-base: 'Poppins', sans-serif;
+$font-size-base: 1rem;
+$font-size-sm: 0.875rem;
+$font-size-xs: 0.75rem;
+
+$line-height-base: 1.6;
+$spacing-unit: 8px;
+$transition-base: all 0.25s ease-in-out;
+
+// Priority Specific Colors (using existing logic, but ensuring consistency)
+$priority-high-color: #E74C3C; // Stronger Red
+$priority-medium-color: #F39C12; // Clear Orange
+$priority-low-color: #3498DB;   // Calming Blue
+
+$priority-high-bg: lighten($priority-high-color, 38%); // Adjusted lightness
+$priority-medium-bg: lighten($priority-medium-color, 40%); // Adjusted lightness
+$priority-low-bg: lighten($priority-low-color, 40%); // Adjusted lightness
+
+
+// --- Base Container ---
+.task-board-container {
+  padding: $spacing-unit * 3; // 24px
+  font-family: $font-family-base;
+  background-color: $background-color;
+  min-height: calc(100vh - 64px); // Adjust if header height changes
+  overflow-y: auto; // Keep scroll for the whole board if content overflows
+}
+
+// --- Header Section ---
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-unit * 3.5; // 28px
+  gap: $spacing-unit * 2;
+
+  .header-content { // Wrapper for title and description if needed
+    flex-grow: 1;
+  }
+
+  h2 {
+    margin: 0 0 ($spacing-unit * 0.5) 0;
+    color: $text-color-primary;
+    font-size: 1.75rem; // Larger title
+    font-weight: 600;
+  }
+
+  .phase-description,
+  .phase-dates {
+    margin: ($spacing-unit * 0.5) 0;
+    color: $text-color-secondary;
+    font-size: $font-size-sm;
+    font-style: italic;
+  }
+  .phase-dates {
+    font-style: normal;
+  }
+}
+
+// --- Phase Navigation ---
+.phase-navigation {
+  margin-bottom: $spacing-unit * 3; // 24px
+  padding: $spacing-unit * 2.5; // 20px
+  background: $container-background;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: $spacing-unit * 2;
+    color: $text-color-primary;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}
+
+.phase-buttons {
+  display: flex;
+  gap: $spacing-unit * 1.5; // 12px
+  flex-wrap: wrap;
+
+  button {
+    padding: ($spacing-unit) ($spacing-unit * 2.5); // 8px 20px
+    border: 1px solid $border-color;
+    border-radius: $border-radius-pill;
+    background: transparent;
+    color: $text-color-secondary;
+    font-weight: 500;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    transition: $transition-base;
+
+    &:hover {
+      background: lighten($primary-color, 45%);
+      border-color: lighten($primary-color, 30%);
+      color: $primary-color;
+    }
+
+    &.active {
+      background: $accent-color;
+      color: $text-color-light;
+      border-color: $accent-color;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(darken($accent-color, 10%), 0.2);
+    }
+  }
+}
+
+// --- Action Buttons (Back, Add Task) ---
+%button-base {
+  cursor: pointer;
+  border-radius: $border-radius;
+  font-weight: 600;
+  min-height: 40px;
+  padding: 0 $spacing-unit * 2; // 16px
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-unit * 0.75; // 6px
+  transition: $transition-base;
+  box-shadow: $shadow-sm;
+  font-size: $font-size-sm;
+
+  i.bi { // Bootstrap Icons example
+    font-size: 1.1em; // Relative to button font size
+  }
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0px);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.back-btn {
+  @extend %button-base;
+  background-color: $text-color-secondary; // More neutral back button
+  color: $text-color-light;
+  border-radius: $border-radius-pill; // Pill shape for back button
+
+  &:hover {
+    background-color: darken($text-color-secondary, 10%);
+  }
+}
+
+.add-task-btn {
+  @extend %button-base;
+  background-color: $primary-color;
+  color: $text-color-light;
+  margin-left: auto; // Keep it aligned to the right
+
+  &:hover {
+    background-color: darken($primary-color, 8%);
+  }
+  i { // Specific icon styling if needed, already covered by %button-base
+    margin-right: $spacing-unit * 0.5; // Keep if specific margin is desired
+  }
+}
+
+// --- Board Description ---
+.board-description {
+  background: $container-background;
+  padding: $spacing-unit * 2.5; // 20px
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-unit * 3; // 24px
+  box-shadow: $shadow-sm;
+  color: $text-color-secondary;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+
+  p {
+    margin: 0;
+    &:not(:last-child) {
+      margin-bottom: $spacing-unit;
+    }
+  }
+}
+
+// --- Task Columns Layout ---
+.task-columns {
+  display: grid;
+  gap: $spacing-unit * 2.5; // 20px
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); // Slightly wider min
+  align-items: flex-start;
+}
+
+// --- Individual Task Column ---
+.task-column {
+  background-color: $column-background;
+  border-radius: $border-radius-lg; // Consistent larger radius
+  padding: $spacing-unit * 2; // 16px
+  box-shadow: none; // Remove individual shadow, rely on card shadows or overall board
+  border: 1px solid $border-color-light;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px; // Ensure it doesn't get too squeezed
+  max-height: calc(100vh - 200px); // Example max height, adjust as needed
+  overflow: hidden; // Important for child scrolling
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: $spacing-unit * 2;
+    padding: $spacing-unit * 1.5 $spacing-unit * 1.75; // Added horizontal padding
+   
+    color: $text-color-primary;
+    font-size: 1.15rem; // Slightly larger column title
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // If you add task count here
+  background-color: lighten($primary-color, 47%); // Light background for title
+    border-radius: $border-radius-sm $border-radius-sm 0 0; // Rounded top corners
+    border-bottom: 1px solid darken(lighten($primary-color, 47%), 5%); // Subtle bottom border for definition
+    margin-left: -$spacing-unit * 2; // Adjust to align with column padding
+    margin-right: -$spacing-unit * 2; // Adjust to align with column padding
+    margin-top: -$spacing-unit *2; // Adjust to align with column padding
+  }
+}
+
+.task-list {
+  flex-grow: 1; // Allow list to take available space
+  min-height: 150px; // Minimum interaction area
+  padding: $spacing-unit * 0.5; // Small padding around the list itself
+  margin: 0 (-$spacing-unit * 0.5); // Negative margin to align cards with column padding
+  overflow-y: auto; // Enable scrolling within the list
+
+  // Custom scrollbar for a cleaner look
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: darken($border-color, 10%);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent; // Or lighten($column-background, 2%)
+  }
+}
+
+// --- Task Card ---
+.task-card {
+  background: $card-background;
+  border-radius: $border-radius;
+  padding: $spacing-unit * 1.75 $spacing-unit * 2; // 14px 16px
+  margin-bottom: $spacing-unit * 1.5; // 12px
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-color-light;
+  border-left-width: 4px; // Thicker priority border
+  border-left-style: solid;
+  border-left-color: transparent; // Default, overridden by priority
+  cursor: move;
+  display: flex;
+  flex-direction: column; // Stack content and footer/actions
+  gap: $spacing-unit; // Space between content and footer (if any)
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.15s ease-out;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    border-color: darken($border-color-light, 5%);
+    transform: translateY(-2px);
+  }
+
+  // Priority border colors
+  &.high { border-left-color: $priority-high-color; }
+  &.medium { border-left-color: $priority-medium-color; }
+  &.low { border-left-color: $priority-low-color; }
+
+  .task-main-content { // Wrapper for header and any description preview
+    flex-grow: 1;
+  }
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; // Align title and priority badge nicely
+    margin-bottom: $spacing-unit * 0.75; // 6px
+
+    h4 { // Task Title
+      margin: 0;
+      font-size: 1rem; // Clearer title size
+      font-weight: 600;
+      color: $text-color-primary;
+      line-height: 1.4;
+      overflow-wrap: break-word; // Prevent long titles from breaking layout
+      padding-right: $spacing-unit; // Space for priority badge if inline
+    }
+  }
+
+  .task-priority {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    padding: ($spacing-unit * 0.4) ($spacing-unit * 1.25); // 3.2px 10px
+    border-radius: $border-radius-pill;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid transparent;
+    white-space: nowrap; // Prevent badge text from wrapping
+    align-self: flex-start; // Align to top if flex direction changes
+
+    &.high {
+      background-color: $priority-high-bg;
+      color: darken($priority-high-color, 15%);
+      border-color: darken($priority-high-color, 5%);
+    }
+    &.medium {
+      background-color: $priority-medium-bg;
+      color: darken($priority-medium-color, 15%);
+      border-color: darken($priority-medium-color, 5%);
+    }
+    &.low {
+      background-color: $priority-low-bg;
+      color: darken($priority-low-color, 15%);
+      border-color: darken($priority-low-color, 5%);
+    }
+  }
+
+  .task-footer { // Optional: for due dates, assignees, or actions
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-unit; // Add space if there's content above
+    padding-top: $spacing-unit;
+    border-top: 1px solid $border-color-light; // Subtle separator
+  }
+
+  .task-meta-info { // For assignee, due date etc.
+    font-size: $font-size-xs;
+    color: $text-color-secondary;
+    // Add styling for avatar, date icon etc.
+  }
+
+  .task-actions {
+    display: flex;
+    gap: $spacing-unit * 0.5; // 4px
+
+    button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: $spacing-unit * 0.5; // 4px
+      border-radius: 50%;
+      width: 30px; // Consistent size
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $text-color-secondary;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      i.bi {
+        font-size: 1rem; // 16px icons
+      }
+
+      &:hover {
+        background-color: lighten($primary-color, 45%);
+        color: $primary-color;
+      }
+
+      &.delete-action { // Specific class for delete button
+        &:hover {
+          background-color: lighten($warn-color, 35%);
+          color: $warn-color;
+        }
+        i.bi { color: $warn-color; } // Default icon color for delete
+        &:hover i.bi { color: darken($warn-color, 5%); }
+      }
+    }
+  }
+}
+
+// --- Drag and Drop Styles ---
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  background-color: lighten($primary-color, 40%);
+  border: 2px dashed $primary-color;
+  border-radius: $border-radius;
+  box-shadow: none;
+  .task-card-content-placeholder { // If you have inner elements you want to hide/style
+    visibility: hidden;
+  }
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  box-shadow: $shadow-lg; // Elevate card when dragging
+}
+
+.task-list.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// --- Responsive Adjustments ---
+@media (max-width: 992px) { // Tablet and below
+  .task-columns {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); // Adjust minmax for tablets
+  }
+}
+
+@media (max-width: 768px) { // Mobile
+  .task-board-container {
+    padding: $spacing-unit * 2; // 16px
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-unit * 1.5; // 12px
+    margin-bottom: $spacing-unit * 2.5; // 20px
+
+    .add-task-btn {
+      width: 100%; // Full width on mobile
+      margin-left: 0;
+    }
+  }
+  .phase-navigation {
+    padding: $spacing-unit * 2;
+    h3 { font-size: 1.1rem; }
+  }
+  .phase-buttons button {
+    padding: ($spacing-unit * 0.75) ($spacing-unit * 2);
+  }
+
+  .task-columns {
+    // Already handled by auto-fill, but could force single column if desired:
+    // grid-template-columns: 1fr;
+    gap: $spacing-unit * 2; // 16px
+  }
+  .task-column {
+    padding: $spacing-unit * 1.5; // 12px
+    max-height: none; // Allow columns to grow on mobile
+    overflow-y: visible; // Let page scroll handle it
+  }
+  .task-list {
+    overflow-y: visible; // Let page scroll handle it
+    min-height: auto;
+  }
+}
+
+@media (max-width: 480px) { // Smaller mobile screens
+  .task-card {
+    padding: $spacing-unit * 1.5 $spacing-unit * 1.75; // 12px 14px
+  }
+  .task-header h4 {
+    font-size: 0.95rem;
+  }
+}
+

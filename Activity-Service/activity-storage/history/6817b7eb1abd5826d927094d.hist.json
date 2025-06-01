@@ -1,0 +1,34 @@
+[ {
+  "id" : "05e972e0-dbf1-4339-baf4-5582c58e54d7",
+  "taskId" : "6817b7eb1abd5826d927094d",
+  "subTaskId" : null,
+  "idUser" : null,
+  "username" : null,
+  "action" : "UPDATE",
+  "fieldChanged" : "description",
+  "oldValue" : "",
+  "newValue" : "Montage des pièces graphiques et administratives",
+  "createdAt" : "2025-05-12T04:37:55.9074488"
+}, {
+  "id" : "a64331f5-0e0f-4b1d-9ed5-82e1c37629d0",
+  "taskId" : "6817b7eb1abd5826d927094d",
+  "subTaskId" : null,
+  "idUser" : null,
+  "username" : null,
+  "action" : "UPDATE",
+  "fieldChanged" : "StartDate",
+  "oldValue" : "Mon Jan 02 01:00:00 CET 2023",
+  "newValue" : "Mon Jan 02 01:00:00 CET 2023",
+  "createdAt" : "2025-05-12T04:37:55.908397"
+}, {
+  "id" : "7f77c9dd-cc5d-4545-be94-4277ca6d8675",
+  "taskId" : "6817b7eb1abd5826d927094d",
+  "subTaskId" : null,
+  "idUser" : null,
+  "username" : null,
+  "action" : "UPDATE",
+  "fieldChanged" : "EndDate",
+  "oldValue" : "Tue Jan 10 01:00:00 CET 2023",
+  "newValue" : "Tue Jan 10 01:00:00 CET 2023",
+  "createdAt" : "2025-05-12T04:37:55.9254315"
+} ]

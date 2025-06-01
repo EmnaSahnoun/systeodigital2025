@@ -1,0 +1,56 @@
+<div class="invitation-container"> <!-- Utiliser une classe spécifique -->
+    <app-header [title]="'Mes Invitations'"></app-header>
+
+    <!-- Header Section (Simplifié) -->
+    <div class="invitation-header"> <!-- Utiliser une classe spécifique -->
+      <!-- Optionnel: Ajouter une barre de recherche si nécessaire -->
+      <!-- <div class="search-container"> ... </div> -->
+      <h3>Invitations en attente</h3>
+    </div>
+
+    <!-- Zone d'affichage des invitations -->
+    <div class="invitation-display"> <!-- Utiliser une classe spécifique -->
+      <!-- Table View -->
+      <div class="invitation-table-card"> <!-- Utiliser une classe spécifique -->
+        <table class="data-table"> <!-- Réutiliser la classe de style -->
+          <thead>
+            <tr>
+              <th>Nom du Projet</th>
+              <th>Date d'invitation</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Afficher les invitations filtrées -->
+            <tr *ngFor="let invitation of invitations">
+              <!-- Nom du Projet -->
+              <td>
+                 {{ invitation.projectName }}
+              </td>
+              <!-- Date d'invitation -->
+              <td>
+                {{ invitation.invitationDate | date:'dd/MM/yyyy HH:mm' }}
+              </td>
+              <!-- Actions Column -->
+               <td class="actions">
+                <button class="action-btn accept-btn" (click)="acceptInvitation(invitation)" matTooltip="Accepter l'invitation" [disabled]="isLoading">   <i class="bi bi-check-circle-fill"></i> Accepter
+                 </button>
+                 <button class="action-btn refuse-btn" (click)="refuseInvitation(invitation)" matTooltip="Refuser l'invitation" [disabled]="isLoading">
+                  <i class="bi bi-x-circle-fill"></i> Refuser
+                 </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+         <!-- Indicateur de chargement -->
+         <div *ngIf="isLoading" class="loading-indicator">
+          <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+        </div>
+        <!-- Message si aucune invitation -->
+        <div *ngIf="!isLoading && (!invitations || invitations.length === 0)" class="empty-state">
+          Vous n'avez aucune invitation en attente.
+        </div>
+        
+      </div>
+    </div>
+  </div>

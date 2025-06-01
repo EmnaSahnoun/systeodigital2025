@@ -1,0 +1,559 @@
+// --- Import or Define Variables (Copy from dashboard.component.scss or use a shared variables file) ---
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825; // Added for potential status use
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// --- General Project Container (Adopted from .dashboard-container) ---
+.project-container {
+  font-family: 'Poppins', sans-serif;
+  padding: 24px;
+  background-color: $background-color;
+  color: $text-color-primary;
+  min-height: calc(110vh - 64px); // Adjust 64px based on your header height
+}
+
+// --- Project Header (Adapted from .section-header) ---
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; // Allow wrapping on smaller screens
+  gap: 16px; // Spacing between elements
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: $container-background;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-grow: 1; // Take available space
+    min-width: 250px; // Minimum width for search
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: $text-color-secondary;
+      font-size: 18px; // Mat icon size
+    }
+
+    input {
+      padding: 10px 15px 10px 40px; // Adjust padding for icon
+      border: 1px solid $border-color;
+      border-radius: 8px;
+      min-height: 40px;
+      width: 100%;
+      font-size: 14px;
+      background-color: lighten($background-color, 2%); // Slightly lighter background
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+    }
+  }
+
+  .actions-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; // Allow wrapping within actions too
+    gap: 12px;
+
+    .filter-button, .view-mode button, .add-project-button {
+      // Common button styles
+      border: none;
+      border-radius: 8px;
+      padding: 0 16px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+      mat-icon, i { // Target both mat-icon and i
+        margin-right: 6px;
+        font-size: 18px; // Consistent icon size
+      }
+
+      &:hover:not(:disabled) {
+         box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      }
+      &:active:not(:disabled) {
+         transform: translateY(1px);
+      }
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    // Specific button styles
+    .filter-button {
+      background-color: lighten($accent-color, 35%); // Lighter accent for filter
+      color: darken($accent-color, 15%);
+      &:hover:not(:disabled) {
+        background-color: lighten($accent-color, 30%);
+      }
+    }
+
+    .view-mode {
+      display: flex;
+      gap: 8px;
+      button {
+        background-color: $container-background;
+        color: $text-color-secondary;
+        border: 1px solid $border-color;
+        padding: 0 12px; // Slightly less padding for icon-only buttons potentially
+        min-width: 40px; // Ensure square-ish shape
+        box-shadow: none;
+
+        mat-icon, i { margin-right: 0; } // No margin if only icon
+
+        &.active {
+          background-color: rgba($primary-color, 0.1);
+          color: $primary-color;
+          border-color: rgba($primary-color, 0.3);
+        }
+        &:hover:not(.active):not(:disabled) {
+          background-color: $background-color;
+        }
+      }
+    }
+
+    .add-project-button {
+      background-color: $primary-color;
+      color: $text-color-light;
+      font-weight: 600; // Make add button stand out
+      &:hover:not(:disabled) {
+        background-color: darken($primary-color, 8%);
+      }
+    }
+  }
+}
+
+// --- Project Display Area ---
+.project-display {
+  margin-top: 24px; // Space below header
+}
+
+// --- Table View (Adopted from .data-table) ---
+.project-table-card { // Wrap table in a card for consistent styling
+  background-color: $container-background;
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+  overflow: hidden; // Important for table border radius
+
+  .data-table { // Apply dashboard table styles
+    width: 100%;
+    box-shadow: none; // Remove default mat-table shadow if used
+    border-collapse: collapse; // Ensure borders work correctly
+
+    th.mat-header-cell, th { // Target both mat-header-cell and plain th
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-color-secondary;
+      background-color: lighten($background-color, 2%); // Slight background for header
+      border-bottom: 2px solid $border-color;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left; // Default align left
+      padding: 14px 16px;
+      vertical-align: middle;
+      &:not(:first-child):not(:last-child) { text-align: center; } // Center intermediate columns
+      &:last-child { text-align: right; } // Align last column right
+    }
+
+    td.mat-cell, td { // Target both mat-cell and plain td
+      padding: 14px 16px;
+      border-bottom: 1px solid $border-color;
+      font-size: 14px;
+      color: $text-color-primary;
+      text-align: left; // Default align left
+      vertical-align: middle;
+      &:not(:first-child):not(:last-child) { text-align: center; } // Center intermediate columns
+      &:last-child { text-align: right; } // Align last column right (e.g., for actions if added)
+    }
+
+    tr.mat-row, tr { // Target both mat-row and plain tr
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      &:hover {
+        background-color: $background-color;
+      }
+      &:last-child {
+        td.mat-cell, td { border-bottom: none; }
+      }
+    }
+
+    // Style for the members button in the table
+    .members-action-button {
+      background-color: transparent;
+      border: none;
+      color: $primary-color;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px / 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      mat-icon { font-size: 18px; }
+      span { font-size: 13px; font-weight: 500; }
+
+      &:hover {
+        background-color: rgba($primary-color, 0.1);
+      }
+    }
+ }
+}
+
+// --- Card View ---
+.project-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // Affiche 3 cartes par ligne
+ 
+  gap: 20px;
+
+  .project-card { // Style individual cards like section-card
+    background-color: $container-background;
+    border-radius: 8px;
+    box-shadow: $card-shadow;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        color: $text-color-primary;
+        margin-right: 10px; // Ajoute un peu d'espace si le titre est long
+        flex-grow: 1;
+      }
+      .card-header-actions {
+        display: flex;
+        align-items: center; // Aligne la date et le bouton verticalement
+        gap: 8px; // Espace entre la date et le bouton de suppression
+
+        .card-creation-date {
+          font-size: 0.75em;
+          color: $text-color-secondary;
+          white-space: nowrap; // Empêche la date de passer à la ligne
+        }
+
+        .delete-btn-card {
+          // Styles similaires aux boutons d'action de la liste
+           background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 8px;
+          transition: background-color 0.2s ease, color 0.2s ease;
+
+          // --- Application de la couleur compatible ---
+          color: $warn-color; // Utilise la couleur d'avertissement (rouge)
+
+          i.bi-trash {
+            font-size: 16px;
+          }
+
+          &:hover {
+            background-color: rgba($warn-color, 0.1); // Fond léger avec la couleur d'avertissement au survol
+            color: darken($warn-color, 10%); // Assombrit légèrement l'icône au survol
+          }}}
+      .card-dates {
+        font-size: 12px;
+        color: $text-color-secondary;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .card-creation-date { // Style pour la date de création en haut à droite
+      font-size: 0.75em;
+      color: $text-color-secondary;
+    }
+    }
+
+    .card-body {
+      flex-grow: 1; // Push footer down if needed
+      font-size: 13px;
+      color: $text-color-secondary;
+
+      .progress-bar-container {
+        margin-bottom: 10px;
+        background-color: $background-color;
+        border-radius: 4px;
+        height: 8px;
+        overflow: hidden;
+        .progress-bar-fill {
+          height: 100%;
+          background-color: $pending-color; // Use theme color
+          border-radius: 4px;
+          transition: width 0.3s ease;
+        }
+      }
+      .card-status { margin-bottom: 10px; }
+      .card-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 0.85em; // Taille de police légèrement réduite pour les détails
+      border-bottom: 1px solid lighten($border-color, 5%);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .info-label {
+        display: flex;
+        align-items: center;
+        color: $text-color-primary;
+        font-weight: 600;
+        font-size: 1.3em;
+        mat-icon {
+          font-size: 18px; // Taille des icônes dans les lignes d'info
+          margin-right: 8px;
+          color: $primary-color; // Couleur des icônes
+        }
+      }
+
+      .info-value {
+        color: $text-color-primary;
+        text-align: right;
+
+        &.status-badge {
+          padding: 3px 8px;
+          border-radius: $border-radius / 2;
+          font-size: 0.8em;
+          font-weight: 500;
+          color: $text-color-light;
+          // Styles spécifiques par statut (à adapter selon vos statuts)
+          &.status-en_cours { background-color: $primary-color; }
+          &.status-terminé { background-color: $success-color; }
+          &.status-en_attente { background-color: $pending-color; }
+          &.status-annulé { background-color: $warn-color; }
+          // Ajoutez d'autres statuts si nécessaire
+        }
+      }
+    } .progress-bar-container { // Styles existants, juste pour le contexte
+      margin-top: 8px; // Un peu d'espace après les infos et avant la barre
+      // ...
+    }}
+
+    .card-footer {
+      .members-list {
+      display: flex;
+      align-items: center;
+      margin-top: 10px; // Espace avant la liste des membres
+      .info-label { // Style pour le label "Membres:"
+        display: flex;
+        align-items: center;
+        color: $text-color-secondary;
+        font-weight: 500;
+        font-size: 0.85em;
+        margin-right: 8px;
+        mat-icon {
+          font-size: 16px;
+          margin-right: 6px;
+          color: $primary-color;
+        }
+      }
+      .members-action-button-card { // Style pour le bouton d'action des membres dans la carte
+        background: transparent;
+        border: none;
+        color: $pending-color;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px; // Espace après les avatars
+        transition: background-color 0.2s ease;
+        &:hover {
+          background-color: rgba($primary-color, 0.1);
+        }
+        mat-icon {
+          font-size: 20px;
+        }}}
+      margin-top: 15px;
+      .members-list img { // Reuse table cell style
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: -8px;
+        border: 2px solid $container-background;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+// --- Responsive Adjustments ---
+@media (max-width: 768px) {
+  .project-header {
+    flex-direction: column;
+    align-items: stretch; // Stretch items like search bar
+
+    .actions-container {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+
+      .filter-button, .add-project-button {
+        width: 100%; // Make buttons full width
+      }
+      .view-mode {
+        justify-content: center; // Center view mode buttons
+      }
+    }
+  }
+
+  .project-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); // Pour les petits écrans, on garde le mode auto-fill
+    // Si vous voulez 2 cartes sur tablette et 1 sur mobile, vous pouvez ajouter des media queries spécifiques :
+    // @media (max-width: 992px) { grid-template-columns: repeat(2, 1fr); }
+    // @media (max-width: 576px) { grid-template-columns: 1fr; }
+
+  }
+}
+.members-action-button {
+  background-color: transparent;
+  border: none;
+  color: $primary-color; // Utilise la variable de couleur primaire définie
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px / 2; // Utilise la variable de border-radius
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  mat-icon { font-size: 18px; }
+  span { font-size: 13px; font-weight: 500; }
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1); // Léger fond au survol
+  }
+}
+// In projects.component.scss
+
+.inline-edit-input {
+  width: 90%; // Adjust as needed
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; // Include padding and border in the element's total width and height
+}
+
+// Style the row being edited (optional)
+tr.editing-row {
+  background-color: #f0f8ff; // Example: light blue background
+  
+}
+
+// Ensure action buttons have consistent size/alignment
+.actions {
+  button {
+    margin: 0 4px; // Add some spacing between buttons
+    min-width: 30px; // Ensure buttons have a minimum width
+    
+    border: none; 
+    background: none; 
+    cursor: pointer;
+          font-size: 1.2rem; 
+          padding: 6px; 
+          border-radius: 50%;
+          width: 34px; height: 34px; display: inline-flex;
+          align-items: center; justify-content: center;
+          margin-left: 5px; transition: all 0.2s ease;
+          vertical-align: middle;
+    &.delete-btn { color: #F44336; &:hover:not(:disabled) { background-color: rgba(#F44336, 0.1); } }
+          
+  }
+  .spinner-border-sm {
+    width: 1em;
+    height: 1em;
+    border-width: .2em;
+  }
+}
+
+// Style for save/cancel buttons (similar to edit/delete)
+.save-btn {
+  color: var(--success-color, #28a745); // Use CSS variables or fallback
+  background: none;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    color: darken(#28a745, 10%);
+  }
+  &:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-btn {
+  color: var(--secondary-color, #6c757d); // Use CSS variables or fallback
+  background: none;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    color: darken(#6c757d, 10%);
+  }
+   &:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+// You might already have styles for edit-btn and delete-btn
+.edit-btn {
+  color: var(--primary-color, #007bff);
+  // ... other styles
+}
+
+.delete-btn {
+   color: var(--danger-color, #dc3545);
+   // ... other styles
+}

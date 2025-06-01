@@ -1,0 +1,22 @@
+<!-- header.component.html -->
+<div class="user-header">
+    <h1>{{ title }}</h1>
+    <!-- User Info Section -->
+    <div class="user-info">
+        <span class="user-name">{{username}}</span>
+        <i class="bi bi-chat-dots icon"></i>
+        <!-- Notification icon - click to toggle dropdown -->
+        <i class="bi bi-bell icon" ></i>
+
+        <!-- Notification Dropdown -->
+        <div *ngIf="showNotifications" class="notification-dropdown">
+            <h3>Notifications</h3>
+            <div *ngIf="notifications.length > 0; else noNotifications">
+                <ul>
+                    <li *ngFor="let notification of notifications">{{ notification.message }}</li>
+                </ul>
+            </div>
+            <ng-template #noNotifications><p>No new notifications.</p></ng-template>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="dashboard-container">
+  <!-- En-tête (supposant que app-header existe et est approprié) -->
+  <app-header [title]="'Tableau de bord Super Admin'"></app-header>
+
+  <!-- Section Résumé des Statistiques -->
+  <div class="stats-header">
+    <h2>Statistiques Générales</h2>
+    <!-- Optionnel: Bouton pour ajouter une agence si pertinent ici -->
+    <button mat-flat-button class="add-agency-button" (click)="addNewAgency()">
+      <mat-icon>add_business</mat-icon> <!-- Icône pour ajouter une agence -->
+      <span>Nouvelle Agence</span>
+    </button>
+  </div>
+
+  <div class="stats-cards-grid">
+    <!-- Carte Nombre d'Agences -->
+    <mat-card class="stat-card agencies">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-container">
+          <mat-icon>business</mat-icon> <!-- Icône Material pour agences -->
+        </div>
+        <mat-card-title>{{ agencyCount }}</mat-card-title> <!-- Remplacer par variable dynamique -->
+        <mat-card-subtitle>Agences Actives</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <!-- Carte Nombre de Projets -->
+    <mat-card class="stat-card projects">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-container">
+          <mat-icon>folder_special</mat-icon> <!-- Icône Material pour projets -->
+        </div>
+        <mat-card-title>{{ projectCount }}</mat-card-title> <!-- Remplacer par variable dynamique -->
+        <mat-card-subtitle>Projets Total</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <!-- Carte Nombre d'Utilisateurs -->
+    <mat-card class="stat-card users">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-container">
+          <mat-icon>group</mat-icon> <!-- Icône Material pour utilisateurs -->
+        </div>
+        <mat-card-title>{{ userCount }}</mat-card-title> <!-- Remplacer par variable dynamique -->
+        <mat-card-subtitle>Membres Enregistrés</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
+
+  <!-- Section Activité (Graphique + Stats Détaillées) -->
+  <mat-card class="activity-section"> <!-- Utilise la classe de dashboard.scss -->
+    <mat-card-header>
+      <mat-card-title>Activité Récente</mat-card-title>
+      <mat-card-subtitle>Vue d'ensemble et statistiques clés</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="activity-content">
+        <div class="chart-container">
+          <!-- ID unique pour ce graphique -->
+          <canvas id="superAdminTaskChart"></canvas>
+        </div>
+        <div class="activity-stats">
+          <div class="stat-item">
+            <mat-icon>event_available</mat-icon>
+            <span class="stat-value">{{ totalTasks }}</span> <!-- Variable dynamique -->
+            <span class="stat-label">Tâches Totales</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>how_to_reg</mat-icon> <!-- Icône différente pour membres actifs -->
+            <span class="stat-value">{{ activeMembers }}</span> <!-- Variable dynamique -->
+            <span class="stat-label">Membres Actifs</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>trending_up</mat-icon> <!-- Icône pour projets actifs/tendances -->
+            <span class="stat-value">{{ activeProjects }}</span> <!-- Variable dynamique -->
+            <span class="stat-label">Projets Actifs</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+ 
+
+</div>

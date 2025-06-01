@@ -1,0 +1,252 @@
+// Color Palette
+$primary-color: #007bff;
+$secondary-color: #2c3e50;
+$light-gray-bg: #f9f9f9;
+$medium-gray-border: #e0e0e0;
+$dark-text-color: #333;
+$text-color: #555;
+$text-muted-color: #777;
+$unread-bg-color: #eef7ff;
+$hover-bg-color: #f5f5f5;
+$item-border-color: #f0f0f0;
+$box-shadow-color: rgba(0, 0, 0, 0.1);
+$error-color: #dc3545; // Example error color
+
+// Spacing
+$spacing-unit: 5px; // Base unit for margins/paddings if needed
+$padding-large: 20px;
+$padding-medium: 15px;
+$padding-small: 10px;
+$margin-large: 20px;
+
+// Font
+$font-size-base: 16px;
+$font-size-large: 24px;
+$font-size-small: 0.95em;
+$font-size-xsmall: 0.85em;
+$font-size-xxsmall: 0.75em;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: bold;
+
+// Header (adjust if you have a global variable for this)
+$header-height: 64px;
+
+
+.emails-page-container {
+   padding: $padding-large;
+  background-color: $light-gray-bg;
+  min-height: calc(100vh - #{$header-height});
+}
+
+.emails-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $margin-large;
+  padding-bottom: $padding-medium;
+  border-bottom: 1px solid $medium-gray-border;
+
+  h1 {
+    margin: 0;
+    font-size: $font-size-large;
+    color: $dark-text-color;
+  }
+}
+
+// Styles pour la navigation des onglets personnalisés
+.custom-tabs-nav {
+  display: flex;
+   border-bottom: 2px solid $medium-gray-border; // Variable used
+  margin-bottom: $margin-large;
+}
+.custom-tab-button {
+   padding: $padding-small $padding-large;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $text-color;
+  margin-right: $spacing-unit; // Espace entre les boutons
+  border-bottom: 3px solid transparent; // Pour l'indicateur actif
+  transition: color 0.3s ease, border-bottom-color 0.3s ease;
+
+  &:hover {
+    color: $primary-color;
+  }
+
+  &.active {
+   color: $primary-color;
+    border-bottom-color: $primary-color;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.email-list-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px $box-shadow-color;
+  overflow: hidden;
+}
+
+.email-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+   padding: $padding-medium $padding-large;
+    border-bottom: 1px solid $item-border-color;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+ display: flex; // Added for layout control
+    align-items: center; // Vertically center content and button
+    justify-content: space-between; // Push button to the end
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+     background-color: $hover-bg-color;
+    }
+&.selected {
+      background-color: darken($hover-bg-color, 5%); // Légèrement plus sombre que le survol
+      border-left: 3px solid $primary-color; // Indicateur visuel sur le côté
+    }
+    &.unread {
+      background-color: $unread-bg-color;
+      .email-item-sender, .email-item-subject {
+       font-weight: $font-weight-bold;
+        color: $secondary-color;
+      }
+    }
+
+.email-details { // Wrapper for email text content
+      flex-grow: 1; // Allows this section to take available width
+      margin-right: $padding-small; // Space between text and delete button
+      min-width: 0; // Important for flex items that contain text that might overflow
+    }
+
+    // Styles for the delete button
+    .delete-button {
+      color: $text-muted-color; // Default color for the icon - subtle
+      background-color: transparent; // Ensure no default mat-icon-button background interferes
+      flex-shrink: 0; // Prevent the button from shrinking
+
+      &:hover, &:focus {
+        color: $error-color; // Error color on hover for emphasis
+        background-color: rgba($error-color, 0.1); // Slight background tint on hover
+      }
+    }
+
+  }
+}
+.email-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-unit * 0.8; // 4px
+}
+.email-item-sender,
+.email-item-recipient {
+  font-size: 1em;
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; // Adjust as needed, or use a percentage
+
+  color: $dark-text-color;
+}
+
+.email-item-subject {
+  font-size: $font-size-small;
+  color: $text-color;
+  margin-bottom: $spacing-unit * 1.2; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-item-snippet {
+  font-size: $font-size-xsmall;
+  color: $text-muted-color;
+  margin-bottom: $spacing-unit * 1.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
+}
+
+.email-item-date {
+   font-size: $font-size-xxsmall;
+  color: $text-muted-color;
+  text-align: right;
+   white-space: nowrap;
+}
+
+.empty-list-message {
+  padding: 30px 20px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  cursor: default ;
+  &:hover {
+    background-color: transparent ;
+  }
+}
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $padding-large;
+}
+
+.error-message {
+  color: $error-color;
+  padding: $padding-medium;
+  border: 1px solid $error-color;
+  background-color: lighten($error-color, 35%);
+  border-radius: 4px;
+  margin-bottom: $margin-large;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.email-form-container {
+  position: fixed;
+  top: 0;
+  right: -100%; /* Start hidden */
+  width: 40%; /* Adjust width as needed */
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  transition: right 0.3s ease-in-out;
+  z-index: 1000; /* Ensure it's on top */
+  overflow-y: auto; /* Allow scrolling */
+  padding: 20px;
+
+  &.open {
+    right: 0; /* Slide in */
+  }
+
+  /* Optional: Style the content within the form container */
+  app-email-form {
+    display: block;
+    width: 100%;
+    /* Add more styles if needed to control form appearance */
+  }
+
+  /* Close button (adjust styling as needed) */
+  .close-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    padding: 5px;
+    /* Style your close button */
+  }
+}

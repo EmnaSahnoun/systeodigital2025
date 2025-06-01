@@ -1,0 +1,61 @@
+<div class="user-form-container"> <!-- Utilisation de la même classe que agence-form -->
+  <h2>Nouveau Projet</h2>
+
+  <form [formGroup]="projectForm" (ngSubmit)="saveProject()" novalidate>
+    <!-- Champ Nom du Projet -->
+    <div class="form-group">
+      <label for="projectName">Nom du Projet</label>
+      <input type="text" id="projectName" formControlName="name" required placeholder="Ex: Rénovation Villa Bellevue">
+      <!-- Affichage des erreurs spécifiques -->
+      <div *ngIf="name?.touched && name?.invalid" class="error-message">
+        <div *ngIf="name?.hasError('required')">
+          Le nom du projet est requis.
+        </div>
+        <div *ngIf="name?.hasError('minlength')">
+          Le nom doit contenir au moins 3 caractères.
+        </div>
+      </div>
+    </div>
+
+    <!-- Champ Description -->
+    <div class="form-group">
+      <label for="projectDescription">Description (Optionnel)</label>
+      <!-- Utilisation d'un textarea standard -->
+      <textarea id="projectDescription" formControlName="description" placeholder="Décrivez brièvement le projet..." rows="4"></textarea>
+      <!-- Affichage des erreurs spécifiques -->
+      <div *ngIf="description?.touched && description?.invalid" class="error-message">
+         <div *ngIf="description?.hasError('maxlength')">
+           La description ne doit pas dépasser 500 caractères.
+         </div>
+      </div>
+    </div>
+<!-- Champ Localisation -->
+    <div class="form-group">
+      <label for="projectAddress">Address </label>
+      <!-- Utilisation d'un textarea standard -->
+      <textarea id="projectAddress" formControlName="address" placeholder="Décrivez brièvement le projet..." rows="2"></textarea>
+      <!-- Affichage des erreurs spécifiques -->
+      <div *ngIf="address?.touched && address?.invalid" class="error-message">
+         <div *ngIf="address?.hasError('maxlength')">
+           La description ne doit pas dépasser 500 caractères.
+         </div>
+      </div>
+    </div>
+    <!-- Affichage des erreurs générales (si nécessaire) -->
+    <div *ngIf="errorMessage" class="error-message general-error-display"> <!-- Classe spécifique pour erreur générale si besoin -->
+      {{ errorMessage }}
+    </div>
+
+    <!-- Actions du formulaire -->
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" (click)="cancel()" [disabled]="isLoading">
+        Annuler
+      </button>
+      <button type="submit" class="submit-btn" [disabled]="projectForm.invalid || isLoading">
+        <!-- Affichage conditionnel du texte ou spinner simple -->
+        <span *ngIf="!isLoading">Enregistrer</span>
+        <span *ngIf="isLoading">En cours...</span>
+      </button>
+    </div>
+  </form>
+</div>

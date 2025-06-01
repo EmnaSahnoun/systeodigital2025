@@ -1,0 +1,187 @@
+/* MatSidenavContainer prend toute la hauteur */
+.sidenav-container {
+  height: 100vh; /* Prend toute la hauteur de l'écran */
+  display: flex;
+  overflow: hidden;
+}
+
+/* Sidebar toujours visible */
+.sidenav {
+  width: 250px; /* Largeur de la sidebar */
+  background: #205a52; 
+  color: white;
+  font-weight: normal;
+  font-size: large;
+
+  position: fixed;
+  padding: 1.3rem;
+  display: flex; // Utiliser flexbox pour organiser le contenu verticalement
+  flex-direction: column; // Aligner les éléments en colonne
+  box-sizing: border-box; // Inclure padding dans la hauteur/largeur
+ 
+  border-radius: 0 2rem 2rem 0;
+  left: 0;
+  top: 0;
+   /* Prend toute la hauteur de l'écran */
+}
+
+/* Assurer que le contenu ne chevauche pas la sidebar */
+mat-sidenav-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  //overflow-y: auto; // Permettre le scroll du contenu principal si nécessaire
+  margin-left: 250px;
+}
+
+/* Logo centré */
+.logo {
+  text-align: center;
+  padding: 1.3rem 1.3rem 1rem 1.3rem; // Appliquer le padding ici
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); // Séparateur léger
+
+}
+
+.logo img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+/* Liste de navigation */
+ul.nav-links { // Cibler plus spécifiquement
+  padding: 1rem 0; // Padding vertical pour la liste
+  margin: 0;
+  list-style-type: none;
+  // **** AJOUT IMPORTANT ****
+  flex-grow: 1; // Permet à cette section de prendre l'espace vertical disponible
+ 
+  // **** FIN AJOUT IMPORTANT ****
+
+  li.nav-item { // Cibler plus spécifiquement
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0; // Retirer padding ici, il est sur le lien <a>
+    border-radius: 0; // Retirer radius ici, il est sur le lien <a>
+    transition: none; // Retirer transition ici
+    margin: 0 1rem 4px 1rem; // Marges pour espacer et centrer visuellement
+
+    a {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 12px 16px; // Padding sur le lien
+      border-radius: 2rem; // Radius sur le lien
+      border-left: 3px solid transparent; // Indicateur actif
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      mat-icon, i {
+        margin-right: 1rem;
+        font-size: 20px;
+        vertical-align: middle;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      &:hover {
+        background-color: #4d716e; // Utiliser variable
+        color: #fff; // Garder blanc ou éclaircir légèrement
+      }
+
+      // Style pour le lien actif
+      &.active {
+        background-color: lighten( #41B3A3, 45%); // Utiliser variable
+        color: #41B3A3; // Utiliser variable
+        font-weight: 600;
+        border-left-color: #41B3A3; // Utiliser variable
+      }
+    }
+  }
+}
+
+ul {
+  padding-left: 0;
+  margin-top: 20px;
+  list-style-type: none;
+}
+
+ul li {
+  cursor: pointer; 
+  display: flex;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: 2rem;
+  transition: background 0.3s ease; 
+}
+
+ul li i {
+  margin-right: 1rem;
+}
+
+ul li:hover {
+  background: #4d716e; 
+}
+
+ul li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+ul li a:hover {
+  background: transparent;
+}
+.logout-section {
+  // margin-top: auto; // Déjà géré par flex-grow sur ul.nav-links
+  padding: 1rem 1.3rem; // Padding
+  border-top: 1px solid rgba(255, 255, 255, 0.1); // Séparateur léger
+
+  button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    color: lighten(#F44336, 15%); // Rouge clair pour déconnexion
+    padding: 10px 0;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    mat-icon, i {
+      margin-right: 12px;
+      font-size: 20px;
+    }
+
+    &:hover {
+      color: #fff; // Blanc au survol
+    }
+  }
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .sidenav {
+    width: 200px;
+  }
+  mat-sidenav-content {
+    margin-left: 200px; // Ajuster le décalage
+  }
+}
+
+@media (max-width: 480px) {
+  .sidenav {
+    width: 180px;
+  }
+  mat-sidenav-content {
+    margin-left: 180px; // Ajuster le décalage
+  }
+}

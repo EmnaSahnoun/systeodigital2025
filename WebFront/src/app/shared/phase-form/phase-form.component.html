@@ -1,0 +1,72 @@
+<div class="user-form-container"> <!-- Utilisation de la même classe racine -->
+    <h2>Nouvelle Phase</h2>
+  
+    <form [formGroup]="phaseForm" (ngSubmit)="savePhase()" novalidate>
+  
+      <!-- Champ Nom de la Phase -->
+      <div class="form-group">
+        <label for="phaseName">Nom de la Phase</label>
+        <input type="text" id="phaseName" formControlName="name" required placeholder="Ex: Conception initiale">
+        <div *ngIf="name?.touched && name?.invalid" class="error-message">
+          <div *ngIf="name?.hasError('required')">
+            Le nom de la phase est requis.
+          </div>
+          <div *ngIf="name?.hasError('minlength')">
+            Le nom doit contenir au moins 3 caractères.
+          </div>
+        </div>
+      </div>
+  
+      <!-- Champ Description -->
+      <div class="form-group">
+        <label for="phaseDescription">Description (Optionnel)</label>
+        <textarea id="phaseDescription" formControlName="description" placeholder="Décrivez les objectifs de cette phase..." rows="3"></textarea>
+        <div *ngIf="description?.touched && description?.invalid" class="error-message">
+           <div *ngIf="description?.hasError('maxlength')">
+             La description ne doit pas dépasser 500 caractères.
+           </div>
+        </div>
+      </div>
+  
+      <!-- Champ Date de Début -->
+      <div class="form-group">
+        <label for="phaseStartDate">Date de Début</label>
+        <input type="date" id="phaseStartDate" formControlName="startDate" required>
+        <div *ngIf="startDate?.touched && startDate?.hasError('required')" class="error-message">
+          La date de début est requise.
+        </div>
+      </div>
+  
+      <!-- Champ Date de Fin -->
+      <div class="form-group">
+        <label for="phaseEndDate">Date de Fin</label>
+        <input type="date" id="phaseEndDate" formControlName="endDate" required>
+        <div *ngIf="endDate?.touched && endDate?.hasError('required')" class="error-message">
+          La date de fin est requise.
+        </div>
+        <!-- Message pour la validation de plage de dates (si ajoutée dans le .ts) -->
+        <!--
+        <div *ngIf="phaseForm.hasError('dateRangeInvalid') && (startDate?.touched || endDate?.touched)" class="error-message">
+          La date de fin doit être postérieure ou égale à la date de début.
+        </div>
+        -->
+      </div>
+  
+      <!-- Affichage des erreurs générales -->
+      <div *ngIf="errorMessage" class="error-message general-error-display">
+        {{ errorMessage }}
+      </div>
+  
+      <!-- Actions du formulaire -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()" [disabled]="isLoading">
+          Annuler
+        </button>
+        <button type="submit" class="submit-btn" [disabled]="phaseForm.invalid || isLoading || !projectId">
+          <span *ngIf="!isLoading">Enregistrer la Phase</span>
+          <span *ngIf="isLoading">En cours...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+  

@@ -1,0 +1,247 @@
+$primary-color: #41B3A3;
+$accent-color: #E27D60;
+$warn-color: #F44336;
+$success-color: #4CAF50;
+$cancel-color: #6c757d;
+$pending-color: #f9a825;
+
+$text-color-primary: #333;
+$text-color-secondary: #666;
+$text-color-light: #fff;
+
+$background-color: #f7f9fc;
+$container-background: #fff;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+.invoice-container {
+  background: $container-background;
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  font-family: Arial, sans-serif;
+  color: $text-color-primary;
+
+  .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo-box {
+      width: 200px;
+      height: 80px;
+      background-color: $background-color;
+      border: 1px dashed $border-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $text-color-secondary;
+    }
+
+    .invoice-title {
+      text-align: right;
+
+      h2 {
+        margin: 0;
+        text-align: center;
+      }
+
+      .invoice-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+         justify-content: flex-end;
+        margin-top: 0.5rem;
+
+        label {
+          margin-right: 0.25rem;
+        }
+      }
+
+      input {
+        width: 50px;
+        padding: 0.2rem;
+      }
+    }
+  }
+
+  .invoice-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+
+    label {
+      font-weight: bold;
+    }
+
+    .left,
+    .right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      input {
+        padding: 0.4rem;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+      }
+    }
+
+    .right {
+      width: 30%;
+    }
+
+    .left {
+      width: 60%;
+    }
+  }
+
+  .invoice-table {
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: collapse;
+th.text-right, td.text-right {
+      text-align: center;
+    }
+    th {
+      background-color: $primary-color;
+      color: $text-color-light;
+      padding: 0.5rem;
+    }
+
+    td {
+      border: 1px solid $border-color;
+      padding: 0.5rem;
+
+      input {
+        width: 100%;
+        border: none;
+        background: none;
+         &.text-right { // Pour l'input de TVA
+          text-align: center;
+        }
+          }
+      &.action-cell { // Cibler spécifiquement la cellule d'action
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center; // Assure que le contenu interne est centré si la cellule est plus large
+      }
+      .delete-item-btn {
+        background: none;
+        border: none;
+        color: $warn-color;
+        
+        cursor: pointer;
+        font-size: 1.2rem; // Rendre le "-" un peu plus grand
+        padding: 0.2rem 0.5rem;
+        line-height: 1;
+        &:disabled {
+          color: $text-color-secondary;
+          cursor: not-allowed;
+        }
+
+      }
+    }
+  }
+
+  .add-item {
+    background-color: transparent;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    padding: 0.4rem 0.8rem;
+    border-radius: $border-radius;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+
+  .notes-terms {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    div {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      textarea {
+        min-height: 60px;
+        padding: 0.5rem;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .invoice-summary {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    input {
+      width: 80px;
+      padding: 0.3rem;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+    }
+
+    strong {
+      color: $accent-color;
+      font-size: 1.2rem;
+    }
+  }
+  .invoice-actions {
+    margin-top: 2rem;
+    text-align: right;
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: $border-radius;
+      cursor: pointer;
+      font-size: 1rem;
+      border: none;
+      &.btn-primary {
+        background-color: $accent-color;
+        color: $text-color-light;
+      }
+    }
+  }
+
+}
+/* invoice.component.scss */
+.invoice-totals {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  width: 40%; // Ajustez la largeur selon votre design
+  margin-left: auto; // Pour pousser le bloc des totaux à droite
+
+  p {
+    display: flex;
+    justify-content: space-between; // Label à gauche, montant à droite
+    margin-bottom: 8px;
+    font-size: 0.95em;
+
+    span:first-child { // Le label
+      color: #555;
+    }
+
+    span.amount { // Le montant
+      font-weight: bold;
+      text-align: right; // Assure l'alignement à droite du texte dans le span
+    }
+  }
+
+  .total-highlight {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+
+    span.amount {
+      color: #000; // Ou la couleur de votre thème pour le total
+    }
+  }
+}

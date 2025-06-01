@@ -1,0 +1,62 @@
+<div class="agence-container">
+    <app-header [title]="'Liste des Agences'"></app-header>
+  
+    <div class="container">
+      <!-- Row 1: Search Bar, Current Date, and Add Button -->
+      <div class="agence-header">
+        <!-- Search Bar -->
+        <div class="input-container">
+          <i class="bi bi-search icon"></i>
+          <input type="text" placeholder="Rechercher une agence..." [(ngModel)]="searchQuery" (input)="filterAgencies()" />
+        </div>
+  
+        <!-- Date -->
+        <div class="current-date">
+          {{ currentDate | date: 'dd/MM/yyyy' }}
+        </div>
+  
+        <!-- Add Agency Button -->
+        <button class="add-agency btn btn-primary" (click)="addAgency()">
+          <i class="bi bi-plus"></i> Nouvelle Agence
+        </button>
+      </div>
+  
+      <!-- Agency Table -->
+      <div class="agence-display">
+        <div class="agence-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Date de Création</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let agency of filteredAgencies; let i = index" 
+                [class.even]="i % 2 === 0" 
+                [class.odd]="i % 2 !== 0"
+                (click)="showAgencyDetails(agency)">
+                <td>{{ agency.name }}</td>
+                <td>{{ agency.address }}</td>
+                <td>{{ agency.email }}</td>
+                <td>{{ agency.phone }}</td>
+                <td>{{ agency.createdAt | date:'dd/MM/yyyy' }}</td>
+                <td class="actions">
+                    <button class="edit-btn" (click)="editAgency(agency); $event.stopPropagation()">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="delete-btn" (click)="deleteAgence(agency.id, agency.name); $event.stopPropagation()">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
