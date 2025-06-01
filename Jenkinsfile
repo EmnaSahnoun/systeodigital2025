@@ -73,7 +73,7 @@ environment {
                 stage('Build Eureka Image') {
                     steps {
                         dir('EurekaCompain') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/eureka-server ."
+                            sh "docker build -t emnasahnoun/eureka-server ."
                         }
                     }
                 }
@@ -81,7 +81,7 @@ environment {
                 stage('Build Gateway Image') {
                     steps {
                         dir('Gatway') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/gateway-service ."
+                            sh "docker build -t emnasahnoun/gateway-service ."
                         }
                     }
                 }
@@ -89,7 +89,7 @@ environment {
                 stage('Build ProjectService Image') {
                     steps {
                         dir('ProjectService') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/project-service ."
+                            sh "docker build -t emnasahnoun/project-service ."
                         }
                     }
                 }
@@ -97,7 +97,7 @@ environment {
                 stage('Build ActivityService Image') {
                     steps {
                         dir('Activity-Service') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/activity-service ."
+                            sh "docker build -t emnasahnoun/activity-service ."
                         }
                     }
                 }
@@ -105,7 +105,7 @@ environment {
                 stage('Build DocumentService Image') {
                     steps {
                         dir('DocumentService') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/document-service ."
+                            sh "docker build -t emnasahnoun/document-service ."
                         }
                     }
                 }
@@ -115,7 +115,7 @@ environment {
         dir('correct-frontend-directory-name') {
             script {
                 try {
-                    sh "docker build -t ${env.DOCKER_REGISTRY}/angular-frontend ."
+                    sh "docker build -t emnasahnoun/angular-frontend ."
                 } catch (e) {
                     echo "Frontend build failed: ${e}"
                     // Optional: add more debugging
@@ -137,12 +137,12 @@ environment {
                 )]) {
                     sh "docker login -u ${env.DockerHubUsername} -p ${env.DockerHubPassword}"
                     
-                    sh "docker push ${env.DOCKER_REGISTRY}/eureka-server"
-                    sh "docker push ${env.DOCKER_REGISTRY}/gateway-service"
-                    sh "docker push ${env.DOCKER_REGISTRY}/project-service"
-                    sh "docker push ${env.DOCKER_REGISTRY}/activity-service"
-                    sh "docker push ${env.DOCKER_REGISTRY}/document-service"
-                    sh "docker push ${env.DOCKER_REGISTRY}/angular-frontend"
+                    sh "docker push emnasahnoun/eureka-server"
+                    sh "docker push emnasahnoun/gateway-service"
+                    sh "docker push emnasahnoun/project-service"
+                    sh "docker push emnasahnoun/activity-service"
+                    sh "docker push emnasahnoun/document-service"
+                    sh "docker push emnasahnoun/angular-frontend"
                 }
             }
         }
