@@ -149,7 +149,8 @@ environment {
         
         stage('Deploy') {
             steps {
-                sh 'docker-compose down && docker-compose up -d --force-recreate'
+                 sh 'docker-compose down || true'  # Force la suppression des anciens conteneurs
+        sh 'docker-compose up -d --force-recreate'  # Recrée les conteneurs
             }
         }
     }
