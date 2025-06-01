@@ -11,7 +11,7 @@ environment {
     stages{
         stage('code'){
             steps {
-                git url: 'https://github.com/EmnaSahnoun/test.git', branch: 'main'
+                git url: 'https://github.com/EmnaSahnoun/systeodigital2025.git', branch: 'main'
             }
         }
       stage('Build and Package') {
