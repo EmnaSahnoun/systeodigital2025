@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   eureka-server:
-    image: emnasahnoun/eureka-server:latest
+    image: emnasahnoun/eureka-server
     container_name: eureka-server
     hostname: eureka.systeo.tn
     ports:
@@ -11,7 +11,7 @@ services:
       - systeo-network
 
   gateway-service:
-    image: emnasahnoun/gateway-service:latest
+    image: emnasahnoun/gateway-service
     container_name: gateway-service
     hostname: e1.systeo.tn
     ports:
@@ -24,7 +24,7 @@ services:
       - systeo-network
 
   project-service:
-    image: emnasahnoun/project-service:latest
+    image: emnasahnoun/project-service
     container_name: project-service
     hostname: e3.systeo.tn
     ports:
@@ -37,7 +37,7 @@ services:
       - systeo-network
 
   activity-service:
-    image: emnasahnoun/activity-service:latest
+    image: emnasahnoun/activity-service
     container_name: activity-service
     hostname: e4.systeo.tn
     ports:
@@ -50,7 +50,7 @@ services:
       - systeo-network
 
   document-service:
-    image: emnasahnoun/document-service:latest
+    image: emnasahnoun/document-service
     container_name: document-service
     hostname: e6.systeo.tn
     ports:
@@ -63,7 +63,7 @@ services:
       - systeo-network
 
   angular-frontend:
-    image: emnasahnoun/angular-frontend:latest
+    image: emnasahnoun/angular-frontend
     container_name: angular-frontend
     ports:
       - "4200:4200"
