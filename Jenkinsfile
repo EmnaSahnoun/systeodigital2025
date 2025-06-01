@@ -111,12 +111,20 @@ environment {
                 }
                 
                 stage('Build Frontend Image') {
-                    steps {
-                        dir('WebFront') {
-                            sh "docker build -t ${env.DOCKER_REGISTRY}/angular-frontend ."
-                        }
-                    }
+    steps {
+        dir('correct-frontend-directory-name') {
+            script {
+                try {
+                    sh "docker build -t ${env.DOCKER_REGISTRY}/angular-frontend ."
+                } catch (e) {
+                    echo "Frontend build failed: ${e}"
+                    // Optional: add more debugging
+                    sh 'ls -la' // Show directory contents
                 }
+            }
+        }
+    }
+}
             }
         }
         
