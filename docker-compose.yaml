@@ -7,8 +7,7 @@ services:
     hostname: eureka.systeo.tn
     ports:
       - "8761:8761"
-    expose:
-      - '8761'
+    
     networks:
       - systeo-network
 
@@ -18,8 +17,7 @@ services:
     hostname: e1.systeo.tn
     ports:
       - "9091:9091"
-    expose:
-      - '9091'
+ 
     environment:
       - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
@@ -33,8 +31,7 @@ services:
     hostname: e3.systeo.tn
     ports:
       - "8074:8074"
-    expose:
-      - '8074'
+    
     environment:
       - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
@@ -48,8 +45,7 @@ services:
     hostname: e4.systeo.tn
     ports:
       - "8075:8075"
-    expose:
-      - '8075'
+    
     environment:
       - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
@@ -63,8 +59,7 @@ services:
     hostname: e6.systeo.tn
     ports:
       - "8077:8077"
-    expose:
-      - '8077'
+    
     environment:
       - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
@@ -77,8 +72,7 @@ services:
     container_name: angular-frontend
     ports:
       - "4200:4200"
-    expose:
-      - '4200'
+    
     depends_on:
       - gateway-service
     networks:
