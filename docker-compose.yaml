@@ -7,11 +7,7 @@ services:
     hostname: eureka.systeo.tn
     ports:
       - "8761:8761"
-    environment:
-      - SERVER_SSL_ENABLED=true
-      - EUREKA_INSTANCE_SECURE_PORT_ENABLED=true
-      - EUREKA_INSTANCE_NON_SECURE_PORT_ENABLED=false
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
+    
     networks:
       - systeo-network
 
@@ -21,10 +17,9 @@ services:
     hostname: e1.systeo.tn
     ports:
       - "9091:9091"
+ 
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
-      - SPRING_PROFILES_ACTIVE=prod
-      - SERVER_SSL_ENABLED=true
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -36,9 +31,9 @@ services:
     hostname: e3.systeo.tn
     ports:
       - "8074:8074"
+    
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
-      - SERVER_SSL_ENABLED=true
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -50,9 +45,9 @@ services:
     hostname: e4.systeo.tn
     ports:
       - "8075:8075"
+    
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
-      - SERVER_SSL_ENABLED=true
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -64,9 +59,9 @@ services:
     hostname: e6.systeo.tn
     ports:
       - "8077:8077"
+    
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
-      - SERVER_SSL_ENABLED=true
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -76,7 +71,10 @@ services:
     image: emnasahnoun/angular-frontend
     container_name: angular-frontend
     ports:
-      - "4200:80"
+      - "4200:4200"
+    
+    depends_on:
+      - gateway-service
     networks:
       - systeo-network
 
