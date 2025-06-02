@@ -11,7 +11,7 @@ services:
       - SERVER_SSL_ENABLED=true
       - EUREKA_INSTANCE_SECURE_PORT_ENABLED=true
       - EUREKA_INSTANCE_NON_SECURE_PORT_ENABLED=false
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn:8761/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
     networks:
       - systeo-network
 
@@ -22,7 +22,7 @@ services:
     ports:
       - "9091:9091"
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn:8761/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
       - SPRING_PROFILES_ACTIVE=prod
       - SERVER_SSL_ENABLED=true
     depends_on:
@@ -37,7 +37,7 @@ services:
     ports:
       - "8074:8074"
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn:8761/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
       - SERVER_SSL_ENABLED=true
     depends_on:
       - eureka-server
@@ -51,7 +51,7 @@ services:
     ports:
       - "8075:8075"
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn:8761/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
       - SERVER_SSL_ENABLED=true
     depends_on:
       - eureka-server
@@ -65,7 +65,7 @@ services:
     ports:
       - "8077:8077"
     environment:
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn:8761/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
       - SERVER_SSL_ENABLED=true
     depends_on:
       - eureka-server
