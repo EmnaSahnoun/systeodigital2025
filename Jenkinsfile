@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     tools {
@@ -148,19 +149,10 @@ environment {
         }
         
         stage('Deploy') {
-    steps {
-        script {
-            sh 'docker-compose up -d eureka-server'
-
-            sh '''
-                while ! curl -s http://localhost:8761/actuator/health | grep -q UP; do
-                    echo "Waiting for Eureka to start..."
-                    sleep 5
-                done
-            '''
-            sh 'docker-compose up -d'
+            steps {
+                sh 'docker-compose down && docker-compose up -d'
+            }
         }
     }
 }
-    }
-}
+
