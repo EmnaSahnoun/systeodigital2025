@@ -7,7 +7,9 @@ services:
     hostname: eureka.systeo.tn
     ports:
       - "8761:8761"
-    
+    environment:
+      - EUREKA_INSTANCE_HOSTNAME=eureka-server
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
     networks:
       - systeo-network
 
@@ -19,7 +21,7 @@ services:
       - "9091:9091"
  
     environment:
-      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -33,7 +35,7 @@ services:
       - "8074:8074"
     
     environment:
-      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -47,7 +49,7 @@ services:
       - "8075:8075"
     
     environment:
-      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
     depends_on:
       - eureka-server
     networks:
@@ -61,7 +63,7 @@ services:
       - "8077:8077"
     
     environment:
-      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
     depends_on:
       - eureka-server
     networks:
