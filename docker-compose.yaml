@@ -2,154 +2,82 @@ version: '3.8'
 
 services:
   eureka-server:
-    image: emnasahnoun/eureka-server # Assurez-vous que cette image est construite et poussée par Jenkins
+    image: emnasahnoun/eureka-server
     container_name: eureka-server
+    hostname: eureka.systeo.tn
     ports:
       - "8761:8761"
-    environment:
-      # Ces variables surchargent celles dans application.properties si nécessaire
-      # Normalement, elles sont déjà correctes dans votre fichier properties
-      - EUREKA_CLIENT_REGISTERWITHUREKA=false
-      - EUREKA_CLIENT_FETCHREGISTRY=false
-      - EUREKA_INSTANCE_HOSTNAME=eureka-server # Important pour la résolution interne à Docker
+    
     networks:
-      - microservice-net
-
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - microservice-net
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672" # Port AMQP
-      - "15672:15672" # Port Management UI
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
-    networks:
-      - microservice-net
+      - systeo-network
 
   gateway-service:
-    image: emnasahnoun/gateway-service # Assurez-vous que cette image est construite et poussée par Jenkins
+    image: emnasahnoun/gateway-service
     container_name: gateway-service
+    hostname: e1.systeo.tn
     ports:
       - "9091:9091"
+ 
     environment:
-      # Pointe vers le service Eureka dans le réseau Docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      # Active la découverte de services pour le routage
-      - SPRING_CLOUD_GATEWAY_DISCOVERY_LOCATOR_ENABLED=true
-      # Assurez-vous que Keycloak est accessible (remplacez par l'URL interne/externe appropriée si Keycloak est aussi dans Docker Compose ou externe)
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=https://esmm.systeo.tn/realms/systeodigital/protocol/openid-connect/certs
-      # Ajoutez d'autres variables d'environnement nécessaires (ex: CORS, Keycloak client ID/secret si non fixés dans l'image)
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
     networks:
-      - microservice-net
+      - systeo-network
 
   project-service:
-    image: emnasahnoun/project-service # Assurez-vous que cette image est construite et poussée par Jenkins
+    image: emnasahnoun/project-service
     container_name: project-service
+    hostname: e3.systeo.tn
     ports:
       - "8074:8074"
+    
     environment:
-      # Pointe vers le service Eureka
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      # Pointe vers MongoDB dans Docker
-      - SPRING_DATA_MONGODB_HOST=mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      # Pointe vers RabbitMQ dans Docker
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=admin
-      - SPRING_RABBITMQ_PASSWORD=admin
-      # Assurez-vous que Keycloak est accessible
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=https://esmm.systeo.tn/realms/systeodigital/protocol/openid-connect/certs
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=https://esmm.systeo.tn/realms/systeodigital
-      # Ajoutez d'autres variables d'environnement nécessaires
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
-      - mongodb
-      - rabbitmq
     networks:
-      - microservice-net
+      - systeo-network
 
   activity-service:
-    image: emnasahnoun/activity-service # Assurez-vous que cette image est construite et poussée par Jenkins
+    image: emnasahnoun/activity-service
     container_name: activity-service
+    hostname: e4.systeo.tn
     ports:
       - "8075:8075"
+    
     environment:
-      # Pointe vers le service Eureka
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      # Pointe vers RabbitMQ dans Docker
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=admin
-      - SPRING_RABBITMQ_PASSWORD=admin
-      # Assurez-vous que Keycloak est accessible
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=https://esmm.systeo.tn/realms/systeodigital/protocol/openid-connect/certs
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=https://esmm.systeo.tn/realms/systeodigital
-      # Ajoutez d'autres variables d'environnement nécessaires (ex: storage.location si besoin de persistance)
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
-      - rabbitmq
     networks:
-      - microservice-net
+      - systeo-network
 
   document-service:
-    image: emnasahnoun/document-service # Assurez-vous que cette image est construite et poussée par Jenkins
+    image: emnasahnoun/document-service
     container_name: document-service
+    hostname: e6.systeo.tn
     ports:
       - "8077:8077"
+    
     environment:
-      # Pointe vers le service Eureka
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      # Pointe vers MongoDB dans Docker
-      - SPRING_DATA_MONGODB_HOST=mongodb
-      - SPRING_DATA_MONGODB_PORT=27017
-      # Pointe vers RabbitMQ dans Docker
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=admin
-      - SPRING_RABBITMQ_PASSWORD=admin
-      # Assurez-vous que Keycloak est accessible
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=https://esmm.systeo.tn/realms/systeodigital/protocol/openid-connect/certs
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=https://esmm.systeo.tn/realms/systeodigital
-      # Ajoutez d'autres variables d'environnement nécessaires
+      - DISCOVERY_SERVICE_URL=https://eureka.systeo.tn/eureka/
     depends_on:
       - eureka-server
-      - mongodb
-      - rabbitmq
     networks:
-      - microservice-net
+      - systeo-network
 
   angular-frontend:
-    image: emnasahnoun/angular-frontend # Assurez-vous que cette image est construite et poussée par Jenkins
+    image: emnasahnoun/angular-frontend
     container_name: angular-frontend
     ports:
       - "4200:4200"
-    # Le proxy.conf.json dans l'image Docker doit pointer vers 'http://gateway-service:9091'
-    # Si ce n'est pas le cas, vous devrez reconstruire l'image frontend avec le bon proxy.conf.json
-    # ou trouver une autre méthode pour configurer l'URL du backend (ex: variable d'environnement injectée au runtime si l'app le supporte)
+    
     depends_on:
       - gateway-service
     networks:
-      - microservice-net
+      - systeo-network
 
 networks:
-  microservice-net:
+  systeo-network:
     driver: bridge
-
-volumes:
-  mongo-data:
-    driver: local
-
