@@ -11,8 +11,6 @@ services:
       - EUREKA_INSTANCE_HOSTNAME=eureka.systeo.tn
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=https://eureka.systeo.tn/eureka/
     networks:
-      systeo-network:
-        aliases:
           - eureka.systeo.tn
 
   gateway-service:
