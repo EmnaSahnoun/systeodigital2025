@@ -5,7 +5,7 @@ pipeline {
         jdk 'jdk-17'
     }
 environment {
-        DOCKER_REGISTRY = 'emnasahnoun' // Votre namespace Docker Hub
+        DOCKER_REGISTRY = 'emnasahnoun' 
     }
     
   
